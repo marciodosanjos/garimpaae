@@ -1,3 +1,21 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Lato:wght@100;700;900&display=swap");
+
+/* Define as fontes globalmente */
+body,
+header,
+nav {
+  font-family: "Inter", "Lato", sans-serif;
+}
+
+body {
+  background-color: "white";
+}
+
+input[type="checkbox"]:checked {
+  background-color: rgba(6, 11, 6, 0.7); /* Cor de fundo quando selecionado */
+  border-color: rgba(9, 19, 9, 0.7); /* Cor da borda quando selecionado */
+}

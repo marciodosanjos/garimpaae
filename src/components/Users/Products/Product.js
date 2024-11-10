@@ -14,7 +14,7 @@ import {
 } from "../../../redux/slices/cart/cartSlice";
 import Swal from "sweetalert2";
 import { Button, Container } from "@mui/material";
-import Footer from "../../HomePage/Footer";
+import Footer from "../../Footer/Footer";
 
 const policies = [
   {

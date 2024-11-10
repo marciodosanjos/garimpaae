@@ -24,7 +24,6 @@ import { fetchBrandsAction } from "../../../redux/slices/brands/brandsSlice";
 import { fetchColorsAction } from "../../../redux/slices/colors/colorsSlice";
 import LoadingComponent from "../../LoadingComp/LoadingComponent";
 import ErrorMsg from "../../ErrorMsg/ErrorMsg";
-import Footer from "../../HomePage/Footer";
 
 const sortOptions = [
   { name: "Preço: menor para maior", href: "#", current: false },
@@ -806,7 +805,6 @@ export default function ProductsFilters() {
           </section>
         </main>
       </div>
-      <Footer />
     </div>
   );
 }

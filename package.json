@@ -16,6 +16,7 @@
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
     "axios": "^1.2.2",
+    "lucide-react": "^0.454.0",
     "react": "^18.2.0",
     "react-datepicker": "^4.8.0",
     "react-dom": "^18.2.0",
@@ -27,7 +28,7 @@
     "react-select": "^5.7.0",
     "react-stripe-checkout": "^2.6.3",
     "stripe": "^11.4.0",
-    "styled-components": "^6.1.11",
+    "styled-components": "^6.1.13",
     "sweetalert2": "^11.6.16",
     "sweetalert2-react-content": "^5.0.7",
     "web-vitals": "^2.1.4"

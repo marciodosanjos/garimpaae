@@ -1,17 +1,13 @@
-import React from "react";
-import ReactLoading from "react-loading";
+import * as React from "react";
+import Box from "@mui/material/Box";
+import Skeleton from "@mui/material/Skeleton";
 
-const LoadingComponent = () => {
+export default function LoadingComponent() {
   return (
-    <div
-      style={{
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-      }}>
-      <ReactLoading type="spin" color="red" />
-    </div>
+    <Box sx={{ width: 300 }}>
+      <Skeleton />
+      <Skeleton animation="wave" />
+      <Skeleton animation={false} />
+    </Box>
   );
-};
-
-export default LoadingComponent;
+}
