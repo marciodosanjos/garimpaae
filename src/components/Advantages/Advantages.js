@@ -37,11 +37,17 @@ export default function Advantages() {
       className="advantages"
       fixed
       sx={{
-        height: { xs: "100vh", sm: "100vh", md: "20vh", xl: "30vh" },
+        height: { xs: "60vh", sm: "60vh", md: "20vh", xl: "30vh" },
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
-        justifyContent: "center",
+        justifyContent: {
+          xs: "fle-start",
+          sm: "flext-start",
+          md: "center",
+          lg: "center",
+          xl: "center",
+        },
         //border: "1px solid black",
       }}
     >
@@ -50,7 +56,7 @@ export default function Advantages() {
         spacing={2}
         sx={{
           marginTop: "1rem",
-          height: "30vh",
+          height: "20vh",
           backgroundColor: "white",
         }}
       >
@@ -62,7 +68,7 @@ export default function Advantages() {
             md={4}
             sx={{
               marginBottom: { md: "2rem" },
-              height: "30vh",
+              height: "20vh",
               backgroundColor: "white",
               display: "flex",
               flexDirection: "column",
