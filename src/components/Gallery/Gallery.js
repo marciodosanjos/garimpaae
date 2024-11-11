@@ -52,7 +52,7 @@ const GallerySlider = ({ arr }) => {
         <Card
           sx={{
             width: "100%",
-            height: arr.length > 1 || isMobile ? "20rem" : "29rem",
+            height: arr?.length > 1 || isMobile ? "20rem" : "29rem",
             maxHeight: "auto",
             boxShadow: "none",
             borderRadius: "unset",
