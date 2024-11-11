@@ -61,7 +61,7 @@ const GallerySlider = ({ arr }) => {
         >
           <CardMedia
             component="img"
-            image={arr?.length > 1 ? arr[selectedIndex] : arr[0]}
+            image={arr?.length > 1 ? arr[selectedIndex] : arr ? arr[0] : "null"}
             alt={"photos[selectedIndex].alt"}
             sx={{
               objectFit: "contain",
