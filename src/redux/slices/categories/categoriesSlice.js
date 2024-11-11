@@ -28,7 +28,6 @@ export const fetchCategoriesAction = createAsyncThunk(
     try {
       //http request
       const { data } = await axios.get(`${baseURL}/categories`);
-      console.log(data);
       return data;
     } catch (error) {
       return rejectWithValue(error?.response?.data);
@@ -90,7 +89,6 @@ export const updateCategoryAction = createAsyncThunk(
         { name },
         config
       );
-      console.log(data);
       return data;
     } catch (error) {
       return rejectWithValue(error?.response?.data);
