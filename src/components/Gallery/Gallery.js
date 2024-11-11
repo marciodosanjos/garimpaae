@@ -3,31 +3,17 @@ import { Grid, Card, CardMedia, IconButton, Box } from "@mui/material";
 import { ArrowForward, ArrowBack } from "@mui/icons-material";
 import useIsMobile from "../../hooks/useIsMobile";
 
-// Dados das fotos
-const photos = [
-  {
-    src: "https://sneakersul.com.br/cdn/shop/files/nike-sb-dunk-low-ebay-1.webp?v=1711918943",
-    alt: "After Rain (Jeshu John - designerspics.com)",
-  },
-  {
-    src: "https://sneakersul.com.br/cdn/shop/files/nike-sb-dunk-low-ebay-1.webp?v=1711918943",
-    alt: "Boats (Jeshu John - designerspics.com)",
-  },
-];
-
 const GallerySlider = ({ arr }) => {
   const [selectedIndex, setSelectedIndex] = useState(0); // Índice da imagem selecionada
   const isMobile = useIsMobile();
   // Navega para a próxima imagem
   const handleNext = () => {
-    setSelectedIndex((prevIndex) => (prevIndex + 1) % photos.length);
+    setSelectedIndex((prevIndex) => (prevIndex + 1) % arr.length);
   };
 
   // Navega para a imagem anterior
   const handlePrev = () => {
-    setSelectedIndex(
-      (prevIndex) => (prevIndex - 1 + photos.length) % photos.length
-    );
+    setSelectedIndex((prevIndex) => (prevIndex - 1 + arr.length) % arr.length);
   };
 
   return (
@@ -75,7 +61,7 @@ const GallerySlider = ({ arr }) => {
         >
           <CardMedia
             component="img"
-            image={arr.length > 1 ? arr[selectedIndex] : arr[0]}
+            image={arr?.length > 1 ? arr[selectedIndex] : arr[0]}
             alt={"photos[selectedIndex].alt"}
             sx={{
               objectFit: "contain",
@@ -109,7 +95,7 @@ const GallerySlider = ({ arr }) => {
         justifyContent="center"
         style={{ marginTop: "0.1rem", display: isMobile && "none" }}
       >
-        {arr.length > 1 &&
+        {arr?.length > 1 &&
           arr?.map((photo, index) => (
             <Grid item xs={3} key={index}>
               <Card
@@ -124,7 +110,7 @@ const GallerySlider = ({ arr }) => {
                 <CardMedia
                   component="img"
                   height="100"
-                  image={photo.src}
+                  image={photo}
                   alt={"photo.alt"}
                   style={{
                     objectFit: "cover",
