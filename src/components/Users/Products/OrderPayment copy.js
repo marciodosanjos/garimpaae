@@ -10,6 +10,7 @@ import LoadingComponent from "../../LoadingComp/LoadingComponent";
 export default function OrderPayment() {
   //get data from location
   const location = useLocation();
+  const { sumTotalPrice } = location?.state;
 
   const dispatch = useDispatch();
 
@@ -19,9 +20,6 @@ export default function OrderPayment() {
 
   //---get cart items from store---
   const { cartItems } = useSelector((state) => state?.cart);
-
-  // console.log(location?.state);
-  // console.log(cartItems);
 
   //const calculateTotalDiscountedPrice = () => {};
 
@@ -43,7 +41,7 @@ export default function OrderPayment() {
       placeOrderAction({
         orderItems: cartItems,
         shippingAddress: userShippingAddress,
-        totalPrice: location?.state,
+        totalPrice: sumTotalPrice,
       })
     );
     //empty cart items
@@ -121,7 +119,7 @@ export default function OrderPayment() {
                     <dt className="text-base font-medium">Sub Total</dt>
                     <dd className="text-base font-medium text-gray-900">
                       {/* $ {calculateTotalDiscountedPrice()} */}
-                      {/* R$ {sumTotalPrice},00 */}
+                      R$ {sumTotalPrice},00
                     </dd>
                   </div>
                 </dl>
@@ -134,7 +132,7 @@ export default function OrderPayment() {
                       onClick={placeOrderHandler}
                       className="w-full rounded-md border border-transparent bg-indigo-600 py-3 px-4 text-base font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-50"
                     >
-                      {/* Confirm Payment - R$ {sumTotalPrice} */}
+                      Confirm Payment - R$ {sumTotalPrice}
                     </button>
                   )}
 

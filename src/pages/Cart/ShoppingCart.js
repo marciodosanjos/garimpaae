@@ -243,7 +243,7 @@ export default function ShoppingCart() {
               }}
             >
               <Button
-                href="/order-payment"
+                to="/order-payment"
                 variant="primary"
                 component={Link}
                 sx={{ width: "100%", marginY: 2 }}
