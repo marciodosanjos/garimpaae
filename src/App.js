@@ -16,7 +16,7 @@ import AddBrand from "./components/Admin/Categories/AddBrand";
 import AddColor from "./components/Admin/Categories/AddColor";
 import UpdateCoupon from "./components/Admin/Coupons/UpdateCoupon";
 import Product from "./components/Product/Product";
-import ShoppingCart from "./components/Users/Products/ShoppingCart";
+import ShoppingCart from "./pages/Cart/ShoppingCart";
 import CustomerProfile from "./components/Users/Profile/CustomerProfile";
 import AddReview from "./components/Users/Reviews/AddReview";
 import UpdateCategory from "./components/Admin/Categories/UpdateCategory";

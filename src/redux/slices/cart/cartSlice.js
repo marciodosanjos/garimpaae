@@ -45,6 +45,7 @@ export const changeCartQtyAction = createAsyncThunk(
       }
       return item;
     });
+
     localStorage.setItem("cartItems", JSON.stringify(newCartItems));
   }
 );

@@ -8,12 +8,14 @@ const GallerySlider = ({ arr }) => {
   const isMobile = useIsMobile();
   // Navega para a próxima imagem
   const handleNext = () => {
-    setSelectedIndex((prevIndex) => (prevIndex + 1) % arr.length);
+    setSelectedIndex((prevIndex) => (prevIndex + 1) % arr?.length);
   };
 
   // Navega para a imagem anterior
   const handlePrev = () => {
-    setSelectedIndex((prevIndex) => (prevIndex - 1 + arr.length) % arr.length);
+    setSelectedIndex(
+      (prevIndex) => (prevIndex - 1 + arr?.length) % arr?.length
+    );
   };
 
   return (
