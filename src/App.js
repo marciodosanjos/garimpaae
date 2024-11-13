@@ -3,7 +3,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import AdminDashboard from "./components/Admin/AdminDashboard";
 import ManageCoupons from "./components/Admin/Coupons/ManageCoupons";
 import AddCoupon from "./components/Admin/Coupons/AddCoupon";
-import Login from "./components/Users/Forms/Login";
+import Login from "./pages/Login/Login";
 import AddProduct from "./components/Admin/Products/AddProduct";
 import RegisterForm from "./components/Users/Forms/RegisterForm";
 import Navbar from "./components/Navbar/Navbar";

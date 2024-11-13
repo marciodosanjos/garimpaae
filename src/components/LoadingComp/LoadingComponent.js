@@ -4,7 +4,7 @@ import Skeleton from "@mui/material/Skeleton";
 
 export default function LoadingComponent() {
   return (
-    <Box sx={{ width: 300 }}>
+    <Box sx={{ width: 300, textAlign: "center" }}>
       <Skeleton />
       <Skeleton animation="wave" />
       <Skeleton animation={false} />
