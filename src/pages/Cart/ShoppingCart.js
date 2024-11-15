@@ -227,7 +227,10 @@ export default function ShoppingCart() {
                 marginY: 3,
               }}
             >
-              <Typography variant="body1" sx={{ color: "#71747E" }}>
+              <Typography
+                variant="body1"
+                sx={{ color: "#71747E", fontWeight: "bold" }}
+              >
                 Total
               </Typography>
               <Typography variant="h6">

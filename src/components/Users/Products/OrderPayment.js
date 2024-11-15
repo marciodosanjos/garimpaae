@@ -2,15 +2,17 @@ import { useDispatch, useSelector } from "react-redux";
 import AddShippingAddress from "../Forms/AddShippingAddress";
 import { useEffect } from "react";
 import { getCartItemsAction } from "../../../redux/slices/cart/cartSlice";
-import { useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { placeOrderAction } from "../../../redux/slices/orders/ordersSlice";
 import { getUserProfileAction } from "../../../redux/slices/users/usersSlice";
 import LoadingComponent from "../../LoadingComp/LoadingComponent";
+import { Box, Button, Container, Grid, Typography } from "@mui/material";
+import useIsMobile from "../../../hooks/useIsMobile";
 
 export default function OrderPayment() {
+  const isMobile = useIsMobile();
   //get data from location
   const location = useLocation();
-
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -20,10 +22,11 @@ export default function OrderPayment() {
   //---get cart items from store---
   const { cartItems } = useSelector((state) => state?.cart);
 
-  // console.log(location?.state);
-  // console.log(cartItems);
-
-  //const calculateTotalDiscountedPrice = () => {};
+  //---get total price from cart items store ---
+  const sumTotalPrice = cartItems?.reduce(
+    (acc, curr) => acc + curr?.totalPrice,
+    0
+  );
 
   //create order submit handler
   //  // const createOrderSubmitHandler = (e) => {
@@ -43,7 +46,7 @@ export default function OrderPayment() {
       placeOrderAction({
         orderItems: cartItems,
         shippingAddress: userShippingAddress,
-        totalPrice: location?.state,
+        totalPrice: sumTotalPrice,
       })
     );
     //empty cart items
@@ -54,97 +57,163 @@ export default function OrderPayment() {
     (state) => state?.orders
   );
 
+  let data = [
+    { title: "Subtotal", value: 300 },
+    { title: "Frete", value: "free" },
+    { title: "Taxa", value: 20 },
+  ];
+
   return (
-    <div className="bg-gray-50">
-      <main className="mx-auto max-w-7xl px-4 pt-16 pb-24 sm:px-6 lg:px-8">
-        <div className="mx-auto max-w-2xl lg:max-w-none">
-          <h1 className="sr-only">Checkout</h1>
+    <Container fixed sx={{ marginY: !isMobile && "8rem" }}>
+      <>
+        {/* Shipping Address */}
+        <Grid
+          container
+          direction="row"
+          sx={{ justifyContent: "space-between", gap: 1 }}
+        >
+          <Grid item xs={12} sm={12} md={6} lg={6}>
+            <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
+              <Typography
+                variant="h3"
+                sx={{
+                  textAlign: isMobile && "center",
+                  marginBottom: isMobile && "2rem",
+                }}
+              >
+                Checkout
+              </Typography>
+              <Typography
+                variant="body"
+                sx={{
+                  textAlign: isMobile && "center",
+                  marginBottom: isMobile && "2rem",
+                }}
+              >
+                Adicione seu endereço de envio, para podermos enviar o produto
+                para você
+              </Typography>
+            </Box>
+            <AddShippingAddress />
+          </Grid>
 
-          <div className="lg:grid lg:grid-cols-2 lg:gap-x-12 xl:gap-x-16">
-            <div>
-              <div className="mt-10 border-t border-gray-200 pt-10">
-                {/* shipping Address */}
-                <AddShippingAddress />
-              </div>
-            </div>
+          {/* Summary card */}
+          <Grid
+            item
+            xs={12}
+            sm={12}
+            md={5}
+            lg={5}
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              gap: 4,
+              boxShadow: "0px 4px 12px rgba(0, 0, 0, 0.1)",
+              padding: 4,
+            }}
+          >
+            <Typography
+              variant="h4"
+              sx={{
+                textAlign: isMobile && "center",
+                marginBottom: isMobile && "2rem",
+              }}
+            >
+              Items no seu carrinho
+            </Typography>
 
-            {/* Order summary */}
-            <div className="mt-10 lg:mt-0">
-              <h2 className="text-lg font-medium text-gray-900">
-                Order summary
-              </h2>
-
-              <div className="mt-4 rounded-lg border border-gray-200 bg-white shadow-sm">
-                <h3 className="sr-only">Items in your cart</h3>
-                <ul className="divide-y divide-gray-200">
-                  {cartItems?.map((product) => (
-                    <li key={product._id} className="flex py-6 px-4 sm:px-6">
-                      <div className="flex-shrink-0">
-                        <img
-                          src={product?.image}
-                          alt={product?.name}
-                          className="w-20 rounded-md"
-                        />
-                      </div>
-
-                      <div className="ml-6 flex flex-1 flex-col">
-                        <div className="flex">
-                          <div className="min-w-0 flex-1">
-                            <p className="mt-1 text-sm text-gray-500">
-                              {product.name}
-                            </p>
-                            <p className="mt-1 text-sm text-gray-500">
-                              {product.size}
-                            </p>
-                            <p className="mt-1 text-sm text-gray-500">
-                              {product.color}
-                            </p>
-                          </div>
-                        </div>
-
-                        <div className="flex flex-1 items-end justify-between pt-2">
-                          <p className="mt-1 text-sm font-medium text-gray-900">
-                            R$ {product?.price} X {product?.qty} = R${" "}
-                            {product?.totalPrice}
-                          </p>
-                        </div>
-                      </div>
-                    </li>
-                  ))}
-                </ul>
-                <dl className="space-y-6 border-t border-gray-200 py-6 px-4 sm:px-6">
-                  <div className="flex items-center justify-between">
-                    <dt className="text-sm">Taxes</dt>
-                    <dd className="text-sm font-medium text-gray-900">$0.00</dd>
-                  </div>
-                  <div className="flex items-center justify-between border-t border-gray-200 pt-6">
-                    <dt className="text-base font-medium">Sub Total</dt>
-                    <dd className="text-base font-medium text-gray-900">
-                      {/* $ {calculateTotalDiscountedPrice()} */}
-                      {/* R$ {sumTotalPrice},00 */}
-                    </dd>
-                  </div>
-                </dl>
-
-                <div className="border-t border-gray-200 py-6 px-4 sm:px-6">
-                  {orderLoading ? (
-                    <LoadingComponent />
-                  ) : (
-                    <button
-                      onClick={placeOrderHandler}
-                      className="w-full rounded-md border border-transparent bg-indigo-600 py-3 px-4 text-base font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-50"
-                    >
-                      {/* Confirm Payment - R$ {sumTotalPrice} */}
-                    </button>
-                  )}
-
-                  <>{orderErr && <p>{orderErr?.message}</p>}</>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </main>
-    </div>
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "row",
+                justifyContent: "space-between",
+              }}
+            >
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "row",
+                  justifyContent: "flex-start",
+                }}
+              >
+                {cartItems?.map((product, index) => (
+                  <Box>
+                    <img
+                      src={product?.image}
+                      alt={product?.name}
+                      height={60}
+                      width={60}
+                      style={{ borderRadius: "50%" }}
+                    />
+                  </Box>
+                ))}
+              </Box>
+              <Button
+                component={Link}
+                to={"/shopping-cart"}
+                sx={{
+                  border: "1px solid #71747E",
+                  color: "#71747E",
+                  width: "auto",
+                  height: "3rem",
+                }}
+              >
+                Editar carrinho
+              </Button>
+            </Box>
+            <Box sx={{ borderBottom: "0.5px solid rgba(0, 0, 0, 0.1)" }}>
+              {data.map((item, index) => (
+                <Box
+                  key={index}
+                  sx={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    marginY: 3,
+                  }}
+                >
+                  <Typography
+                    variant="body1"
+                    sx={{ color: "#71747E", fontWeight: "bold" }}
+                  >
+                    {item?.title}
+                  </Typography>
+                  <Typography variant="h6">
+                    R$ {item.title === "Subtotal" ? sumTotalPrice : item.value}
+                  </Typography>
+                </Box>
+              ))}
+            </Box>
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "space-between",
+                marginY: 3,
+              }}
+            >
+              <Typography
+                variant="body1"
+                sx={{ color: "#71747E", fontWeight: "bold" }}
+              >
+                Total
+              </Typography>
+              <Typography variant="h6">
+                R$ {sumTotalPrice + data[2].value}
+              </Typography>
+            </Box>
+            <Button
+              to="/order-payment"
+              variant="primary"
+              component={Link}
+              sx={{ width: "100%", marginY: 2 }}
+              onClick={placeOrderHandler}
+            >
+              Finalizar compra
+            </Button>
+            {orderLoading && <LoadingComponent />}
+            <>{orderErr && <p>{orderErr?.message}</p>}</>
+          </Grid>
+        </Grid>
+      </>
+    </Container>
   );
 }
