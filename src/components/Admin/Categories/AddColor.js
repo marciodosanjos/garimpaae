@@ -19,7 +19,6 @@ export default function AddColor() {
   //onChange
   const handleOnChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
-    console.log(formData);
   };
 
   //onSubmit

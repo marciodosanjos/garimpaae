@@ -12,7 +12,6 @@ export default function CategoryToAdd() {
 
   const handleOnSubmit = (e) => {
     e.preventDefault();
-    console.log(category);
   };
 
   return (

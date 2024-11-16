@@ -119,7 +119,6 @@ export default function PLP() {
   }, [loadingData, hasMore]);
 
   const handleSortOption = (e) => {
-    console.log(e.target.value);
     setSort(e.target.value);
     setPage(1);
     setProductsData([]);

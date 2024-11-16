@@ -22,8 +22,6 @@ const initialState = {
 export const createBrandAction = createAsyncThunk(
   "brand/create",
   async (name, { rejectWithValue, getState }) => {
-    console.log(name);
-
     try {
       const token = getState().users?.userAuth?.userInfo?.token;
 
@@ -34,7 +32,6 @@ export const createBrandAction = createAsyncThunk(
       };
 
       const { data } = await axios.post(`${baseURL}/brands`, { name }, config);
-      console.log(data);
 
       return data;
     } catch (error) {

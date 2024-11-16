@@ -5,11 +5,12 @@ import {
   updateUserShippingAdressAction,
 } from "../../../redux/slices/users/usersSlice";
 import LoadingComponent from "../../LoadingComp/LoadingComponent";
-import { Box, Button, TextField } from "@mui/material";
+import { Box, Button } from "@mui/material";
 import FormTextField from "../../FormTextField/FormTextField";
 
 const AddShippingAddress = () => {
   const dispatch = useDispatch();
+  const [hasAddress, setHasAddress] = useState(true);
 
   useEffect(() => {
     dispatch(getUserProfileAction());
@@ -17,6 +18,14 @@ const AddShippingAddress = () => {
 
   const { loading, error, profile } = useSelector((state) => state?.users);
   const user = profile?.data;
+
+  useEffect(() => {
+    Object.entries(user?.shippingAddress).map(([key, value], index) => {
+      if (!value) {
+        setHasAddress(false);
+      }
+    });
+  }, [user]);
 
   const [formData, setFormData] = useState({
     firstName: user?.shippingAddress?.firstName,
@@ -28,8 +37,6 @@ const AddShippingAddress = () => {
     postalCode: "",
     phone: "",
   });
-
-  console.log(formData);
 
   const onChange = (e) => {
     const { name, value } = e.target;
@@ -71,31 +78,31 @@ const AddShippingAddress = () => {
   return (
     <>
       {/* shipping details */}
-      {user?.hasShippingAddress ? (
+      {user?.hasShippingAddress && hasAddress ? (
         <div className="mt-6">
           <h3 className="text-lg font-medium text-gray-900">
-            Endereço de envio atual
+            Seu endereço de envio atual
           </h3>
 
           <p className="mt-1 text-sm text-gray-500">Revise suas informações </p>
           <div>
             <p className="mt-1 text-sm text-gray-500">
-              First Name : {user?.shippingAddress?.firstName}
+              Nome : {user?.shippingAddress?.firstName}
             </p>
             <p className="mt-1 text-sm text-gray-500">
-              Last Name : {user?.shippingAddress?.lastName}
+              Sobrenome : {user?.shippingAddress?.lastName}
             </p>
             <p className="mt-1 text-sm text-gray-500">
-              Address : {user?.shippingAddress?.address}
+              Endereço : {user?.shippingAddress?.address}
             </p>
             <p className="mt-1 text-sm text-gray-500">
-              City : {user?.shippingAddress?.city}
+              Cidade : {user?.shippingAddress?.city}
             </p>
             <p className="mt-1 text-sm text-gray-500">
-              Country : {user?.shippingAddress?.country}
+              País : {user?.shippingAddress?.country}
             </p>
             <p className="mt-1 text-sm text-gray-500">
-              phone : {user?.shippingAddress?.phone}
+              Telefone : {user?.shippingAddress?.phone}
             </p>
           </div>
         </div>

@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { XMarkIcon } from "@heroicons/react/20/solid";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -199,7 +198,7 @@ export default function ShoppingCart() {
               </Typography>
             </Box>
             <Box sx={{ borderBottom: "0.5px solid rgba(0, 0, 0, 0.1)" }}>
-              {data.map((item, index) => (
+              {data?.map((item, index) => (
                 <Box
                   key={index}
                   sx={{
@@ -234,7 +233,7 @@ export default function ShoppingCart() {
                 Total
               </Typography>
               <Typography variant="h6">
-                R$ {sumTotalPrice + data[2].value}
+                R$ {sumTotalPrice + data[2]?.value}
               </Typography>
             </Box>
             <Box

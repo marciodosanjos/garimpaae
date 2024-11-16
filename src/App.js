@@ -7,7 +7,7 @@ import Login from "./pages/Login/Login";
 import AddProduct from "./components/Admin/Products/AddProduct";
 import RegisterForm from "./components/Users/Forms/RegisterForm";
 import Navbar from "./components/Navbar/Navbar";
-import OrderPayment from "./components/Users/Products/OrderPayment";
+import OrderPayment from "./pages/Checkout/OrderPayment";
 import ManageCategories from "./components/Admin/Categories/ManageCategories";
 import ManageStocks from "./components/Admin/Products/ManageStocks";
 import CategoryToAdd from "./components/Admin/Categories/CategoryToAdd";

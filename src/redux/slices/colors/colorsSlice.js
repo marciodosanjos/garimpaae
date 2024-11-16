@@ -58,8 +58,6 @@ export const addColorAction = createAsyncThunk(
         config
       );
 
-      console.log(data);
-
       return data;
     } catch (error) {
       return rejectWithValue(error?.response?.data);

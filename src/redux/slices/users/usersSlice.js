@@ -32,6 +32,15 @@ export const loginUserAction = createAsyncThunk(
       });
       //save user into localstorage
       localStorage.setItem("userInfo", JSON.stringify(data));
+
+      const cartItems = localStorage.getItem("cartItems");
+
+      if (cartItems) {
+        window.location.assign("/order-payment");
+      } else {
+        console.log("No cart items");
+      }
+
       return data;
     } catch (error) {
       return rejectWithValue(error?.response?.data);
@@ -62,7 +71,6 @@ export const registrationUserAction = createAsyncThunk(
       });
       return data;
     } catch (error) {
-      console.log(error);
       return rejectWithValue(error?.response?.data);
     }
   }

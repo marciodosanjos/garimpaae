@@ -1,5 +1,4 @@
 import axios from "axios";
-import { act } from "react-dom/test-utils";
 import baseURL from "../../../utils/baseURL";
 import {
   resetErrAction,
@@ -26,6 +25,7 @@ export const placeOrderAction = createAsyncThunk(
       const { orderItems, shippingAddress, totalPrice } = payload;
       //token
       const token = getState()?.users?.userAuth?.userInfo?.token;
+
       const config = {
         headers: {
           Authorization: `Bearer ${token}`,

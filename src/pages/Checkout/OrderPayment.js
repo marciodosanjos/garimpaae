@@ -1,19 +1,20 @@
 import { useDispatch, useSelector } from "react-redux";
-import AddShippingAddress from "../Forms/AddShippingAddress";
-import { useEffect } from "react";
-import { getCartItemsAction } from "../../../redux/slices/cart/cartSlice";
-import { Link, useLocation } from "react-router-dom";
-import { placeOrderAction } from "../../../redux/slices/orders/ordersSlice";
-import { getUserProfileAction } from "../../../redux/slices/users/usersSlice";
-import LoadingComponent from "../../LoadingComp/LoadingComponent";
+import AddShippingAddress from "../../components/Users/Forms/AddShippingAddress";
+import { useEffect, useState } from "react";
+import { getCartItemsAction } from "../../redux/slices/cart/cartSlice";
+import { Link } from "react-router-dom";
+import { placeOrderAction } from "../../redux/slices/orders/ordersSlice";
+import { getUserProfileAction } from "../../redux/slices/users/usersSlice";
+import LoadingComponent from "../../components/LoadingComp/LoadingComponent";
 import { Box, Button, Container, Grid, Typography } from "@mui/material";
-import useIsMobile from "../../../hooks/useIsMobile";
+import useIsMobile from "../../hooks/useIsMobile";
+import { useNavigate } from "react-router-dom";
 
 export default function OrderPayment() {
-  const isMobile = useIsMobile();
-  //get data from location
-  const location = useLocation();
+  const navigate = useNavigate();
   const dispatch = useDispatch();
+  const isMobile = useIsMobile();
+  const [isLogged, setIsLogged] = useState(true);
 
   useEffect(() => {
     dispatch(getCartItemsAction());
@@ -57,14 +58,24 @@ export default function OrderPayment() {
     (state) => state?.orders
   );
 
+  useEffect(() => {
+    const userInfo = localStorage.getItem("userInfo");
+    if (!userInfo) {
+      setIsLogged(false);
+      setTimeout(() => {
+        navigate("/login");
+      }, 5000);
+    }
+  }, []);
+
   let data = [
     { title: "Subtotal", value: 300 },
     { title: "Frete", value: "free" },
     { title: "Taxa", value: 20 },
   ];
 
-  return (
-    <Container fixed sx={{ marginY: !isMobile && "8rem" }}>
+  return isLogged ? (
+    <Container fixed sx={{ marginY: !isMobile && "6rem" }}>
       <>
         {/* Shipping Address */}
         <Grid
@@ -90,8 +101,8 @@ export default function OrderPayment() {
                   marginBottom: isMobile && "2rem",
                 }}
               >
-                Adicione seu endereço de envio, para podermos enviar o produto
-                para você
+                Adicione e revise seu endereço de envio, para que possamos
+                enviar o produto para você o mais rápido possível.
               </Typography>
             </Box>
             <AddShippingAddress />
@@ -162,7 +173,7 @@ export default function OrderPayment() {
               </Button>
             </Box>
             <Box sx={{ borderBottom: "0.5px solid rgba(0, 0, 0, 0.1)" }}>
-              {data.map((item, index) => (
+              {data?.map((item, index) => (
                 <Box
                   key={index}
                   sx={{
@@ -197,7 +208,7 @@ export default function OrderPayment() {
                 Total
               </Typography>
               <Typography variant="h6">
-                R$ {sumTotalPrice + data[2].value}
+                R$ {sumTotalPrice + data[2]?.value}
               </Typography>
             </Box>
             <Button
@@ -215,5 +226,32 @@ export default function OrderPayment() {
         </Grid>
       </>
     </Container>
+  ) : (
+    <Box
+      sx={{
+        display: "flex",
+        justifyContent: "center",
+        flexDirection: "column",
+        alignItems: "center",
+        marginY: "4rem",
+        gap: 2,
+      }}
+    >
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          flexDirection: "column",
+          alignItems: "center",
+          gap: 1,
+        }}
+      >
+        <Typography variant="h4">Parece que você não está logado</Typography>
+        <Typography variant="body1">
+          Sem problemas. Estamos redirecionando você para a tela de login.
+        </Typography>
+      </Box>
+      <LoadingComponent />
+    </Box>
   );
 }

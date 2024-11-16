@@ -47,7 +47,6 @@ export default function Product() {
 
   const { product } = useSelector((state) => state?.products);
   const productData = product?.data;
-  //console.log(productData.sizes);
 
   //get cart
   useEffect(() => {

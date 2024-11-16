@@ -14,8 +14,10 @@ import {
   Typography,
 } from "@mui/material";
 import useIsMobile from "../../hooks/useIsMobile";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
+  const navigate = useNavigate();
   const isMobile = useIsMobile();
   const dispatch = useDispatch();
   const [formData, setFormData] = useState({
@@ -36,6 +38,10 @@ const Login = () => {
       return;
     }
     dispatch(loginUserAction({ email, password }));
+    if (localStorage.getItem("cartItems")) {
+      navigate("/shopping-cart");
+      return;
+    }
   };
 
   const { loading, userInfo, error } = useSelector(
@@ -43,8 +49,8 @@ const Login = () => {
   );
 
   useEffect(() => {
-    if (userInfo?.userFound) {
-      window.location.href = "/";
+    if (userInfo?.userFound && !localStorage.getItem("cartItems")) {
+      navigate("/");
     }
   }, [userInfo]);
 
