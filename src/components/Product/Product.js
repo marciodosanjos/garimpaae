@@ -10,21 +10,18 @@ import Swal from "sweetalert2";
 import {
   Box,
   Button,
-  Checkbox,
   Container,
   FormControl,
   FormControlLabel,
   FormLabel,
   Radio,
   RadioGroup,
-  FormGroup,
   Typography,
   Grid,
 } from "@mui/material";
 
 import useIsMobile from "../../hooks/useIsMobile";
 import Teaser from "../Teaser/Teaser";
-import PhotoGallery from "../Gallery/Gallery";
 import Gallery from "../Gallery/Gallery";
 
 function classNames(...classes) {
@@ -82,7 +79,7 @@ export default function Product() {
       addOrderAction({
         _id: productData?._id,
         name: productData?.name,
-        qty: productData?.qty,
+        qty: 1,
         price: productData?.price,
         description: productData?.description,
         color: selectedColor,

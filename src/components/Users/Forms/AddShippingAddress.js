@@ -20,11 +20,13 @@ const AddShippingAddress = () => {
   const user = profile?.data;
 
   useEffect(() => {
-    Object.entries(user?.shippingAddress).map(([key, value], index) => {
-      if (!value) {
-        setHasAddress(false);
-      }
-    });
+    if (user) {
+      Object.entries(user?.shippingAddress).map(([key, value], index) => {
+        if (!value) {
+          setHasAddress(false);
+        }
+      });
+    }
   }, [user]);
 
   const [formData, setFormData] = useState({
