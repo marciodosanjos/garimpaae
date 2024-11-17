@@ -3,11 +3,15 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { getCartItemsAction } from "../../../redux/slices/cart/cartSlice";
 import { getUserProfileAction } from "../../../redux/slices/users/usersSlice";
+import { Box, Button, Container, Grid, Typography } from "@mui/material";
+import useIsMobile from "../../../hooks/useIsMobile";
+import Teaser from "../../Teaser/Teaser";
 
 export default function ThanksForOrdering() {
   //const location = useLocation();
   //const { sumTotalPrice } = location.state;
   //console.log(sumTotalPrice);
+  const isMobile = useIsMobile();
 
   const dispatch = useDispatch();
 
@@ -32,147 +36,176 @@ export default function ThanksForOrdering() {
     dispatch(getUserProfileAction());
   }, [dispatch]);
 
-  //const { profile } = useSelector((state) => state?.users);
-
-  // const userShippingAddress = profile?.data?.shippingAddress;
-
-  // const async userShippingAddressValues = async () => {
-  //   return await Object.values(userShippingAddress);
-  // };
+  let data = [
+    { title: "Subtotal", value: 300 },
+    { title: "Frete", value: "free" },
+    { title: "Taxa", value: 20 },
+  ];
 
   return (
     <>
-      <main className="relative lg:min-h-full">
-        <div className="h-80 overflow-hidden lg:absolute lg:h-full lg:w-1/2 lg:pr-4 xl:pr-12">
-          <img
-            src="https://tailwindui.com/img/ecommerce-images/confirmation-page-06-hero.jpg"
-            alt="TODO"
-            className="h-full w-full object-cover object-center"
-          />
-        </div>
+      <Container fixed>
+        <Grid
+          container
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            alignItems: "center",
+            marginY: "4rem",
+            gap: 4,
+          }}
+        >
+          {/* Thank you message */}
+          <Grid
+            item
+            xs={12}
+            sm={12}
+            md={12}
+            lg={12}
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "center",
+              alignItems: "center",
+              gap: 1,
+            }}
+          >
+            <Typography
+              variant="body1"
+              sx={{
+                border: "1px solid black",
+                width: "auto",
+                color: "black",
+                textAlign: "center",
+                paddingX: "1rem",
+                borderRadius: 1,
+              }}
+            >
+              Pagamento confirmado
+            </Typography>
+            <Typography variant="h1" sx={{ fontWeight: "bold" }}>
+              Agradecemos o seu pedido
+            </Typography>
+            <Typography variant="body1" sx={{ textAlign: "center" }}>
+              Estamos processando sua compra. Aguarde e enviaremos sua
+              confirmação por WhatsApp em breve!
+            </Typography>
+          </Grid>
 
-        <div>
-          <div className="mx-auto max-w-2xl py-16 px-4 sm:px-6 sm:py-24 lg:grid lg:max-w-7xl lg:grid-cols-2 lg:gap-x-8 lg:px-8 lg:py-32 xl:gap-x-24">
-            <div className="lg:col-start-2">
-              <h1 className="text-sm font-medium text-indigo-600">
-                Payment successful
-              </h1>
-              <p className="mt-2 text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl">
-                Thanks for ordering
-              </p>
-              <p className="mt-2 text-base text-gray-500">
-                We appreciate your order, we’re currently processing it. So hang
-                tight and we’ll send you confirmation very soon!
-              </p>
+          {/* Summary card */}
+          <Grid
+            item
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              gap: 4,
+              boxShadow: "0px 4px 12px rgba(0, 0, 0, 0.1)",
+              padding: 4,
+              width: "50%",
+              //border: "1px solid black",
+            }}
+          >
+            <Typography
+              variant="h4"
+              sx={{
+                textAlign: "center",
+                marginBottom: isMobile && "2rem",
+              }}
+            >
+              Items na sua compra
+            </Typography>
 
-              <dl className="mt-16 text-sm font-medium">
-                <dt className="text-gray-900">Ordem</dt>
-              </dl>
-              {/* <dl className="mt-16 text-sm font-medium">
-                <dt className="text-gray-900">Tracking number</dt>
-                <dd className="mt-2 text-indigo-600">51547878755545848512</dd>
-              </dl> */}
-
-              <ul className="mt-6 divide-y divide-gray-200 border-t border-gray-200 text-sm font-medium text-gray-500">
-                {cartItems.map((product) => (
-                  <li key={product.id} className="flex space-x-6 py-6">
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "row",
+                justifyContent: "center",
+              }}
+            >
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "row",
+                  justifyContent: "flex",
+                }}
+              >
+                {cartItems?.map((product, index) => (
+                  <Box key={index}>
                     <img
-                      src={product.image}
-                      alt={product.name}
-                      className="h-24 w-24 flex-none rounded-md bg-gray-100 object-cover object-center"
+                      src={product?.image}
+                      alt={product?.name}
+                      height={60}
+                      width={60}
+                      style={{ borderRadius: "50%" }}
                     />
-                    <div className="flex-auto space-y-1">
-                      <h3 className="text-gray-900">
-                        <a href={product.href}>{product.name}</a>
-                      </h3>
-                      <p>{product.color}</p>
-                      <p>{product.size}</p>
-                    </div>
-                    <p className="flex-none font-medium text-gray-900">
-                      {product.price}
-                    </p>
-                  </li>
+                  </Box>
                 ))}
-              </ul>
-
-              <dl className="space-y-6 border-t border-gray-200 pt-6 text-sm font-medium text-gray-500">
-                <div className="flex justify-between">
-                  <dt>Subtotal</dt>
-                  <dd className="text-gray-900">{sumTotalPrice}</dd>
-                </div>
-
-                <div className="flex justify-between">
-                  <dt>Frete</dt>
-                  <dd className="text-gray-900">R$ {frete}</dd>
-                </div>
-
-                {/* <div className="flex justify-between">
-                  <dt>Taxes</dt>
-                  <dd className="text-gray-900">$6.40</dd>
-                </div> */}
-
-                <div className="flex items-center justify-between border-t border-gray-200 pt-6 text-gray-900">
-                  <dt className="text-base">Total</dt>
-                  <dd className="text-base">R$ {sumTotalPrice + frete}</dd>
-                </div>
-              </dl>
-
-              <dl className="mt-16 grid grid-cols-2 gap-x-4 text-sm text-gray-600">
-                <div>
-                  <dt className="font-medium text-gray-900">
-                    Endereço de envio
-                  </dt>
-                  <dd className="mt-2">
-                    <address className="not-italic">
-                      {/* {userShippingAddressValues?.map((item) => {
-                        <span className="block">{item}</span>;
-                      })} */}
-                    </address>
-                  </dd>
-                </div>
-                {/* <div>
-                  <dt className="font-medium text-gray-900">
-                    Payment Information
-                  </dt>
-                  <dd className="mt-2 space-y-2 sm:flex sm:space-y-0 sm:space-x-4">
-                    <div className="flex-none">
-                      <svg
-                        aria-hidden="true"
-                        width={36}
-                        height={24}
-                        viewBox="0 0 36 24"
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="h-6 w-auto"
-                      >
-                        <rect width={36} height={24} rx={4} fill="#224DBA" />
-                        <path
-                          d="M10.925 15.673H8.874l-1.538-6c-.073-.276-.228-.52-.456-.635A6.575 6.575 0 005 8.403v-.231h3.304c.456 0 .798.347.855.75l.798 4.328 2.05-5.078h1.994l-3.076 7.5zm4.216 0h-1.937L14.8 8.172h1.937l-1.595 7.5zm4.101-5.422c.057-.404.399-.635.798-.635a3.54 3.54 0 011.88.346l.342-1.615A4.808 4.808 0 0020.496 8c-1.88 0-3.248 1.039-3.248 2.481 0 1.097.969 1.673 1.653 2.02.74.346 1.025.577.968.923 0 .519-.57.75-1.139.75a4.795 4.795 0 01-1.994-.462l-.342 1.616a5.48 5.48 0 002.108.404c2.108.057 3.418-.981 3.418-2.539 0-1.962-2.678-2.077-2.678-2.942zm9.457 5.422L27.16 8.172h-1.652a.858.858 0 00-.798.577l-2.848 6.924h1.994l.398-1.096h2.45l.228 1.096h1.766zm-2.905-5.482l.57 2.827h-1.596l1.026-2.827z"
-                          fill="#fff"
-                        />
-                      </svg>
-                      <p className="sr-only">Visa</p>
-                    </div>
-                    <div className="flex-auto">
-                      <p className="text-gray-900">Ending with 4242</p>
-                      <p>Expires 12 / 21</p>
-                    </div>
-                  </dd>
-                </div> */}
-              </dl>
-
-              <div className="mt-16 border-t border-gray-200 py-6 text-right">
-                <Link
-                  to="/"
-                  className="text-sm font-medium text-indigo-600 hover:text-indigo-500"
+              </Box>
+            </Box>
+            <Box sx={{ borderBottom: "0.5px solid rgba(0, 0, 0, 0.1)" }}>
+              {data?.map((item, index) => (
+                <Box
+                  key={index}
+                  sx={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    marginY: 3,
+                  }}
                 >
-                  Continue comprando
-                  <span aria-hidden="true"> &rarr;</span>
-                </Link>
-              </div>
-            </div>
-          </div>
-        </div>
-      </main>
+                  <Typography
+                    variant="body1"
+                    sx={{ color: "#71747E", fontWeight: "bold" }}
+                  >
+                    {item?.title}
+                  </Typography>
+                  <Typography variant="h6">
+                    R$ {item.title === "Subtotal" ? sumTotalPrice : item.value}
+                  </Typography>
+                </Box>
+              ))}
+            </Box>
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "space-between",
+                marginY: 3,
+              }}
+            >
+              <Typography
+                variant="body1"
+                sx={{ color: "#71747E", fontWeight: "bold" }}
+              >
+                Total
+              </Typography>
+              <Typography variant="h6">
+                R$ {sumTotalPrice + data[2]?.value}
+              </Typography>
+            </Box>
+            <Button
+              to="/"
+              variant="primary"
+              component={Link}
+              sx={{ width: "100%", marginY: 2 }}
+            >
+              Continuar comprando
+            </Button>
+          </Grid>
+        </Grid>
+      </Container>
+      <Teaser
+        title={"Ficou com dúvidas?"}
+        text={"Entre em contato com a gente e saiba mais"}
+        buttonText={"Entrar em contato"}
+        img={
+          "https://static.vecteezy.com/system/resources/thumbnails/041/714/543/small_2x/ai-generated-black-blank-t-shirt-front-mockup-on-a-transparent-background-png.png"
+        }
+        blockHeight={{ xs: "60vh", sm: "60vh", md: "40vh" }}
+        titleSize={"h3"}
+        imgHeight={233}
+        imgWidth={250}
+        destination={"/"}
+      />
     </>
   );
 }
