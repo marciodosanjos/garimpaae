@@ -194,7 +194,7 @@ export default function Navbar() {
                     onMouseOver={() => setHoveredIcon("user")}
                     onMouseOut={() => setHoveredIcon(null)}
                   >
-                    <Link to="/customer-profile">
+                    <Link to="/user-profile">
                       <User
                         color={hoveredIcon === "user" ? "#000" : "#71747E"}
                         strokeWidth={1}

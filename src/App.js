@@ -17,7 +17,6 @@ import AddColor from "./components/Admin/Categories/AddColor";
 import UpdateCoupon from "./components/Admin/Coupons/UpdateCoupon";
 import Product from "./components/Product/Product";
 import ShoppingCart from "./pages/Cart/ShoppingCart";
-import CustomerProfile from "./components/Users/Profile/CustomerProfile";
 import AddReview from "./components/Users/Reviews/AddReview";
 import UpdateCategory from "./components/Admin/Categories/UpdateCategory";
 import OrdersList from "./components/Admin/Orders/OdersList";
@@ -33,6 +32,7 @@ import Footer from "./components/Footer/Footer";
 import PLP from "./pages/PLP/PLP";
 import UserProfile from "./pages/UserProfile/UserProfile";
 import AuthRoute from "./components/AuthRoute/AuthRoute";
+import MyOrders from "./components/MyOrders/MyOrders";
 
 const App = () => {
   return (
@@ -49,7 +49,7 @@ const App = () => {
             </AuthRoute>
           }
         >
-          {/* <Route path="/x" element={<Y />} /> */}
+          <Route path="" element={<MyOrders />} />
         </Route>
 
         {/* nested admin route */}
@@ -92,7 +92,6 @@ const App = () => {
         <Route path="/" element={<LandingPage />} />
         <Route path="/products-filters" element={<PLP />} />
         <Route path="/products/:id" element={<Product />} />
-
         <Route path="success" element={<TYP />} />
 
         {/* review */}
@@ -101,6 +100,7 @@ const App = () => {
         {/* shopping cart */}
         <Route path="/shopping-cart" element={<ShoppingCart />} />
         <Route path="/order-payment" element={<OrderPayment />} />
+
         {/* users */}
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<RegisterForm />} />
