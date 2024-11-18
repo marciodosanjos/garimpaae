@@ -25,20 +25,34 @@ import ManageOrders from "./components/Admin/Orders/ManageOrders";
 import Customers from "./components/Admin/Orders/Customers";
 import BrandsColorsList from "./components/Admin/Categories/BrandsColorsList";
 import AdminAuthRoute from "./components/AuthRoute/AdminAuthRoute";
-import ThanksForOrdering from "./components/Users/Products/ThanksForOrdering";
+import TYP from "./pages/TYP/TYP";
 import ProductUpdate from "./components/Admin/Products/ProductUpdate";
 import UpdateOrders from "./components/Admin/Orders/UpdateOrders";
 import LandingPage from "./pages/LP/LP";
 import Footer from "./components/Footer/Footer";
 import PLP from "./pages/PLP/PLP";
+import UserProfile from "./pages/UserProfile/UserProfile";
+import AuthRoute from "./components/AuthRoute/AuthRoute";
 
 const App = () => {
   return (
     <BrowserRouter>
-      <Navbar />
       {/* hide navbar if admin */}
+      <Navbar />
       <Routes>
-        {/* nested route */}
+        {/* nested user route */}
+        <Route
+          path="user-profile"
+          element={
+            <AuthRoute>
+              <UserProfile />
+            </AuthRoute>
+          }
+        >
+          {/* <Route path="/x" element={<Y />} /> */}
+        </Route>
+
+        {/* nested admin route */}
         <Route
           path="admin"
           element={
@@ -79,7 +93,7 @@ const App = () => {
         <Route path="/products-filters" element={<PLP />} />
         <Route path="/products/:id" element={<Product />} />
 
-        <Route path="success" element={<ThanksForOrdering />} />
+        <Route path="success" element={<TYP />} />
 
         {/* review */}
         <Route path="/add-review/:id" element={<AddReview />} />
@@ -90,7 +104,6 @@ const App = () => {
         {/* users */}
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<RegisterForm />} />
-        <Route path="/customer-profile" element={<CustomerProfile />} />
       </Routes>
       <Footer />
     </BrowserRouter>

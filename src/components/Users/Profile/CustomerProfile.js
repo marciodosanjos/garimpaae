@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-import CustomerDetails from "./CustomerDetails";
+import CustomerDetails from "../../../pages/UserProfile/UserProfile";
 import ShippingAddressDetails from "./ShippingAddressDetails";
 import { useEffect } from "react";
 import { getUserProfileAction } from "../../../redux/slices/users/usersSlice";

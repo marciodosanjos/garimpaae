@@ -1,11 +1,11 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { getCartItemsAction } from "../../../redux/slices/cart/cartSlice";
-import { getUserProfileAction } from "../../../redux/slices/users/usersSlice";
+import { getCartItemsAction } from "../../redux/slices/cart/cartSlice";
+import { getUserProfileAction } from "../../redux/slices/users/usersSlice";
 import { Box, Button, Container, Grid, Typography } from "@mui/material";
-import useIsMobile from "../../../hooks/useIsMobile";
-import Teaser from "../../Teaser/Teaser";
+import useIsMobile from "../../hooks/useIsMobile";
+import Teaser from "../../components/Teaser/Teaser";
 
 export default function ThanksForOrdering() {
   //const location = useLocation();
