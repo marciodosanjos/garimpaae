@@ -3,7 +3,6 @@ import { ShoppingCart, MapPinHouse, Key, LogOut } from "lucide-react";
 import { useState } from "react";
 import { Link, Outlet } from "react-router-dom";
 import useIsMobile from "../../hooks/useIsMobile";
-import { BorderBottom } from "@mui/icons-material";
 
 const menuItems = [
   {
@@ -17,7 +16,7 @@ const menuItems = [
     text: "Endereço",
   },
   {
-    destination: "change-password",
+    destination: "user-data",
     icon: Key,
     text: "Senha",
   },
@@ -30,7 +29,7 @@ const menuItems = [
 
 export default function UserProfile() {
   const [hovered, setHovered] = useState(null);
-  const [isActive, setIsActive] = useState(1);
+  const [isActive, setIsActive] = useState(0);
   const [hoveredIcon, setHoveredIcon] = useState(null);
   const isMobile = useIsMobile();
 

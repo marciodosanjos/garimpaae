@@ -33,6 +33,9 @@ import PLP from "./pages/PLP/PLP";
 import UserProfile from "./pages/UserProfile/UserProfile";
 import AuthRoute from "./components/AuthRoute/AuthRoute";
 import MyOrders from "./components/MyOrders/MyOrders";
+import ChangeAddress from "./components/ChangeAddress/ChangeAddress";
+import ChangePassword from "./components/ChangePassword/ChangePassword";
+import Logout from "./components/Logout/Logout";
 
 const App = () => {
   return (
@@ -50,6 +53,9 @@ const App = () => {
           }
         >
           <Route path="" element={<MyOrders />} />
+          <Route path="address" element={<ChangeAddress />} />
+          <Route path="user-data" element={<ChangePassword />} />
+          <Route path="logout" element={<Logout />} />
         </Route>
 
         {/* nested admin route */}
