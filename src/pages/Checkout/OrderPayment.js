@@ -105,7 +105,7 @@ export default function OrderPayment() {
                 enviar o produto para você o mais rápido possível.
               </Typography>
             </Box>
-            <AddShippingAddress />
+            <AddShippingAddress buttonText={"Atualizar endereço"} />
           </Grid>
 
           {/* Summary card */}

@@ -5,12 +5,15 @@ import {
   updateUserShippingAdressAction,
 } from "../../../redux/slices/users/usersSlice";
 import LoadingComponent from "../../LoadingComp/LoadingComponent";
-import { Box, Button } from "@mui/material";
+import { Box, Button, Grid } from "@mui/material";
 import FormTextField from "../../FormTextField/FormTextField";
+import Alert from "@mui/material/Alert";
+import CheckIcon from "@mui/icons-material/Check";
 
-const AddShippingAddress = () => {
+const AddShippingAddress = ({ buttonText }) => {
   const dispatch = useDispatch();
   const [hasAddress, setHasAddress] = useState(true);
+  const [isUpdated, setIsUpdated] = useState(false);
 
   useEffect(() => {
     dispatch(getUserProfileAction());
@@ -18,6 +21,8 @@ const AddShippingAddress = () => {
 
   const { loading, error, profile } = useSelector((state) => state?.users);
   const user = profile?.data;
+
+  console.log(user);
 
   useEffect(() => {
     if (user) {
@@ -31,13 +36,13 @@ const AddShippingAddress = () => {
 
   const [formData, setFormData] = useState({
     firstName: user?.shippingAddress?.firstName,
-    lastName: "",
-    address: "",
-    city: "",
-    country: "",
-    region: "",
-    postalCode: "",
-    phone: "",
+    lastName: user?.shippingAddress?.lastName,
+    address: user?.shippingAddress?.address,
+    city: user?.shippingAddress?.city,
+    country: user?.shippingAddress?.country,
+    region: user?.shippingAddress?.region,
+    postalCode: user?.shippingAddress?.postalCode,
+    phone: user?.shippingAddress?.phone,
   });
 
   const onChange = (e) => {
@@ -52,6 +57,7 @@ const AddShippingAddress = () => {
   const onSubmit = (e) => {
     e.preventDefault();
     dispatch(updateUserShippingAdressAction({ ...formData }));
+    setIsUpdated(true);
   };
 
   const translatedValues = (value) => {
@@ -67,7 +73,7 @@ const AddShippingAddress = () => {
       case "country":
         return "País";
       case "region":
-        return "Região";
+        return "Estado";
       case "postalCode":
         return "CEP";
       case "phone":
@@ -78,67 +84,54 @@ const AddShippingAddress = () => {
   };
 
   return (
-    <>
-      {/* shipping details */}
-      {user?.hasShippingAddress && hasAddress ? (
-        <div className="mt-6">
-          <h3 className="text-lg font-medium text-gray-900">
-            Seu endereço de envio atual
-          </h3>
-
-          <p className="mt-1 text-sm text-gray-500">Revise suas informações </p>
-          <div>
-            <p className="mt-1 text-sm text-gray-500">
-              Nome : {user?.shippingAddress?.firstName}
-            </p>
-            <p className="mt-1 text-sm text-gray-500">
-              Sobrenome : {user?.shippingAddress?.lastName}
-            </p>
-            <p className="mt-1 text-sm text-gray-500">
-              Endereço : {user?.shippingAddress?.address}
-            </p>
-            <p className="mt-1 text-sm text-gray-500">
-              Cidade : {user?.shippingAddress?.city}
-            </p>
-            <p className="mt-1 text-sm text-gray-500">
-              País : {user?.shippingAddress?.country}
-            </p>
-            <p className="mt-1 text-sm text-gray-500">
-              Telefone : {user?.shippingAddress?.phone}
-            </p>
-          </div>
-        </div>
-      ) : (
-        <form onSubmit={onSubmit}>
-          <Box
+    <form onSubmit={onSubmit}>
+      <Grid
+        xs={12}
+        sm={12}
+        lg={12}
+        xl={12}
+        container
+        sx={{
+          display: "flex",
+          flexDirection: "row",
+          justifyContent: "space-betwwen",
+          alignItems: "space-betwwen",
+          gap: 1,
+          flexWrap: "wrap",
+          marginY: 2,
+          width: "100%",
+          //border: "1px solid black",
+        }}
+      >
+        {Object.entries(formData).map(([key, value], index) => (
+          <Grid
+            item
+            xs={12}
+            sm={12}
+            md={12}
+            key={index}
             sx={{
               display: "flex",
               flexDirection: "row",
-              justifyContent: "flex-start",
-              gap: 1,
+              justifyContent: "space-betwwen",
+              alignItems: "space-betwwen",
               flexWrap: "wrap",
-              marginY: 2,
               width: "100%",
+
               //border: "1px solid black",
             }}
           >
-            {Object.entries(formData).map(([key, value], index) => (
-              <FormTextField
-                key={index}
-                id={key.toLowerCase()}
-                name={key}
-                label={translatedValues(key)}
-                value={value || ""}
-                onChange={onChange}
-                sx={{
-                  flexGrow: key === "address" ? 1 : 0, // "address" ocupa todo o espaço disponível
-                  flexBasis: key === "address" ? "100%" : "calc(50% - 16px)", // 100% para address, 50% para os demais
-                  minWidth: key === "address" ? "0" : "300px", // Remove limite para address
-                }}
-              />
-            ))}
-          </Box>
+            <FormTextField
+              id={key.toLowerCase()}
+              name={key}
+              label={translatedValues(key)}
+              value={value || ""}
+              onChange={onChange}
+            />
+          </Grid>
+        ))}
 
+        <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
           {loading ? (
             <LoadingComponent />
           ) : (
@@ -148,13 +141,22 @@ const AddShippingAddress = () => {
               type="submit"
               onClick={onSubmit}
             >
-              Adicionar endereço
+              {buttonText}
             </Button>
           )}
           {error && <p>{error?.message}</p>}
-        </form>
-      )}
-    </>
+          {isUpdated && (
+            <Alert
+              icon={<CheckIcon fontSize="inherit" />}
+              sx={{ marginY: 2 }}
+              severity="success"
+            >
+              Endereço atualizado com sucesso
+            </Alert>
+          )}
+        </Grid>
+      </Grid>
+    </form>
   );
 };
 
