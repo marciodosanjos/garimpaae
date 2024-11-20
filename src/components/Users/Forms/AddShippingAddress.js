@@ -22,8 +22,6 @@ const AddShippingAddress = ({ buttonText }) => {
   const { loading, error, profile } = useSelector((state) => state?.users);
   const user = profile?.data;
 
-  console.log(user);
-
   useEffect(() => {
     if (user) {
       Object.entries(user?.shippingAddress).map(([key, value], index) => {
@@ -86,10 +84,6 @@ const AddShippingAddress = ({ buttonText }) => {
   return (
     <form onSubmit={onSubmit}>
       <Grid
-        xs={12}
-        sm={12}
-        lg={12}
-        xl={12}
         container
         sx={{
           display: "flex",
@@ -103,33 +97,34 @@ const AddShippingAddress = ({ buttonText }) => {
           //border: "1px solid black",
         }}
       >
-        {Object.entries(formData).map(([key, value], index) => (
-          <Grid
-            item
-            xs={12}
-            sm={12}
-            md={12}
-            key={index}
-            sx={{
-              display: "flex",
-              flexDirection: "row",
-              justifyContent: "space-betwwen",
-              alignItems: "space-betwwen",
-              flexWrap: "wrap",
-              width: "100%",
-
-              //border: "1px solid black",
-            }}
-          >
+        <Grid
+          container
+          item
+          xs={12}
+          sm={12}
+          md={12}
+          lg={12}
+          xl={12}
+          sx={{
+            gap: 1,
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "space-beetwen",
+            //border: "1px solid black",
+          }}
+        >
+          {Object.entries(formData).map(([key, value], index) => (
             <FormTextField
+              key={index}
               id={key.toLowerCase()}
               name={key}
               label={translatedValues(key)}
               value={value || ""}
               onChange={onChange}
+              sx={{ width: "20px" }}
             />
-          </Grid>
-        ))}
+          ))}
+        </Grid>
 
         <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
           {loading ? (
