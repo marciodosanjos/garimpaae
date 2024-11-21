@@ -1,18 +1,40 @@
 import { Box, Button, Grid, Typography } from "@mui/material";
 import useIsMobile from "../../hooks/useIsMobile";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import FormTextField from "../FormTextField/FormTextField";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import translateLabels from "../../utils/translateLabels";
+import { updateUserLoginData } from "../../redux/slices/users/usersSlice";
+import LoadingComponent from "../LoadingComp/LoadingComponent";
+import CheckIcon from "@mui/icons-material/Check";
+import Alert from "@mui/material/Alert";
+import { useNavigate } from "react-router-dom";
 
 export default function ChangePassword() {
   const isMobile = useIsMobile();
+  const [isUpdated, setIsUpdated] = useState(false);
+
+  //select store data
+  const { error, loading, profile } = useSelector((state) => {
+    return state?.users;
+  });
+
+  useEffect(() => {
+    if (profile?.data?.email) {
+      setFormData((prev) => ({
+        ...prev,
+        username: profile.data.email,
+      }));
+    }
+  }, [profile]);
+
+  const errorMsg = error?.message;
 
   const [formData, setFormData] = useState({
-    username: "",
+    username: profile?.data?.email || "",
     password: "",
   });
-  //const dispatch = useDispatch();
+  const dispatch = useDispatch();
 
   const handleOnChange = (e) => {
     const { name, value } = e.target;
@@ -23,9 +45,13 @@ export default function ChangePassword() {
     }));
   };
 
-  // const handleOnSubmit = (e) => {
-  //   e.preventDefault();
-  // };
+  const { username, password } = formData;
+
+  const handleOnSubmit = (e) => {
+    e.preventDefault();
+    dispatch(updateUserLoginData({ email: username, password }));
+    setIsUpdated(true);
+  };
 
   return (
     <Grid container>
@@ -62,10 +88,27 @@ export default function ChangePassword() {
                 type="password"
               />
             ))}
-            <Button type="submit" variant="primary">
+            <Button type="submit" variant="primary" onClick={handleOnSubmit}>
               Atualizar dados
             </Button>
           </form>
+          {loading && <LoadingComponent />}
+          {isUpdated && (
+            <Alert
+              icon={<CheckIcon fontSize="inherit" />}
+              sx={{ marginY: 2 }}
+              severity="success"
+            >
+              Login atualizado com sucesso
+            </Alert>
+          )}
+          {error && (
+            <Alert sx={{ marginY: 2 }} severity="error">
+              {error?.message === "Invalid token"
+                ? "Faça o login novamente e tente outra vez"
+                : "Verfique suas informações e tente novamente"}
+            </Alert>
+          )}
         </Box>
       </Grid>
     </Grid>

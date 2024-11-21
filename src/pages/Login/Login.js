@@ -21,11 +21,15 @@ const Login = () => {
   const isMobile = useIsMobile();
   const dispatch = useDispatch();
   const [formData, setFormData] = useState({
-    email: "admin3@gmail.com",
-    password: "43221",
+    email: "",
+    password: "",
   });
 
   const { email, password } = formData;
+
+  const { loading, userInfo, error } = useSelector(
+    (state) => state?.users?.userAuth
+  );
 
   const onChangeHandler = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -37,22 +41,17 @@ const Login = () => {
       alert("Preencha os dados");
       return;
     }
-    dispatch(loginUserAction({ email, password }));
-    if (localStorage.getItem("cartItems")) {
-      navigate("/shopping-cart");
-      return;
+
+    try {
+      dispatch(loginUserAction({ email, password }));
+
+      if (error) {
+        return;
+      }
+    } catch (error) {
+      console.error(error);
     }
   };
-
-  const { loading, userInfo, error } = useSelector(
-    (state) => state?.users?.userAuth
-  );
-
-  useEffect(() => {
-    if (userInfo?.userFound && !localStorage.getItem("cartItems")) {
-      navigate("/");
-    }
-  }, [userInfo]);
 
   return (
     <Container fixed>
@@ -151,7 +150,7 @@ const Login = () => {
           {error?.message && (
             <Box sx={{ width: "50%" }}>
               <Alert severity="error" icon={false} sx={{ textAlign: "center" }}>
-                Erro no login. Insira os dados novamente e tente outra vez
+                Senha ou password errado. os dados novamente e tente outra vez.
               </Alert>
             </Box>
           )}

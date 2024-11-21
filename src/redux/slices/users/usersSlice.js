@@ -144,6 +144,34 @@ export const getUserProfileAction = createAsyncThunk(
   }
 );
 
+export const updateUserLoginData = createAsyncThunk(
+  "user/update-login-data",
+  async ({ email, password }, { rejectWithValue, getState, dispatch }) => {
+    const token = getState().users?.userAuth?.userInfo?.token;
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    try {
+      //http post request
+      const { data } = await axios.put(
+        `${baseURL}/users/update/logindata`,
+        {
+          email,
+          password,
+        },
+        config
+      );
+      console.log(data);
+
+      return data;
+    } catch (error) {
+      return rejectWithValue(error?.response?.data);
+    }
+  }
+);
+
 //users slice
 const usersSlice = createSlice({
   name: "users",
@@ -197,6 +225,20 @@ const usersSlice = createSlice({
         state.loading = false;
       }
     );
+
+    //update login data
+    builder.addCase(updateUserLoginData.pending, (state) => {
+      state.loading = true;
+    });
+    builder.addCase(updateUserLoginData.fulfilled, (state, action) => {
+      state.user = action.payload;
+      state.loading = false;
+    });
+    builder.addCase(updateUserLoginData.rejected, (state, action) => {
+      state.error = action.payload;
+      state.loading = false;
+    });
+
     //profile
     builder.addCase(getUserProfileAction.pending, (state, action) => {
       state.loading = true;

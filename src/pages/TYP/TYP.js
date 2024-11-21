@@ -10,7 +10,6 @@ import Teaser from "../../components/Teaser/Teaser";
 export default function ThanksForOrdering() {
   //const location = useLocation();
   //const { sumTotalPrice } = location.state;
-  //console.log(sumTotalPrice);
   const isMobile = useIsMobile();
 
   const dispatch = useDispatch();

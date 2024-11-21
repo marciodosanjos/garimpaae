@@ -23,8 +23,6 @@ export default function MyOrders() {
     (item, index) => item?.user._id === userFound?._id
   );
 
-  console.log(userOrders);
-
   const data = [
     {
       name: "Nike Dunk Low",
