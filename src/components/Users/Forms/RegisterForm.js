@@ -1,105 +1,209 @@
-import React, { useState } from "react";
-import ErrorMsg from "../../ErrorMsg/ErrorMsg";
+import { useNavigate } from "react-router-dom";
+import useIsMobile from "../../../hooks/useIsMobile";
 import { useDispatch, useSelector } from "react-redux";
+import { useState } from "react";
 import { registrationUserAction } from "../../../redux/slices/users/usersSlice";
+import { Alert, Box, Button, Container, Grid, TextField } from "@mui/material";
 import LoadingComponent from "../../LoadingComp/LoadingComponent";
+import CheckIcon from "@mui/icons-material/Check";
+import TitleUserProfileSection from "../../TitleUserProfileSection/TitleUserProfileSection";
 
 const RegisterForm = () => {
-  //dispatch
+  const navigate = useNavigate();
+  const isMobile = useIsMobile();
   const dispatch = useDispatch();
-
-  //dispatch
   const [formData, setFormData] = useState({
     fullname: "",
     email: "",
     password: "",
   });
-  //---Destructuring---
-  const { fullname, email, password } = formData;
-  //---onchange handler----
+  const [isCreated, setIsCreated] = useState(false);
+
+  const { email, password, fullname } = formData;
+
+  const { loading, error } = useSelector((state) => state?.users);
+
   const onChangeHandler = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  //---onsubmit handler----
   const onSubmitHandler = (e) => {
     e.preventDefault();
-    dispatch(registrationUserAction({ fullname, email, password }));
+
+    if (email === "" || password === "" || fullname === "") {
+      alert("Preencha os dados");
+      return;
+    }
+
+    try {
+      dispatch(registrationUserAction({ email, password, fullname })).then(
+        (res) => {
+          if (res?.error?.message) {
+            setIsCreated(false);
+            setTimeout(() => {
+              navigate("/register");
+            }, 2000);
+          } else {
+            setIsCreated(true);
+            setTimeout(() => {
+              setIsCreated(false);
+            }, 2000);
+          }
+        }
+      );
+      // setTimeout(() => {
+      //   navigate("/");
+      // }, 3000);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
-  //select store data
-  const { error, loading } = useSelector((state) => {
-    return state?.users;
-  });
-
-  // //redirect
-  // if (user) {
-  //   window.location.href = "/login";
-  // }
-
   return (
-    <>
-      <section className="relative overflow-x-hidden">
-        <div className="container px-4 mx-auto">
-          <div className="flex flex-wrap items-center">
-            <div className="w-full lg:w-2/6 px-4 mb-12 lg:mb-0">
-              <div className="py-20 text-center">
-                <h3 className="mb-8 text-4xl md:text-5xl font-bold font-heading">
-                  Signing up with social is super quick
-                </h3>
-                {/* error */}
-                {error && <ErrorMsg message={error?.message} />}
-                <p className="mb-10">Please, do not hesitate</p>
-                <form onSubmit={onSubmitHandler}>
-                  <input
-                    name="fullname"
-                    value={fullname}
-                    onChange={onChangeHandler}
-                    className="w-full mb-4 px-12 py-6 border border-gray-200 focus:ring-blue-300 focus:border-blue-300 rounded-md"
-                    type="text"
-                    placeholder="Full Name"
-                  />
-                  <input
-                    name="email"
-                    value={email}
-                    onChange={onChangeHandler}
-                    className="w-full mb-4 px-12 py-6 border border-gray-200 focus:ring-blue-300 focus:border-blue-300 rounded-md"
-                    type="email"
-                    placeholder="Enter your email"
-                  />
-                  <input
-                    name="password"
-                    value={password}
-                    onChange={onChangeHandler}
-                    className="w-full mb-4 px-12 py-6 border border-gray-200 focus:ring-blue-300 focus:border-blue-300 rounded-md"
-                    type="password"
-                    placeholder="Enter your password"
-                  />
-                  {loading ? (
-                    <>
-                      <LoadingComponent />
-                    </>
-                  ) : (
-                    <>
-                      <button className="mt-12 md:mt-16 bg-blue-800 hover:bg-blue-900 text-white font-bold font-heading py-5 px-8 rounded-md uppercase">
-                        "Register"
-                      </button>
-                    </>
-                  )}
-                </form>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div
-          className="hidden lg:block lg:absolute top-0 bottom-0 right-0 lg:w-3/6 bg-center bg-cover bg-no-repeat"
-          style={{
-            backgroundImage:
-              'url("https://cdn.pixabay.com/photo/2017/03/29/04/47/high-heels-2184095_1280.jpg")',
+    <Container fixed>
+      <Grid container>
+        <Grid
+          item
+          xs={12}
+          sm={12}
+          md={12}
+          lg={12}
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            alignItems: "center",
+            gap: 3,
+            marginY: "4rem",
           }}
-        />
-      </section>
-    </>
+        >
+          <div className="logo">
+            <span
+              style={{
+                textTransform: "upperCase",
+                fontWeight: 800,
+              }}
+            >
+              Garimpa Aê
+            </span>
+          </div>
+
+          <TitleUserProfileSection
+            title={"Novo por aqui?"}
+            description={
+              "Inscreva-se e tenha acesso aos melhores produtos hype"
+            }
+            alignment={"center"}
+          />
+          <form onSubmit={onSubmitHandler}>
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "center",
+                alignItems: "center",
+                gap: 1,
+              }}
+            >
+              <TextField
+                id="name"
+                label="Nome completo"
+                name="fullname"
+                variant="outlined"
+                value={fullname}
+                onChange={onChangeHandler}
+                sx={{
+                  // Cor da borda quando focado
+                  "& .MuiOutlinedInput-root": {
+                    "&.Mui-focused fieldset": {
+                      borderColor: "secondary.dark",
+                    },
+                  },
+                  // Cor do label quando focado
+                  "& .MuiInputLabel-root": {
+                    color: "gray",
+                    "&.Mui-focused": {
+                      color: "secondary.dark",
+                    },
+                  },
+                }}
+              />
+              <TextField
+                id="user"
+                label="Email"
+                name="email"
+                variant="outlined"
+                value={email}
+                onChange={onChangeHandler}
+                sx={{
+                  // Cor da borda quando focado
+                  "& .MuiOutlinedInput-root": {
+                    "&.Mui-focused fieldset": {
+                      borderColor: "secondary.dark",
+                    },
+                  },
+                  // Cor do label quando focado
+                  "& .MuiInputLabel-root": {
+                    color: "gray",
+                    "&.Mui-focused": {
+                      color: "secondary.dark",
+                    },
+                  },
+                }}
+              />
+              <TextField
+                id="password"
+                label="Senha"
+                name="password"
+                type="password"
+                variant="outlined"
+                value={password}
+                onChange={onChangeHandler}
+                sx={{
+                  // Cor da borda quando focado
+                  "& .MuiOutlinedInput-root": {
+                    "&.Mui-focused fieldset": {
+                      borderColor: "secondary.dark",
+                    },
+                  },
+                  // Cor do label quando focado
+                  "& .MuiInputLabel-root": {
+                    color: "gray",
+                    "&.Mui-focused": {
+                      color: "secondary.dark",
+                    },
+                  },
+                }}
+              />
+              {loading ? (
+                <LoadingComponent />
+              ) : (
+                <Button variant="primary" type="submit" sx={{ width: "100%" }}>
+                  Criar usuário
+                </Button>
+              )}
+            </Box>
+          </form>
+          {isCreated && (
+            <Alert
+              icon={<CheckIcon fontSize="inherit" />}
+              sx={{ marginY: 2 }}
+              severity="success"
+            >
+              Conta criada com sucesso
+            </Alert>
+          )}
+          {error?.message && (
+            <Box sx={{ width: "50%" }}>
+              <Alert severity="error" icon={false} sx={{ textAlign: "center" }}>
+                Parece que já existe um usuário com este email. Tente usar outro
+                e-mail
+              </Alert>
+            </Box>
+          )}
+        </Grid>
+      </Grid>
+    </Container>
   );
 };
 

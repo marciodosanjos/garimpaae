@@ -8,7 +8,7 @@ import { updateUserLoginData } from "../../redux/slices/users/usersSlice";
 import LoadingComponent from "../LoadingComp/LoadingComponent";
 import CheckIcon from "@mui/icons-material/Check";
 import Alert from "@mui/material/Alert";
-import { useNavigate } from "react-router-dom";
+import TitleUserProfileSection from "../TitleUserProfileSection/TitleUserProfileSection";
 
 export default function ChangePassword() {
   const isMobile = useIsMobile();
@@ -27,8 +27,6 @@ export default function ChangePassword() {
       }));
     }
   }, [profile]);
-
-  const errorMsg = error?.message;
 
   const [formData, setFormData] = useState({
     username: profile?.data?.email || "",
@@ -57,25 +55,13 @@ export default function ChangePassword() {
     <Grid container>
       <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
         <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
-          <Typography
-            variant="h3"
-            sx={{
-              textAlign: isMobile && "center",
-              marginBottom: isMobile && "2rem",
-            }}
-          >
-            Seus dados de acesso
-          </Typography>
-          <Typography
-            variant="body"
-            sx={{
-              textAlign: isMobile && "center",
-              marginBottom: isMobile && "2rem",
-            }}
-          >
-            Altere aqui seus dados de acesso, inserindo os novos dados no
-            formulário abaixo.
-          </Typography>
+          <TitleUserProfileSection
+            title={" Seus dados de acesso"}
+            description={
+              "Altere aqui seus dados de acesso, inserindo os novos dados no formulário abaixo"
+            }
+            alignment={"flex-start"}
+          />
 
           <form style={{ display: "flex", flexDirection: "column", gap: 6 }}>
             {Object.entries(formData).map(([key, value], index) => (

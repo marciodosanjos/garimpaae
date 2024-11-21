@@ -4,6 +4,7 @@ import useIsMobile from "../../hooks/useIsMobile";
 import { useEffect, useState } from "react";
 import { getUserProfileAction } from "../../redux/slices/users/usersSlice";
 import AddShippingAddress from "../Users/Forms/AddShippingAddress";
+import TitleUserProfileSection from "../TitleUserProfileSection/TitleUserProfileSection";
 
 export default function ChangeAddress() {
   const dispatch = useDispatch();
@@ -29,25 +30,13 @@ export default function ChangeAddress() {
         sx={{ display: "flex", flexDirection: "column", gap: 2 }}
       >
         <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
-          <Typography
-            variant="h3"
-            sx={{
-              textAlign: isMobile && "center",
-              marginBottom: isMobile && "2rem",
-            }}
-          >
-            Checkout
-          </Typography>
-          <Typography
-            variant="body"
-            sx={{
-              textAlign: isMobile && "center",
-              marginBottom: isMobile && "2rem",
-            }}
-          >
-            Este é seu endereço atual na nossa loja. Se quiser alterá-lo, basta
-            inserir os novos dados no formulário abaixo.
-          </Typography>
+          <TitleUserProfileSection
+            title={"Checkout"}
+            description={
+              "Este é seu endereço atual na nossa loja. Se quiser alterá-lo, basta inserir os novos dados no formulário abaixo."
+            }
+            alignment={"flex-start"}
+          />
         </Box>
         <Box>
           <AddShippingAddress buttonText={"Atualizar endereço"} />
