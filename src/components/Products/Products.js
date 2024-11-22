@@ -23,7 +23,7 @@ const Products = ({ products }) => {
           justifyContent: {
             xs: "center",
             sm: "center",
-            md: "center",
+            md: "flex-start",
             lg: "flex-start",
           },
           gap: { xs: 5, md: 0 },

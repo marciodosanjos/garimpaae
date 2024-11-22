@@ -226,7 +226,6 @@ export default function PLP() {
             height: products ? "auto" : "100vh",
             display: "block",
             marginTop: -2,
-            //border: "1px solid black",
           }}
         >
           {/* Sorting */}

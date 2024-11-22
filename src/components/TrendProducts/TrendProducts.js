@@ -16,7 +16,6 @@ export default function TrendProducts({ title, array }) {
             gap: 3,
             marginTop: "5rem",
             marginBottom: "5rem",
-            //border: "1px solid black",
           }}
         >
           <Grid
@@ -26,7 +25,6 @@ export default function TrendProducts({ title, array }) {
             md={12}
             sx={{
               marginBottom: { md: "1rem" },
-              //border: "1px solid black",
               textAlign: "center",
             }}
           >
@@ -41,9 +39,6 @@ export default function TrendProducts({ title, array }) {
                 sm={6}
                 sx={{
                   marginBottom: { md: "1rem" },
-                  display: "flex",
-                  flexDirection: "column",
-                  justifyContent: "center",
                 }}
                 key={product.id}
               >
@@ -54,8 +49,7 @@ export default function TrendProducts({ title, array }) {
                       display: "flex",
                       flexDirection: "column",
                       justifyContent: "center",
-                      gap: 2,
-                      width: "100%",
+                      gap: 3,
                     }}
                   >
                     <Box
@@ -90,7 +84,7 @@ export default function TrendProducts({ title, array }) {
                         display: "flex",
                         flexDirection: "column",
                         justifyContent: "space-between",
-                        width: "100%",
+                        height: "3rem",
                       }}
                     >
                       <Typography className="product-card-title" variant="h6">
