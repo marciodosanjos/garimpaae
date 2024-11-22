@@ -14,7 +14,7 @@ import {
   Typography,
 } from "@mui/material";
 import useIsMobile from "../../hooks/useIsMobile";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -138,6 +138,7 @@ const Login = () => {
                   },
                 }}
               />
+
               {loading ? (
                 <LoadingComponent />
               ) : (
@@ -154,6 +155,19 @@ const Login = () => {
               </Alert>
             </Box>
           )}
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              gap: 1,
+            }}
+          >
+            <Typography variant="h6">É novo por aqui?</Typography>
+            <Link style={{ textDecoration: "underline" }} to={"/register"}>
+              Crie sua conta rapidamente
+            </Link>
+          </Box>
         </Grid>
       </Grid>
     </Container>

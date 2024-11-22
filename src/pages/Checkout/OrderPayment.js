@@ -70,7 +70,7 @@ export default function OrderPayment() {
 
   let data = [
     { title: "Subtotal", value: 300 },
-    { title: "Frete", value: "free" },
+    { title: "Frete", value: 0 },
     { title: "Taxa", value: 20 },
   ];
 

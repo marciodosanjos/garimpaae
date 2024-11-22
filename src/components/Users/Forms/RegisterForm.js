@@ -1,5 +1,4 @@
 import { useNavigate } from "react-router-dom";
-import useIsMobile from "../../../hooks/useIsMobile";
 import { useDispatch, useSelector } from "react-redux";
 import { useState } from "react";
 import { registrationUserAction } from "../../../redux/slices/users/usersSlice";
@@ -10,18 +9,17 @@ import TitleUserProfileSection from "../../TitleUserProfileSection/TitleUserProf
 
 const RegisterForm = () => {
   const navigate = useNavigate();
-  const isMobile = useIsMobile();
   const dispatch = useDispatch();
+  const [isCreated, setIsCreated] = useState(false);
+  const [error, setError] = useState(false);
   const [formData, setFormData] = useState({
     fullname: "",
     email: "",
     password: "",
   });
-  const [isCreated, setIsCreated] = useState(false);
 
   const { email, password, fullname } = formData;
-
-  const { loading, error } = useSelector((state) => state?.users);
+  const { loading } = useSelector((state) => state?.users);
 
   const onChangeHandler = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -29,7 +27,6 @@ const RegisterForm = () => {
 
   const onSubmitHandler = (e) => {
     e.preventDefault();
-
     if (email === "" || password === "" || fullname === "") {
       alert("Preencha os dados");
       return;
@@ -40,20 +37,20 @@ const RegisterForm = () => {
         (res) => {
           if (res?.error?.message) {
             setIsCreated(false);
+            setError(true);
             setTimeout(() => {
               navigate("/register");
             }, 2000);
           } else {
             setIsCreated(true);
+            setError(false);
             setTimeout(() => {
               setIsCreated(false);
-            }, 2000);
+              navigate("/");
+            }, 5000);
           }
         }
       );
-      // setTimeout(() => {
-      //   navigate("/");
-      // }, 3000);
     } catch (error) {
       console.error(error);
     }
@@ -190,10 +187,11 @@ const RegisterForm = () => {
               sx={{ marginY: 2 }}
               severity="success"
             >
-              Conta criada com sucesso
+              Conta criada com sucesso. Você será redirecionado para a página
+              inicial em 5 segundos
             </Alert>
           )}
-          {error?.message && (
+          {error && (
             <Box sx={{ width: "50%" }}>
               <Alert severity="error" icon={false} sx={{ textAlign: "center" }}>
                 Parece que já existe um usuário com este email. Tente usar outro

@@ -19,6 +19,7 @@ export default function Navbar() {
   const dispatch = useDispatch();
   const isMobile = useIsMobile();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [cartItems, setCartItems] = useState([]);
 
   useEffect(() => {
     dispatch(fetchCategoriesAction());
@@ -30,12 +31,18 @@ export default function Navbar() {
 
   const location = useLocation();
   const { pathname } = location;
-  const user = JSON.parse(localStorage.getItem("userInfo"));
-  const isLoggedIn = user?.token ? true : false;
   const adminRoute = pathname.includes("admin");
-  const cartItemsFromLocalStorage = JSON.parse(
-    localStorage.getItem("cartItems")
-  );
+
+  useEffect(() => {
+    const syncCartItemsFromLocalStorage = () => {
+      const updatedCart = JSON.parse(localStorage.getItem("cartItems") || "[]");
+      setCartItems(updatedCart);
+    };
+    syncCartItemsFromLocalStorage();
+    window.addEventListener("storage", syncCartItemsFromLocalStorage);
+    return () =>
+      window.removeEventListener("storage", syncCartItemsFromLocalStorage);
+  }, [cartItems]);
 
   let logoutHandler = () => {
     dispatch(logoutUserAction());
@@ -182,12 +189,31 @@ export default function Navbar() {
                   <div
                     onMouseOver={() => setHoveredIcon("cart")}
                     onMouseOut={() => setHoveredIcon(null)}
+                    style={{ position: "relative" }} // Torna o contêiner pai um ponto de referência
                   >
                     <Link to="/shopping-cart">
                       <ShoppingCart
                         color={hoveredIcon === "cart" ? "#000" : "#71747E"}
                         strokeWidth={1}
                       />
+                      <div
+                        style={{
+                          position: "absolute",
+                          top: "-10px",
+                          right: "-10px",
+                          backgroundColor: "#9c0000",
+                          color: "#fff",
+                          borderRadius: "50%",
+                          padding: "4px 8px",
+                          fontSize: "0.5rem",
+                          fontWeight: "bold",
+                          display: "flex",
+                          justifyContent: "center",
+                          alignItems: "center",
+                        }}
+                      >
+                        {cartItems.length}
+                      </div>
                     </Link>
                   </div>
                   <div
