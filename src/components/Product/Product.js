@@ -30,8 +30,8 @@ export default function Product() {
   const isMobile = useIsMobile();
   const [selectedSize, setSelectedSize] = useState("");
   const [selectedColor, setSelectedColor] = useState("");
-  const [addedToCart, setAddedToCart] = useState(false);
-  const [isSnackbarOpen, setSnackbarOpen] = useState(true);
+  const [isSnackbarOpen, setSnackbarOpen] = useState(false);
+  const [error, setError] = useState("");
 
   const handleSnackbarClose = () => {
     setSnackbarOpen(false);
@@ -62,20 +62,17 @@ export default function Product() {
   //Add to cart handler
   const addToCartHandler = () => {
     if (selectedSize === "") {
-      return Swal.fire({
-        icon: "error",
-        title: "Selecione um tamanho",
-        text: "para poder prosseguir com o checkout",
-      });
+      setError("Erro: Selecione um tamanho correto");
+      setSnackbarOpen(true);
+      return;
     }
 
     //check if product is in cart
     if (productInCart) {
-      return Swal.fire({
-        icon: "error",
-        title: "Produto já adicionado ao carrinho",
-        text: "",
-      });
+      console.log("erro");
+      setError("Erro: Produto já adicionado ao carrinho");
+      setSnackbarOpen(true);
+      return;
     }
 
     dispatch(
@@ -92,7 +89,7 @@ export default function Product() {
         qtyLeft: productData?.qtyLeft,
       })
     );
-    setAddedToCart(true);
+    setSnackbarOpen(true);
   };
 
   return (
@@ -298,9 +295,16 @@ export default function Product() {
         imgWidth={250}
         destination={"/"}
       />
-      {addedToCart && (
+      {isSnackbarOpen && (
         <SuccessMsg
           msg={"Produto adicionado ao carrinho"}
+          isOpened={isSnackbarOpen}
+          onClose={handleSnackbarClose}
+        />
+      )}
+      {error && (
+        <SuccessMsg
+          msg={error}
           isOpened={isSnackbarOpen}
           onClose={handleSnackbarClose}
         />

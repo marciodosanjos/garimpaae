@@ -14,13 +14,26 @@ import {
 } from "@mui/material";
 import { ShoppingCart, User, Menu } from "lucide-react";
 import useIsMobile from "../../hooks/useIsMobile";
+import { getCartItemsAction } from "../../redux/slices/cart/cartSlice";
 
 export default function Navbar() {
   const dispatch = useDispatch();
   const isMobile = useIsMobile();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [cartItems, setCartItems] = useState([]);
 
+  //handling cart counting
+  useEffect(() => {
+    dispatch(getCartItemsAction());
+  }, [dispatch]);
+  const { cartItems: cartData } = useSelector((state) => state?.cart);
+
+  const [cartItems, setCartItems] = useState(cartData);
+
+  useEffect(() => {
+    setCartItems(cartData);
+  }, [cartData]);
+
+  //fetch and display categories
   useEffect(() => {
     dispatch(fetchCategoriesAction());
   }, [dispatch]);
@@ -33,28 +46,7 @@ export default function Navbar() {
   const { pathname } = location;
   const adminRoute = pathname.includes("admin");
 
-  // useEffect(() => {
-  //   const syncCartItemsFromLocalStorage = () => {
-  //     const updatedCart = JSON.parse(localStorage.getItem("cartItems") || "[]");
-  //     setCartItems(updatedCart);
-  //   };
-  //   syncCartItemsFromLocalStorage();
-  //   window.addEventListener("storage", syncCartItemsFromLocalStorage);
-  //   return () =>
-  //     window.removeEventListener("storage", syncCartItemsFromLocalStorage);
-  // }, [cartItems]);
-
-  useEffect(() => {
-    const syncCartItemsFromLocalStorage = () => {
-      const updatedCart = JSON.parse(localStorage.getItem("cartItems") || "[]");
-      setCartItems(updatedCart);
-    };
-    syncCartItemsFromLocalStorage();
-    window.addEventListener("storage", syncCartItemsFromLocalStorage);
-    return () =>
-      window.removeEventListener("storage", syncCartItemsFromLocalStorage);
-  }, []); // Remova `cartItems` das dependências
-
+  //logout handler for mobile menu
   let logoutHandler = () => {
     dispatch(logoutUserAction());
     window.location.href = "/login";
@@ -223,7 +215,7 @@ export default function Navbar() {
                           alignItems: "center",
                         }}
                       >
-                        {cartItems.length}
+                        {cartItems?.length}
                       </div>
                     </Link>
                   </div>

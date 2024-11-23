@@ -1,8 +1,9 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
-//initial state
 const initialState = {
-  cartItems: [],
+  cartItems: localStorage.getItem("cartItems")
+    ? JSON.parse(localStorage.getItem("cartItems"))
+    : [],
   loading: false,
   error: null,
   isAdded: false,
@@ -18,6 +19,7 @@ export const addOrderAction = createAsyncThunk("cart/add", async (cartItem) => {
   //push to storage
   cartItems.push(cartItem);
   localStorage.setItem("cartItems", JSON.stringify(cartItems));
+  return cartItems;
 });
 
 //get products from cart
