@@ -5,12 +5,12 @@ import { Link } from "react-router-dom";
 export default function Footer() {
   return (
     <>
-      <footer style={{ backgroundColor: "white" }} className="footer">
+      <footer style={{ backgroundColor: "#ffffff" }} className="footer">
         <Container
           className="footer-container"
           fixed
           sx={{
-            backgroundColor: "white",
+            backgroundColor: "#ffffff",
             height: "40vh",
             display: "flex",
             alignItems: "center",

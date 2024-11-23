@@ -75,7 +75,7 @@ export default function CategoriesSection() {
                           display: "flex",
                           justifyContent: "center",
                           alignItems: "center",
-                          color: "white",
+                          color: "#ffffff",
                           textAlign: "center",
                         }}
                       >
@@ -90,7 +90,7 @@ export default function CategoriesSection() {
                           <Typography
                             variant="h1"
                             sx={{
-                              color: "white",
+                              color: "#ffffff",
                             }}
                           >
                             {category?.name.toUpperCase()}

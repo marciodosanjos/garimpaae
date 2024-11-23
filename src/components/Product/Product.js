@@ -23,16 +23,19 @@ import {
 import useIsMobile from "../../hooks/useIsMobile";
 import Teaser from "../Teaser/Teaser";
 import Gallery from "../Gallery/Gallery";
-
-function classNames(...classes) {
-  return classes.filter(Boolean).join(" ");
-}
+import SuccessMsg from "../SuccessMsg/SuccessMsg";
 
 export default function Product() {
   const dispatch = useDispatch();
   const isMobile = useIsMobile();
   const [selectedSize, setSelectedSize] = useState("");
   const [selectedColor, setSelectedColor] = useState("");
+  const [addedToCart, setAddedToCart] = useState(false);
+  const [isSnackbarOpen, setSnackbarOpen] = useState(true);
+
+  const handleSnackbarClose = () => {
+    setSnackbarOpen(false);
+  };
 
   //get id from params;
   const { id } = useParams();
@@ -89,11 +92,7 @@ export default function Product() {
         qtyLeft: productData?.qtyLeft,
       })
     );
-    return Swal.fire({
-      icon: "success",
-      title: "produto adicionado ao carrinho",
-      text: "Uhuu",
-    });
+    setAddedToCart(true);
   };
 
   return (
@@ -249,8 +248,8 @@ export default function Product() {
                       width: 40,
                       height: 40,
                       border: "2px solid grey",
-                      backgroundColor: selectedSize ? "#71747E" : "white",
-                      color: selectedSize ? "white" : "#71747E",
+                      backgroundColor: selectedSize ? "#71747E" : "#ffffff",
+                      color: selectedSize ? "#ffffff" : "#71747E",
                       cursor: "pointer",
                       "&:hover": {
                         backgroundColor: "lightgrey",
@@ -275,7 +274,7 @@ export default function Product() {
                 variant="primary"
                 sx={{
                   backgroundColor: "black",
-                  color: "white",
+                  color: "#ffffff",
                   width: "100%",
                   marginY: "1rem",
                 }}
@@ -299,6 +298,13 @@ export default function Product() {
         imgWidth={250}
         destination={"/"}
       />
+      {addedToCart && (
+        <SuccessMsg
+          msg={"Produto adicionado ao carrinho"}
+          isOpened={isSnackbarOpen}
+          onClose={handleSnackbarClose}
+        />
+      )}
     </>
   );
 }

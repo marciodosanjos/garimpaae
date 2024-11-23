@@ -57,7 +57,7 @@ export default function Advantages() {
         sx={{
           marginTop: "1rem",
           height: "20vh",
-          backgroundColor: "white",
+          backgroundColor: "#ffffff",
         }}
       >
         {advantages.map((advantage, index) => (
@@ -69,7 +69,7 @@ export default function Advantages() {
             sx={{
               marginBottom: { md: "2rem" },
               height: "20vh",
-              backgroundColor: "white",
+              backgroundColor: "#ffffff",
               display: "flex",
               flexDirection: "column",
               alignItems: "center",

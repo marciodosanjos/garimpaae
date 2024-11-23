@@ -23,7 +23,7 @@ export default function LandingPage() {
   const featuredProducts2 = products.data && products.data.slice(3, 6);
 
   return (
-    <Box sx={{ flexGrow: 1, backgroundColor: "white" }}>
+    <Box sx={{ flexGrow: 1, backgroundColor: "#ffffff" }}>
       <Teaser
         title={"Novidades chegando"}
         text={"Descubra nossa coleção hoje"}

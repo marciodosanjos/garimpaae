@@ -45,12 +45,12 @@ export default function FacetItem({ title, type, arr, fn, selectedItems }) {
               // Estilização ao ser selecionado
               "&.Mui-checked": {
                 backgroundColor: "secondary.dark",
-                borderColor: "white", // Borda branca quando marcado
+                borderColor: "#ffffff", // Borda branca quando marcado
               },
               "& .MuiSvgIcon-root": {
                 fontSize: "2rem",
                 color: selectedItems.includes(brandItem?.name)
-                  ? "white"
+                  ? "#ffffff"
                   : "transparent", // Cor do checkmark
               },
               ":hover": {

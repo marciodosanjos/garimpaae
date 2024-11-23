@@ -33,6 +33,17 @@ export default function Navbar() {
   const { pathname } = location;
   const adminRoute = pathname.includes("admin");
 
+  // useEffect(() => {
+  //   const syncCartItemsFromLocalStorage = () => {
+  //     const updatedCart = JSON.parse(localStorage.getItem("cartItems") || "[]");
+  //     setCartItems(updatedCart);
+  //   };
+  //   syncCartItemsFromLocalStorage();
+  //   window.addEventListener("storage", syncCartItemsFromLocalStorage);
+  //   return () =>
+  //     window.removeEventListener("storage", syncCartItemsFromLocalStorage);
+  // }, [cartItems]);
+
   useEffect(() => {
     const syncCartItemsFromLocalStorage = () => {
       const updatedCart = JSON.parse(localStorage.getItem("cartItems") || "[]");
@@ -42,7 +53,7 @@ export default function Navbar() {
     window.addEventListener("storage", syncCartItemsFromLocalStorage);
     return () =>
       window.removeEventListener("storage", syncCartItemsFromLocalStorage);
-  }, [cartItems]);
+  }, []); // Remova `cartItems` das dependências
 
   let logoutHandler = () => {
     dispatch(logoutUserAction());
@@ -67,7 +78,7 @@ export default function Navbar() {
             <Grid item xs={12} sx={{ backgroundColor: "secondary.dark" }}>
               <Container
                 sx={{
-                  color: "white",
+                  color: "#ffffff",
                   display: "flex",
                   justifyContent: "center",
                   paddingY: "0.5rem",

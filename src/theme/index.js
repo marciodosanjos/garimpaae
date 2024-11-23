@@ -24,7 +24,7 @@ const theme = createTheme({
           props: { variant: "outlined" },
           style: {
             backgroundColor: "#00468c",
-            color: "white",
+            color: "#ffffff",
             borderRadius: "1rem",
             fontWeight: "none",
             "&:hover": {
@@ -49,21 +49,21 @@ const theme = createTheme({
           props: { variant: "primary" },
           style: {
             backgroundColor: "black",
-            color: "white",
+            color: "#ffffff",
             borderRadius: 3,
             "&:hover": {
               backgroundColor: "#202533",
-              color: "white",
+              color: "#ffffff",
               textDecoration: "none",
             },
             "&:active": {
               backgroundColor: "#202533",
-              color: "white",
+              color: "#ffffff",
               textDecoration: "none",
             },
             "&:visited": {
               backgroundColor: "#202533",
-              color: "white",
+              color: "#ffffff",
               textDecoration: "none",
             },
             textTransform: "none",
@@ -103,7 +103,7 @@ const theme = createTheme({
     MuiAccordionSummary: {
       styleOverrides: {
         root: {
-          backgroundColor: "white",
+          backgroundColor: "#ffffff",
           height: "0.5rem",
           paddingBottom: "0.5rem",
           borderRadius: "0.5rem",
@@ -127,7 +127,7 @@ const theme = createTheme({
       styleOverrides: {
         root: {
           padding: "2rem",
-          backgroundColor: "white",
+          backgroundColor: "#ffffff",
           marginBottom: "1rem",
           borderRadius: "0.5rem",
           border: "1px solid rgba(0, 0, 9, .1)",
@@ -202,7 +202,7 @@ const theme = createTheme({
       main: "#00468c",
       dark: "#0E1422",
       light: "#fffff",
-      contrastText: "white",
+      contrastText: "#ffffff",
     },
     secondary: {
       main: "#ecec53",
@@ -210,7 +210,7 @@ const theme = createTheme({
       light: "#ffffff",
     },
     background: {
-      default: "white",
+      default: "#ffffff",
     },
     text: {
       primary: "#121212",
