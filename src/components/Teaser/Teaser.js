@@ -32,10 +32,6 @@ export default function Teaser({
     }
   }, [products]);
 
-  if (error) {
-    console.log(error);
-  }
-
   return (
     <>
       <Grid

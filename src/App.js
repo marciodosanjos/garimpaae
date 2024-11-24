@@ -15,7 +15,7 @@ import AddCategory from "./components/Admin/Categories/AddCategory";
 import AddBrand from "./components/Admin/Categories/AddBrand";
 import AddColor from "./components/Admin/Categories/AddColor";
 import UpdateCoupon from "./components/Admin/Coupons/UpdateCoupon";
-import Product from "./components/Product/Product";
+import Product from "./pages/PDP/PDP";
 import ShoppingCart from "./pages/Cart/ShoppingCart";
 import AddReview from "./components/Users/Reviews/AddReview";
 import UpdateCategory from "./components/Admin/Categories/UpdateCategory";
@@ -68,30 +68,27 @@ const App = () => {
           }
         >
           {/* products */}
-          <Route path="" element={<OrdersList />} />
+          <Route path="dashboard" element={<OrdersList />} />
           <Route path="add-product" element={<AddProduct />} />
-          <Route path="manage-products" element={<ManageStocks />} />
+          <Route path="products" element={<ManageStocks />} />
           <Route path="products/edit/:id" element={<ProductUpdate />} />
-          {/* coupons */}
-          <Route path="add-coupon" element={<AddCoupon />} />
-          <Route path="manage-coupon" element={<ManageCoupons />} />
-          <Route path="manage-coupon/edit/:code" element={<UpdateCoupon />} />
           {/* Category */}
-          <Route path="category-to-add" element={<CategoryToAdd />} />{" "}
           <Route path="add-category" element={<AddCategory />} />
-          <Route path="manage-category" element={<ManageCategories />} />
+          <Route path="categories" element={<ManageCategories />} />
           <Route path="edit-category/:id" element={<UpdateCategory />} />
           {/* brand category */}
           <Route path="add-brand" element={<AddBrand />} />
           <Route path="all-brands" element={<BrandsColorsList />} />
           {/* color category */}
           <Route path="add-color" element={<AddColor />} />
-          <Route path="all-colors" element={<BrandsColorsList />} />
+          <Route path="colors" element={<BrandsColorsList />} />
           {/* Orders */}
-          <Route path="manage-orders" element={<ManageOrders />} />
+          <Route path="orders" element={<ManageOrders />} />
           <Route path="orders/:id" element={<UpdateOrders />} />
           <Route path="order-payment" element={<OrderPayment />} />
           <Route path="customers" element={<Customers />} />
+          {/* Logout */}
+          <Route path="logout" element={<Logout />} />
         </Route>
         {/* public links */}
         {/* Products */}

@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { Link, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchProductAtion } from "../../redux/slices/products/productsSlice";
 import {
   addOrderAction,
   getCartItemsAction,
 } from "../../redux/slices/cart/cartSlice";
-import Swal from "sweetalert2";
 import {
   Box,
   Button,
@@ -21,11 +20,11 @@ import {
 } from "@mui/material";
 
 import useIsMobile from "../../hooks/useIsMobile";
-import Teaser from "../Teaser/Teaser";
-import Gallery from "../Gallery/Gallery";
-import SuccessMsg from "../SuccessMsg/SuccessMsg";
+import Teaser from "../../components/Teaser/Teaser";
+import Gallery from "../../components/Gallery/Gallery";
+import SuccessMsg from "../../components/SuccessMsg/SuccessMsg";
 
-export default function Product() {
+export default function PDP() {
   const dispatch = useDispatch();
   const isMobile = useIsMobile();
   const [selectedSize, setSelectedSize] = useState("");

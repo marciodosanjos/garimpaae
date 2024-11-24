@@ -2,9 +2,17 @@ import { useDispatch, useSelector } from "react-redux";
 import OrdersStats from "./OrdersStatistics";
 import { useState } from "react";
 import { fetchOrdersAction } from "../../../redux/slices/orders/ordersSlice";
-import LoadingComponent from "../../LoadingComp/LoadingComponent";
-import NoDataFound from "../../NoDataFound/NoDataFound";
+import { Button, Grid } from "@mui/material";
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableCell from "@mui/material/TableCell";
+import TableContainer from "@mui/material/TableContainer";
+import TableHead from "@mui/material/TableHead";
+import TableRow from "@mui/material/TableRow";
+import Paper from "@mui/material/Paper";
 import { Link } from "react-router-dom";
+import translateLabels from "../../../utils/translateLabels";
+import LoadingComponent from "../../LoadingComp/LoadingComponent";
 
 export default function OrdersList() {
   const dispatch = useDispatch();
@@ -13,128 +21,148 @@ export default function OrdersList() {
     dispatch(fetchOrdersAction());
   }, []);
 
-  const { orders, error, loading } = useSelector((state) => state?.orders);
+  const { orders, error } = useSelector((state) => state?.orders);
 
   const ordersData = orders?.data;
 
   return (
     <>
       {error && <p>{error?.message}</p>}
-      <div className="px-4 sm:px-6 lg:px-8">
-        <div className="sm:flex sm:items-center"></div>
+      <Grid
+        container
+        direction="column"
+        sx={{
+          padding: 3,
+          gap: 4,
+          justifyContent: "center",
+          //          border: "1px solid black",
+        }}
+      >
         {/* order stats */}
-        <OrdersStats />
+        <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
+          <OrdersStats />
+        </Grid>
 
-        <h3 className="text-lg font-medium leading-6 text-gray-900 mt-3">
-          Pedidos
-        </h3>
-        <div className="-mx-4 mt-3  overflow-hidden shadow ring-1 ring-black ring-opacity-5 sm:-mx-6 md:mx-0 md:rounded-lg">
-          <table className="min-w-full divide-y divide-gray-300">
-            <thead className="bg-gray-50">
-              <tr>
-                <th
-                  scope="col"
-                  className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6"
+        {/* order list */}
+        {!ordersData ? (
+          <LoadingComponent />
+        ) : (
+          <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
+            <TableContainer component={Paper} sx={{ boxShadow: "none" }}>
+              <Table sx={{ minWidth: 650 }} aria-label="simple table">
+                <TableHead
+                  sx={{ borderBottom: "1px solid grey", position: "relative" }}
                 >
-                  ID
-                </th>
-                <th
-                  scope="col"
-                  className="hidden px-3 py-3.5 text-left text-sm font-semibold text-gray-900 lg:table-cell"
-                >
-                  Status do pagamento
-                </th>
-                <th
-                  scope="col"
-                  className="hidden px-3 py-3.5 text-left text-sm font-semibold text-gray-900 sm:table-cell"
-                >
-                  Data do pedido
-                </th>
-                <th
-                  scope="col"
-                  className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
-                >
-                  Data de envio
-                </th>
-                <th
-                  scope="col"
-                  className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
-                >
-                  Status
-                </th>
+                  <TableCell
+                    sx={{
+                      borderBottom: "1px solid grey",
+                      fontWeight: "bold !important",
+                    }}
+                  >
+                    Pedidos recentes
+                  </TableCell>
+                  <Button
+                    component={Link}
+                    to="/admin/orders"
+                    variant="primary"
+                    sx={{
+                      borderBottom: "1px solid grey",
+                      position: "absolute",
+                      right: 10,
+                      top: 10,
+                    }}
+                  >
+                    Ver todos
+                  </Button>
+                </TableHead>
+                <TableHead>
+                  <TableRow>
+                    <TableCell
+                      sx={{
+                        borderBottom: "1px solid grey",
+                        fontWeight: "bold !important",
+                      }}
+                    >
+                      N. do pedido
+                    </TableCell>
+                    <TableCell
+                      align="right"
+                      sx={{
+                        fontWeight: "bold !important",
+                        borderBottom: "1px solid grey",
+                      }}
+                    >
+                      Data do pedido
+                    </TableCell>
+                    <TableCell
+                      align="right"
+                      sx={{
+                        fontWeight: "bold !important",
+                        borderBottom: "1px solid grey",
+                        fontStyle: "bold",
+                      }}
+                    >
+                      Itens
+                    </TableCell>
+                    <TableCell
+                      align="right"
+                      sx={{
+                        borderBottom: "1px solid grey",
+                        fontWeight: "bold !important",
+                      }}
+                    >
+                      Preço total
+                    </TableCell>
+                    <TableCell
+                      align="right"
+                      sx={{
+                        borderBottom: "1px solid grey",
+                        fontWeight: "bold !important",
+                      }}
+                    >
+                      Status
+                    </TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {ordersData?.slice(0, 9).map((row) => (
+                    <TableRow
+                      key={row.name}
+                      sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                    >
+                      <TableCell component="th" scope="row">
+                        {row.orderNumber}
+                      </TableCell>
+                      <TableCell align="right">
+                        {row.createdAt.slice(0, 10)}
+                      </TableCell>
+                      <TableCell align="right">
+                        {row.orderItems.length}
+                      </TableCell>
+                      <TableCell align="right"> R$ {row.totalPrice}</TableCell>
+                      <TableCell align="right">
+                        {translateLabels(row.status)}
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
 
-                <th
-                  scope="col"
-                  className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
-                >
-                  Total
-                </th>
-                <th
-                  scope="col"
-                  className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
-                >
-                  Ação
-                </th>
-                {/* <th scope="col" className="relative py-3.5 pl-3 pr-4 sm:pr-6">
-                <span className="sr-only">Edit</span>
-              </th> */}
-              </tr>
-            </thead>
-            {loading ? (
-              <LoadingComponent />
-            ) : ordersData?.length <= 0 ? (
-              <NoDataFound />
-            ) : (
-              <tbody className="divide-y divide-gray-200 bg-white">
-                {ordersData?.map((order) => (
-                  <tr key={order?._id}>
-                    <td className="w-full max-w-0 py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:w-auto sm:max-w-none sm:pl-6">
-                      {order?.orderNumber}
-                    </td>
-                    <td className="hidden px-3 py-4 text-sm text-gray-500 lg:table-cell">
-                      {order?.paymentStatus}
-                    </td>
-                    <td className="hidden px-3 py-4 text-sm text-gray-500 lg:table-cell">
-                      {new Date(order?.createdAt).toLocaleDateString()}
-                    </td>
-                    <td className="hidden px-3 py-4 text-sm text-gray-500 sm:table-cell">
-                      Não especificado
-                    </td>
-                    <td className="px-3 py-4 text-sm text-gray-500">
-                      {order?.status}
-                    </td>
-
-                    <td className="px-3 py-4 text-sm text-gray-500">
-                      R$ {order?.totalPrice}
-                    </td>
-
-                    <td className="px-3 py-4 text-sm text-gray-500">
-                      {order?.paymentStatus !== "Not paid" ? (
-                        <Link
-                          style={{ color: "blue" }}
-                          to={`/admin/orders/${order?._id}`}
-                        >
-                          Editar<span className="sr-only">, {order?.name}</span>
-                        </Link>
-                      ) : (
-                        <Link style={{ color: "grey", cursor: "not-allowed" }}>
-                          Nada <span className="sr-only">, {order?.name}</span>
-                        </Link>
-                      )}
-                    </td>
-
-                    {/* <td className="py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
-                  <a href="#" className="text-indigo-600 hover:text-indigo-900">
-                    Edit<span className="sr-only">, {order.name}</span>
-                  </a>
-                </td> */}
-                  </tr>
-                ))}
-              </tbody>
-            )}
-          </table>
-        </div>
-      </div>
+            <Button
+              component={Link}
+              to="/admin/orders"
+              variant="primary"
+              sx={{
+                width: "100%",
+                marginTop: 3,
+              }}
+            >
+              Ver todos
+            </Button>
+          </Grid>
+        )}
+      </Grid>
     </>
   );
 }
