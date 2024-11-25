@@ -48,6 +48,9 @@ const translateLabels = (value) => {
     case "category":
       return "Categoria";
       break;
+    case "_id":
+      return "Ação";
+      break;
     default:
       return "outro";
       break;

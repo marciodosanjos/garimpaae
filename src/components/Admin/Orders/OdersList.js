@@ -127,7 +127,7 @@ export default function OrdersList() {
                 <TableBody>
                   {ordersData?.slice(0, 9).map((row) => (
                     <TableRow
-                      key={row.name}
+                      key={row.orderNumber}
                       sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                     >
                       <TableCell component="th" scope="row">

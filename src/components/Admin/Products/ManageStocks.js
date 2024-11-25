@@ -1,17 +1,10 @@
-import { Link } from "react-router-dom";
-import ErrorMsg from "../../ErrorMsg/ErrorMsg";
-import LoadingComponent from "../../LoadingComp/LoadingComponent";
-import NoDataFound from "../../NoDataFound/NoDataFound";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
-import {
-  deleteProductAtion,
-  fecthProductsAction,
-} from "../../../redux/slices/products/productsSlice";
+import { fecthProductsAction } from "../../../redux/slices/products/productsSlice";
 import baseURL from "../../../utils/baseURL";
 import { Grid } from "@mui/material";
-import Table from "../../Table/Table";
 import translateLabels from "../../../utils/translateLabels";
+import AdminTable from "../../Table/AdminTable";
 
 export default function ManageStocks() {
   const dispatch = useDispatch();
@@ -21,6 +14,8 @@ export default function ManageStocks() {
   }, [dispatch]);
 
   const { products, loading, error } = useSelector((state) => state?.products);
+
+  console.log(products, error, loading);
 
   let [productsRows, setProductsRows] = useState([]);
 
@@ -39,6 +34,7 @@ export default function ManageStocks() {
               "totalQty",
               "colors",
               "category",
+              "_id",
             ].includes(key)
           )
           .reduce((obj, key) => {
@@ -49,8 +45,6 @@ export default function ManageStocks() {
 
     setProductsRows(productsRows);
   }, [products]);
-
-  console.log(productsRows);
 
   const tableHeadItems = () => {
     const keys =
@@ -65,23 +59,12 @@ export default function ManageStocks() {
             key === "sizes" ||
             key === "totalQty" ||
             key === "colors" ||
-            key === "category"
+            key === "category" ||
+            key === "_id"
         )
-        .map(([key]) => translateLabels(key));
+        .map(([key]) => key);
 
     return keys;
-  };
-
-  //delete product handler
-  const deleteProductHandler = (id) => {
-    dispatch(deleteProductAtion(id))
-      .then(() => {
-        dispatch(fecthProductsAction({ url: `${baseURL}/products` }));
-      })
-      .catch((error) => {
-        // Handle error if necessary
-        console.error("Error deleting category:", error);
-      });
   };
 
   return (
@@ -93,14 +76,16 @@ export default function ManageStocks() {
         justifyContent: "center",
       }}
     >
-      <Grid item sx={12} sm={12} md={12} lg={12} xl={12}>
+      <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
         Lista de produtos
       </Grid>
       <Grid item>
-        <Table
+        <AdminTable
           title={"Lista de produtos"}
           tableHeadItems={tableHeadItems()}
           tableValues={productsRows}
+          buttonText={"Criar produto"}
+          href={"/admin/add-product"}
         />
       </Grid>
     </Grid>
