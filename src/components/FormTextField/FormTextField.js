@@ -9,7 +9,16 @@ import {
 } from "@mui/material";
 import { useState } from "react";
 
-export default function FormTextField({ id, label, name, value, onChange }) {
+export default function FormTextField({
+  id,
+  label,
+  name,
+  value,
+  onChange,
+  compWidth = "inherit",
+  type = "text",
+  rows = 0,
+}) {
   const [showPassword, setShowPassword] = useState(false);
   const handleClickShowPassword = () => setShowPassword((show) => !show);
   const handleMouseDownPassword = (event) => {
@@ -88,10 +97,13 @@ export default function FormTextField({ id, label, name, value, onChange }) {
           id={id}
           label={label}
           name={name}
-          type={"text"}
+          type={type}
           variant="outlined"
           value={value}
           onChange={onChange}
+          multiline
+          maxRows={4}
+          rows={rows}
           sx={{
             // Cor da borda quando focado
             "& .MuiOutlinedInput-root": {
@@ -100,6 +112,7 @@ export default function FormTextField({ id, label, name, value, onChange }) {
               },
 
               flexGrow: 1,
+              width: compWidth,
             },
             // Cor do label quando focado
             "& .MuiInputLabel-root": {

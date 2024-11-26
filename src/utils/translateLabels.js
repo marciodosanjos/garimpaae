@@ -51,6 +51,10 @@ const translateLabels = (value) => {
     case "_id":
       return "Deletar";
       break;
+    case "description":
+      return "Descrição";
+      break;
+
     default:
       return "outro";
       break;
