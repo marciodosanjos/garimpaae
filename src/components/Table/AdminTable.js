@@ -8,16 +8,8 @@ import {
   TableHead,
   TableRow,
 } from "@mui/material";
-import { LinkIcon } from "lucide-react";
-import capitalize from "../../utils/capitalize";
 import { Link } from "react-router-dom";
 import { Trash2 } from "lucide-react";
-import {
-  deleteProductAtion,
-  fecthProductsAction,
-} from "../../redux/slices/products/productsSlice";
-import { useDispatch } from "react-redux";
-import baseURL from "../../utils/baseURL";
 import translateLabels from "../../utils/translateLabels";
 
 export default function AdminTable({
@@ -26,20 +18,8 @@ export default function AdminTable({
   tableValues,
   buttonText,
   href,
+  fn,
 }) {
-  const dispatch = useDispatch();
-
-  //delete product handler
-  const deleteProductHandler = (id) => {
-    dispatch(deleteProductAtion(id))
-      .then(() => {
-        dispatch(fecthProductsAction({ url: `${baseURL}/products` }));
-      })
-      .catch((error) => {
-        console.error("Error deleting category:", error);
-      });
-  };
-
   return (
     <TableContainer component={Paper} sx={{ boxShadow: "none" }}>
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
@@ -83,8 +63,9 @@ export default function AdminTable({
                 </TableCell>
               ))}
             {/* Adiciona a célula de '_id' como última coluna */}
-            {tableHeadItems.includes("_id") && (
+            {tableHeadItems?.includes("_id") && (
               <TableCell
+                align="left"
                 key="_id"
                 sx={{
                   borderBottom: "1px solid grey",
@@ -108,11 +89,21 @@ export default function AdminTable({
                 sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
               >
                 {otherEntries.map(([key, value]) => (
-                  <TableCell key={`${index}-${key}`} align="right">
+                  <TableCell key={`${index}-${key}`} align="left">
                     {key === "images" ? (
                       <img src={value} height={50} width={50} alt={"alt"} />
                     ) : key === "brand" ? (
                       value
+                    ) : key === "name" ? (
+                      <>
+                        <span style={{ marginRight: "0.5rem" }}>{value}</span>
+                        <Link
+                          to={`edit/${idEntry[1]}`}
+                          style={{ textDecoration: "underline" }}
+                        >
+                          [editar]
+                        </Link>
+                      </>
                     ) : (
                       value
                     )}
@@ -124,8 +115,8 @@ export default function AdminTable({
                   <TableCell key={`${index}-id`} align="right">
                     <Trash2
                       strokeWidth={1}
-                      onClick={() => deleteProductHandler(idEntry)}
-                      //style={{ cursor: "pointer" }}
+                      onClick={() => fn(idEntry[1])}
+                      style={{ cursor: "pointer" }}
                     />
                   </TableCell>
                 )}

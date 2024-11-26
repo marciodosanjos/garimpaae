@@ -163,6 +163,7 @@ export default function UserProfile() {
       </Grid>
       {/* Outlet renders dinamically the content based on the route */}
       <Grid
+        container
         item
         xs={12}
         sm={12}
@@ -171,8 +172,8 @@ export default function UserProfile() {
         xl={9}
         sx={{
           background: "linear-gradient(45deg, #F6F6F6, #E6E7E8)",
-          paddingRight: 10,
-          paddingTop: 5,
+          paddingRight: !isMobile && 10,
+          paddingTop: !isMobile && 5,
         }}
       >
         <Outlet />

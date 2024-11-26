@@ -15,11 +15,11 @@ export default function SuccessMsg({ msg, isOpened, onClose }) {
       <Snackbar open={isOpened} autoHideDuration={6000} onClose={handleClose}>
         <Alert
           onClose={handleClose}
-          severity={msg.includes("Erro") ? "error" : "success"}
+          severity={msg?.includes("Erro") ? "error" : "success"}
           variant="filled"
           sx={{
             width: "100%",
-            backgroundColor: msg.includes("Erro")
+            backgroundColor: msg?.includes("Erro")
               ? "#9c0000"
               : "secondary.dark",
             color: "#ffffff",

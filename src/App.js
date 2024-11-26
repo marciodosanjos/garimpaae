@@ -1,8 +1,6 @@
 import React from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import AdminDashboard from "./components/Admin/AdminDashboard";
-import ManageCoupons from "./components/Admin/Coupons/ManageCoupons";
-import AddCoupon from "./components/Admin/Coupons/AddCoupon";
 import Login from "./pages/Login/Login";
 import AddProduct from "./components/Admin/Products/AddProduct";
 import RegisterForm from "./components/Users/Forms/RegisterForm";
@@ -68,6 +66,7 @@ const App = () => {
           }
         >
           {/* products */}
+          <Route path="" element={<OrdersList />} />
           <Route path="dashboard" element={<OrdersList />} />
           <Route path="add-product" element={<AddProduct />} />
           <Route path="products" element={<ManageStocks />} />

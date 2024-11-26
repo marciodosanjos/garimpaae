@@ -163,7 +163,6 @@ export const updateUserLoginData = createAsyncThunk(
         },
         config
       );
-      console.log(data);
 
       return data;
     } catch (error) {

@@ -16,8 +16,6 @@ export default function OrdersStats() {
 
   const obj = stats?.data[0];
 
-  console.log(obj);
-
   return (
     <Grid
       container

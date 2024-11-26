@@ -30,7 +30,7 @@ export default function OrdersList() {
       {error && <p>{error?.message}</p>}
       <Grid
         container
-        direction="column"
+        direction="row"
         sx={{
           padding: 3,
           gap: 4,

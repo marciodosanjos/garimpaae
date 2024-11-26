@@ -49,7 +49,7 @@ const translateLabels = (value) => {
       return "Categoria";
       break;
     case "_id":
-      return "Ação";
+      return "Deletar";
       break;
     default:
       return "outro";
