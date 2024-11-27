@@ -15,6 +15,7 @@ import { Box, Button, Container, Grid } from "@mui/material";
 import TitleUserProfileSection from "../../TitleUserProfileSection/TitleUserProfileSection";
 import FormTextField from "../../FormTextField/FormTextField";
 import translateLabels from "../../../utils/translateLabels";
+import FormSelectField from "../../FormSelectField/FormSelectField";
 
 export default function AddProduct() {
   const dispatch = useDispatch();
@@ -44,6 +45,7 @@ export default function AddProduct() {
 
   //sizes
   const sizes = ["S", "M", "L", "XL"];
+  const sizesShoes = ["40", "41", "42", "43"];
   const [sizeOption, setSizeOption] = useState([]);
 
   const handleSizeChange = (sizes) => {
@@ -64,6 +66,7 @@ export default function AddProduct() {
 
   //select categories data from store
   const { categories } = useSelector((state) => state?.categories);
+  const categoriesItems = categories?.data?.map((item) => item.name);
 
   //brands
   useEffect(() => {
@@ -72,6 +75,7 @@ export default function AddProduct() {
 
   //select brands data from store
   const { brands } = useSelector((state) => state?.brands);
+  const brandsItems = brands?.data?.map((item) => item.name);
 
   //colors
   const [colorOption, setColorOption] = useState([]);
@@ -117,6 +121,8 @@ export default function AddProduct() {
   const handleOnChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
+
+  console.log(formData);
 
   const {
     isAdded,
@@ -197,7 +203,7 @@ export default function AddProduct() {
               }}
             >
               {Object.entries(formData).map(([key, value], index) => {
-                if (key == "description") {
+                if (key === "description") {
                   return (
                     <FormTextField
                       key={index}
@@ -207,6 +213,31 @@ export default function AddProduct() {
                       compWidth="30rem"
                       name={value[index]}
                       rows={3}
+                    />
+                  );
+                }
+
+                if (key === "category") {
+                  return (
+                    <FormSelectField
+                      arr={categoriesItems}
+                      title={"Categoria"}
+                      compWidth="30rem"
+                      onChange={handleOnChange} // Passando onChange para o FormSelectField
+                      value={formData.category}
+                      name={key}
+                    />
+                  );
+                }
+                if (key === "brand") {
+                  return (
+                    <FormSelectField
+                      arr={brandsItems}
+                      title={"Marca"}
+                      compWidth="30rem"
+                      onChange={handleOnChange}
+                      value={formData.brand}
+                      name={key}
                     />
                   );
                 }
@@ -223,7 +254,7 @@ export default function AddProduct() {
               })}
             </form>
             <Box sx={{ width: "100%" }}>
-              <Button type="submit" variant="primary" sx={{ width: "57%" }}>
+              <Button type="submit" variant="primary" sx={{ width: "48%" }}>
                 Criar novo produto
               </Button>
             </Box>
