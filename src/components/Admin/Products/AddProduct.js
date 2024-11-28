@@ -184,7 +184,7 @@ export default function AddProduct() {
       const result = await dispatch(
         addProductAction({
           ...formData,
-          images: files,
+          files,
           sizes: sizeOption,
           colors: colorOptions,
         })
@@ -200,9 +200,13 @@ export default function AddProduct() {
       } else if (addProductAction.rejected.match(result)) {
         console.log("Erro ao adicionar produto:", result.payload);
         setError(true);
+        setTimeout(() => {
+          setError(false);
+        }, 6000);
       }
     } catch (error) {
       console.log("Erro inesperado:", error);
+      setError(true);
     }
 
     // Resetar os dados do formulário
