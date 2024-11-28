@@ -99,7 +99,7 @@ export default function FormTextField({
           name={name}
           type={type}
           variant="outlined"
-          value={value}
+          value={value || ""}
           onChange={onChange}
           multiline
           maxRows={4}

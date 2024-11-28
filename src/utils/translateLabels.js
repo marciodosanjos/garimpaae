@@ -56,7 +56,7 @@ const translateLabels = (value) => {
       break;
 
     default:
-      return "outro";
+      return value;
       break;
   }
 };

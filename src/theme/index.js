@@ -23,25 +23,29 @@ const theme = createTheme({
         {
           props: { variant: "outlined" },
           style: {
-            backgroundColor: "#00468c",
-            color: "#ffffff",
-            borderRadius: "1rem",
-            fontWeight: "none",
+            color: "black",
+            fontWeight: "100",
+            textTransform: "none",
+            border: "1px solid black",
             "&:hover": {
-              backgroundColor: "#e5e619",
+              backgroundColor: "grey",
             },
             textTransform: "capitalize",
             "@media (min-width:0px)": {
-              fontSize: "18px",
+              fontSize: "2rem",
+              textTransform: "none",
             },
             "@media (min-width:600px)": {
-              fontSize: "24px",
+              fontSize: "2rem",
+              textTransform: "none",
             },
             "@media (min-width:900px)": {
-              fontSize: "28px",
+              fontSize: "1rem",
+              textTransform: "none",
             },
             "@media (min-width:1200px)": {
-              fontSize: "28px",
+              fontSize: "1rem",
+              textTransform: "none",
             },
           },
         },
