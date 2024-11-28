@@ -60,9 +60,11 @@ const App = () => {
         <Route
           path="admin"
           element={
-            <AdminAuthRoute>
-              <AdminDashboard />
-            </AdminAuthRoute>
+            <AuthRoute>
+              <AdminAuthRoute>
+                <AdminDashboard />
+              </AdminAuthRoute>
+            </AuthRoute>
           }
         >
           {/* products */}
@@ -89,6 +91,7 @@ const App = () => {
           {/* Logout */}
           <Route path="logout" element={<Logout />} />
         </Route>
+
         {/* public links */}
         {/* Products */}
         <Route path="/" element={<LandingPage />} />

@@ -173,26 +173,28 @@ export default function OrderPayment() {
               </Button>
             </Box>
             <Box sx={{ borderBottom: "0.5px solid rgba(0, 0, 0, 0.1)" }}>
-              {data?.map((item, index) => (
-                <Box
-                  key={index}
-                  sx={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    marginY: 3,
-                  }}
-                >
-                  <Typography
-                    variant="body1"
-                    sx={{ color: "#71747E", fontWeight: "bold" }}
+              {data.length > 1 &&
+                data?.map((item, index) => (
+                  <Box
+                    key={index}
+                    sx={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      marginY: 3,
+                    }}
                   >
-                    {item?.title}
-                  </Typography>
-                  <Typography variant="h6">
-                    R$ {item.title === "Subtotal" ? sumTotalPrice : item.value}
-                  </Typography>
-                </Box>
-              ))}
+                    <Typography
+                      variant="body1"
+                      sx={{ color: "#71747E", fontWeight: "bold" }}
+                    >
+                      {item?.title}
+                    </Typography>
+                    <Typography variant="h6">
+                      R${" "}
+                      {item.title === "Subtotal" ? sumTotalPrice : item.value}
+                    </Typography>
+                  </Box>
+                ))}
             </Box>
             <Box
               sx={{

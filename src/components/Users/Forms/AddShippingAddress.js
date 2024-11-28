@@ -23,7 +23,7 @@ const AddShippingAddress = ({ buttonText }) => {
   const user = profile?.data;
 
   useEffect(() => {
-    if (user) {
+    if (user && user.shippingAddress) {
       Object.entries(user?.shippingAddress).map(([key, value], index) => {
         if (!value) {
           setHasAddress(false);
@@ -33,15 +33,17 @@ const AddShippingAddress = ({ buttonText }) => {
   }, [user]);
 
   const [formData, setFormData] = useState({
-    firstName: user?.shippingAddress?.firstName,
-    lastName: user?.shippingAddress?.lastName,
-    address: user?.shippingAddress?.address,
-    city: user?.shippingAddress?.city,
-    country: user?.shippingAddress?.country,
-    region: user?.shippingAddress?.region,
-    postalCode: user?.shippingAddress?.postalCode,
-    phone: user?.shippingAddress?.phone,
+    firstName: user?.shippingAddress?.firstName || "",
+    lastName: user?.shippingAddress?.lastName || "",
+    address: user?.shippingAddress?.address || "",
+    city: user?.shippingAddress?.city || "",
+    country: user?.shippingAddress?.country || "",
+    region: user?.shippingAddress?.region || "",
+    postalCode: user?.shippingAddress?.postalCode || "",
+    phone: user?.shippingAddress?.phone || "",
   });
+
+  console.log(formData);
 
   const onChange = (e) => {
     const { name, value } = e.target;
@@ -113,17 +115,18 @@ const AddShippingAddress = ({ buttonText }) => {
             //border: "1px solid black",
           }}
         >
-          {Object.entries(formData).map(([key, value], index) => (
-            <FormTextField
-              key={index}
-              id={key.toLowerCase()}
-              name={key}
-              label={translatedValues(key)}
-              value={value || ""}
-              onChange={onChange}
-              sx={{ width: "20px" }}
-            />
-          ))}
+          {formData &&
+            Object.entries(formData).map(([key, value], index) => (
+              <FormTextField
+                key={index}
+                id={key.toLowerCase()}
+                name={key}
+                label={translatedValues(key)}
+                value={value || ""}
+                onChange={onChange}
+                sx={{ width: "20px" }}
+              />
+            ))}
         </Grid>
 
         <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>

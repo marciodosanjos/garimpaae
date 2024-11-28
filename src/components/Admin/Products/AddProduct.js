@@ -47,18 +47,26 @@ export default function AddProduct() {
       }
     });
 
-    console.log(newFiles);
-    console.log(newErrs);
     setFiles(newFiles);
     setFilesError(newErrs);
   };
+
+  //clean data if error
+  useEffect(() => {
+    if (filesError.length > 0) {
+      setTimeout(() => {
+        setFilesError([]);
+        setFiles([]);
+      }, 3000);
+    }
+  }, [filesError]);
 
   //select categories data from store
   useEffect(() => {
     dispatch(fetchCategoriesAction());
   }, [dispatch]);
   const { categories } = useSelector((state) => state?.categories);
-  const categoriesItems = categories?.data?.map((item) => item.name);
+  const categoriesItems = categories?.data?.map((item) => item.name) || [];
 
   //select brands data from store
   useEffect(() => {
@@ -148,13 +156,8 @@ export default function AddProduct() {
     });
   };
 
-  const {
-    isAdded,
-    loading: loadingProduct,
-    error: errProductCreation,
-  } = useSelector((state) => {
-    return state?.products;
-  });
+  const [isAdded, setIsAdded] = useState(false);
+  const [error, setError] = useState(false);
 
   //useEffect to reset isAdded
   useEffect(() => {
@@ -166,40 +169,54 @@ export default function AddProduct() {
     }
   }, [isAdded, dispatch]);
 
+  const [isSnackbarOpen, setSnackbarOpen] = useState(false);
+
+  const handleSnackbarClose = () => {
+    setSnackbarOpen(false);
+  };
+
   //onSubmit
-  const handleOnSubmit = (e) => {
+  const handleOnSubmit = async (e) => {
     e.preventDefault();
 
-    let obj = {
-      ...formData,
-      sizes: sizeOption,
-      colors: colorOptions,
-    };
+    try {
+      // Despacha a ação para criar o produto e aguarda o resultado
+      const result = await dispatch(
+        addProductAction({
+          ...formData,
+          images: files,
+          sizes: sizeOption,
+          colors: colorOptions,
+        })
+      );
 
-    console.log(obj);
+      // Aqui você pode manipular a resposta, caso seja necessário
+      if (addProductAction.fulfilled.match(result)) {
+        console.log("Produto adicionado com sucesso:", result.payload);
+        setSnackbarOpen(true);
+        setTimeout(() => {
+          setSnackbarOpen(false);
+        }, 6000);
+      } else if (addProductAction.rejected.match(result)) {
+        console.log("Erro ao adicionar produto:", result.payload);
+        setError(true);
+      }
+    } catch (error) {
+      console.log("Erro inesperado:", error);
+    }
 
-    //dispatch action create product
-    //dispatch();
-
-    // addProductAction({
-    //   ...formData,
-    //   files,
-    //   colors: colorOption?.map((color) => color.value),
-    //   sizes: sizeOption,
-    // })
-
-    //reset form data
-    // setFormData({
-    //   name: "",
-    //   description: "",
-    //   category: "",
-    //   sizes: "",
-    //   brand: "",
-    //   colors: "",
-    //   images: "",
-    //   price: "",
-    //   totalQty: "",
-    // });
+    // Resetar os dados do formulário
+    setFormData({
+      name: "",
+      description: "",
+      category: "",
+      sizes: "",
+      brand: "",
+      colors: "",
+      images: "",
+      price: "",
+      totalQty: "",
+    });
   };
 
   return (
@@ -288,7 +305,12 @@ export default function AddProduct() {
                 if (key === "images") {
                   return (
                     <Box
-                      sx={{ display: "flex", flexDirection: "column", gap: 1 }}
+                      sx={{
+                        display: "flex",
+                        flexDirection: "column",
+                        gap: 1,
+                        width: "30rem",
+                      }}
                     >
                       <InputLabel>Upload de imagens</InputLabel>
                       <div>
@@ -297,6 +319,7 @@ export default function AddProduct() {
                           name="images"
                           onChange={fileHandleChange}
                           type="file"
+                          multiple
                           style={{ display: "none" }}
                         />
 
@@ -308,15 +331,25 @@ export default function AddProduct() {
                           }
                           sx={{ width: "100%" }}
                         >
-                          Selecione uma foto
+                          Selecione fotos
                         </Button>
 
                         {/* Exibe o nome do arquivo ou o texto padrão */}
-                        <p>
-                          {files
-                            ? `Arquivo selecionado: ${files[0]?.name}`
+
+                        <Typography>
+                          {files.length > 0
+                            ? `Arquivos selecionados: ${files
+                                .map((file) => file.name)
+                                .join(", ")}`
                             : "Nenhum arquivo selecionado"}
-                        </p>
+                        </Typography>
+
+                        {filesError.length > 0 &&
+                          filesError.map((error) => (
+                            <Typography sx={{ color: "red" }}>
+                              {error}
+                            </Typography>
+                          ))}
                       </div>
                     </Box>
                   );
@@ -349,16 +382,29 @@ export default function AddProduct() {
               <Button
                 type="submit"
                 variant="primary"
-                sx={{ width: "48%" }}
+                sx={{ width: "30rem" }}
                 onClick={handleOnSubmit}
               >
                 Criar novo produto
               </Button>
             </Box>
+            {isSnackbarOpen && (
+              <SuccessMsg
+                msg={"Produto adicionado ao carrinho"}
+                isOpened={isSnackbarOpen}
+                onClose={handleSnackbarClose}
+              />
+            )}
+            {error && (
+              <SuccessMsg
+                msg={"Produto já existe"}
+                isOpened={isSnackbarOpen}
+                onClose={handleSnackbarClose}
+              />
+            )}
           </Grid>
         </Grid>
       </Container>
-      {isAdded && <SuccessMsg message="Produto adicionado com sucesso" />}
     </>
   );
 }
