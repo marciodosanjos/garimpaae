@@ -52,12 +52,14 @@ export const addProductAction = createAsyncThunk(
       formData.append("totalQty", totalQty);
       formData.append("price", price);
 
+      colors.forEach((color) => formData.append("colors[]", color));
+
       sizes?.forEach((size) => {
         formData.append("sizes", size);
       });
-      colors?.forEach((color) => {
-        formData.append("color", color);
-      });
+      // colors?.forEach((color) => {
+      //   formData.append("color", color);
+      // });
       files?.forEach((file) => {
         formData.append("files", file);
       });

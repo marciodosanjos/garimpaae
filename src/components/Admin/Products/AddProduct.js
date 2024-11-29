@@ -26,11 +26,18 @@ import FormSelectField from "../../FormSelectField/FormSelectField";
 import FormMultiSelectField from "../../FormMultiSelectField/FormMultiSelectField";
 
 export default function AddProduct() {
-  const dispatch = useDispatch();
-
-  //files
   const [files, setFiles] = useState("");
   const [filesError, setFilesError] = useState([]);
+  const [sizeOption, setSizeOption] = useState([]);
+  const [isChecked, setIsChecked] = useState(true);
+  const [errorMessage, setErrorMessage] = useState("");
+  const [isSnackbarOpen, setSnackbarOpen] = useState(false);
+  const [colorOptions, setColorOptions] = useState([]);
+  const dispatch = useDispatch();
+
+  //sizes
+  const sizes = ["S", "M", "L", "XL"];
+  const sizesShoes = ["38", "39", "40", "41", "42", "43"];
 
   //file handle change
   const fileHandleChange = (event) => {
@@ -75,23 +82,12 @@ export default function AddProduct() {
   const { brands } = useSelector((state) => state?.brands);
   const brandsItems = brands?.data?.map((item) => item.name) || [];
 
-  //select categories data from store
-  const [colorOptions, setColorOptions] = useState([]);
-
+  //select colors data from store
   useEffect(() => {
     dispatch(fetchColorsAction());
   }, [dispatch]);
-
-  //select colors data from store
   const { colors } = useSelector((state) => state?.colors);
   const colorItems = colors?.data?.map((item) => item.name) || [];
-
-  let colorOptionsCoverted = colors?.data?.map((color) => {
-    return {
-      value: color.name,
-      label: color.name,
-    };
-  });
 
   const handleColorChangeOption = (e) => {
     const {
@@ -109,7 +105,7 @@ export default function AddProduct() {
     dispatch(fecthProductsAction());
   }, [dispatch]);
 
-  //---form data---
+  //form data
   const [formData, setFormData] = useState({
     name: "Dunk Low",
     description: "Lorem ipsum",
@@ -125,22 +121,17 @@ export default function AddProduct() {
   const { name, brand, category, description, totalQty, price, images } =
     formData;
 
-  //default onChange
+  const newFormData = {
+    ...formData,
+    files,
+    sizes: sizeOption,
+    colors: colorOptions,
+  };
+
+  //handlers
   const handleOnChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
-
-  //sizes
-  const sizes = ["S", "M", "L", "XL"];
-  const sizesShoes = ["38", "39", "40", "41", "42", "43"];
-  const [sizeOption, setSizeOption] = useState([]);
-  const [isChecked, setIsChecked] = useState(true);
-
-  //Clean size array on category change
-  useEffect(() => {
-    setSizeOption([]);
-    setIsChecked(false);
-  }, [category]);
 
   const handleSizeChange = (e) => {
     const { value, checked } = e.target;
@@ -156,71 +147,68 @@ export default function AddProduct() {
     });
   };
 
-  const [isAdded, setIsAdded] = useState(false);
-  const [error, setError] = useState(false);
-
-  //useEffect to reset isAdded
-  useEffect(() => {
-    if (isAdded) {
-      // Reseta isAdded após 3 segundos
-      setTimeout(() => {
-        dispatch(resetProductAdded());
-      }, 3000);
-    }
-  }, [isAdded, dispatch]);
-
-  const [isSnackbarOpen, setSnackbarOpen] = useState(false);
-
   const handleSnackbarClose = () => {
     setSnackbarOpen(false);
   };
+
+  //Clean size array on category change
+  useEffect(() => {
+    setSizeOption([]);
+    setIsChecked(false);
+  }, [category]);
 
   //onSubmit
   const handleOnSubmit = async (e) => {
     e.preventDefault();
 
+    Object.entries(newFormData).some(([key, value], index) => {
+      if (!value) {
+        const errorMsg = "Erro: preencha todos os campos";
+        setErrorMessage(errorMsg);
+        console.log("dispara erro:", errorMsg); // Evite usar o estado diretamente aqui
+        return; // Interrompa o fluxo se a validação falhar
+      }
+    });
+
     try {
       // Despacha a ação para criar o produto e aguarda o resultado
-      const result = await dispatch(
-        addProductAction({
-          ...formData,
-          files,
-          sizes: sizeOption,
-          colors: colorOptions,
-        })
-      );
+      const result = await dispatch(addProductAction(newFormData));
 
       // Aqui você pode manipular a resposta, caso seja necessário
       if (addProductAction.fulfilled.match(result)) {
+        console.log("obj a ser enviado", newFormData);
         console.log("Produto adicionado com sucesso:", result.payload);
         setSnackbarOpen(true);
+        setErrorMessage("");
         setTimeout(() => {
           setSnackbarOpen(false);
         }, 6000);
       } else if (addProductAction.rejected.match(result)) {
         console.log("Erro ao adicionar produto:", result.payload);
-        setError(true);
+        setErrorMessage(
+          "Erro ao adicionar produto. Preencha todos os campos corretamente"
+        );
         setTimeout(() => {
-          setError(false);
+          setErrorMessage("");
         }, 6000);
       }
     } catch (error) {
       console.log("Erro inesperado:", error);
-      setError(true);
+      setErrorMessage("Erro inesperado");
     }
 
-    // Resetar os dados do formulário
-    setFormData({
-      name: "",
-      description: "",
-      category: "",
-      sizes: "",
-      brand: "",
-      colors: "",
-      images: "",
-      price: "",
-      totalQty: "",
-    });
+    // // Resetar os dados do formulário
+    // setFormData({
+    //   name: "",
+    //   description: "",
+    //   category: "",
+    //   sizes: "",
+    //   brand: "",
+    //   colors: "",
+    //   images: "",
+    //   price: "",
+    //   totalQty: "",
+    // });
   };
 
   return (
@@ -399,11 +387,11 @@ export default function AddProduct() {
                 onClose={handleSnackbarClose}
               />
             )}
-            {error && (
+            {errorMessage.includes("Erro") && (
               <SuccessMsg
-                msg={"Produto já existe"}
-                isOpened={isSnackbarOpen}
-                onClose={handleSnackbarClose}
+                msg={errorMessage}
+                isOpened={true} // Garanta que o erro seja exibido
+                onClose={() => setErrorMessage("")} // Limpe a mensagem de erro ao fechar
               />
             )}
           </Grid>
