@@ -88,7 +88,7 @@ export const OrdersStatsAction = createAsyncThunk(
   }
 );
 
-//fetch product action
+//fetch order action
 export const fetchOrderAction = createAsyncThunk(
   "orders/details",
   async (productId, { rejectWithValue, getState, dispatch }) => {

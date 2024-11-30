@@ -18,7 +18,7 @@ export default function ManageStocks() {
     dispatch(fecthProductsAction({ url: `${baseURL}/products` }));
   }, [dispatch]);
 
-  const { products, loading, error } = useSelector((state) => state?.products);
+  const { products } = useSelector((state) => state?.products);
 
   let [productsRows, setProductsRows] = useState([]);
 
@@ -27,7 +27,7 @@ export default function ManageStocks() {
       products &&
       products?.data?.map((product) => {
         return Object.keys(product)
-          .filter((key) =>
+          .filter((key, value) =>
             [
               "brand",
               "name",
@@ -41,12 +41,18 @@ export default function ManageStocks() {
             ].includes(key)
           )
           .reduce((obj, key) => {
+            if (key === "sizes" || key === "colors") {
+              obj[key] = product[key].join(",");
+              return obj;
+            }
+
             obj[key] = product[key];
             return obj;
           }, {});
       });
 
     setProductsRows(productsRows);
+    console.log(productsRows);
   }, [products]);
 
   //delete product handler

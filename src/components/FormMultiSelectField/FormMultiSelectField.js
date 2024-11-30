@@ -31,7 +31,7 @@ export default function FormMultiSelectField({
           width: compWidth,
           "& .MuiOutlinedInput-root": {
             "& fieldset": {
-              borderColor: "black",
+              //borderColor: "black",
             },
             "&:hover fieldset": {
               borderColor: "black",

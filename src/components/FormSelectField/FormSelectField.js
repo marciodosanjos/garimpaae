@@ -75,13 +75,13 @@ export default function FormSelectField({
             width: compWidth, // Customizando a borda padrão
             "& .MuiOutlinedInput-root": {
               "& fieldset": {
-                borderColor: "black", // Borda preta padrão
+                // borderColor: "black", // Borda preta padrão
               },
               "&:hover fieldset": {
-                borderColor: "black", // Borda preta no hover
+                //borderColor: "black", // Borda preta no hover
               },
               "&.Mui-focused fieldset": {
-                borderColor: "black", // Borda preta quando focado
+                //borderColor: "black", // Borda preta quando focado
                 borderWidth: 2, // Aumenta a espessura da borda no foco (opcional)
               },
             },
@@ -127,7 +127,7 @@ export default function FormSelectField({
             width: compWidth, // Customizando a borda padrão
             "& .MuiOutlinedInput-root": {
               "& fieldset": {
-                borderColor: "black", // Borda preta padrão
+                //borderColor: "black", // Borda preta padrão
               },
               "&:hover fieldset": {
                 borderColor: "black", // Borda preta no hover
@@ -162,7 +162,7 @@ export default function FormSelectField({
           >
             {arr?.map((item) => (
               <MenuItem key={item} value={item}>
-                {item + 1}
+                {item}
               </MenuItem>
             ))}
           </Select>

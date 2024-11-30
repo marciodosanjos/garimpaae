@@ -183,6 +183,18 @@ export default function AddProduct() {
         setTimeout(() => {
           setSnackbarOpen(false);
         }, 6000);
+        // Resetar os dados do formulário
+        setFormData({
+          name: "",
+          description: "",
+          category: "",
+          sizes: "",
+          brand: "",
+          colors: "",
+          images: "",
+          price: "",
+          totalQty: "",
+        });
       } else if (addProductAction.rejected.match(result)) {
         console.log("Erro ao adicionar produto:", result.payload);
         setErrorMessage(
@@ -196,19 +208,6 @@ export default function AddProduct() {
       console.log("Erro inesperado:", error);
       setErrorMessage("Erro inesperado");
     }
-
-    // // Resetar os dados do formulário
-    // setFormData({
-    //   name: "",
-    //   description: "",
-    //   category: "",
-    //   sizes: "",
-    //   brand: "",
-    //   colors: "",
-    //   images: "",
-    //   price: "",
-    //   totalQty: "",
-    // });
   };
 
   return (

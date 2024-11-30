@@ -91,7 +91,9 @@ export default function AdminTable({
                 {otherEntries.map(([key, value]) => (
                   <TableCell key={`${index}-${key}`} align="left">
                     {key === "images" ? (
-                      <img src={value} height={50} width={50} alt={"alt"} />
+                      <Link to={`/products/${idEntry[1]}`}>
+                        <img src={value} height={50} width={50} alt={"alt"} />
+                      </Link>
                     ) : key === "brand" ? (
                       value
                     ) : key === "name" ? (
