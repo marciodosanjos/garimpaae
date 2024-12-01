@@ -122,6 +122,7 @@ export default function ManageStocks() {
           buttonText={"Criar produto"}
           href={"/admin/add-product"}
           fn={deleteProductHandler}
+          path={"admin/products/edit"}
         />
         {isDeleted && (
           <SuccessMsg

@@ -370,7 +370,7 @@ export default function UpdateProduct() {
                         title={"Cores"}
                         compWidth="30rem"
                         onChange={handleColorChangeOption}
-                        value={colorOptions}
+                        value={colorOptions || []}
                         name={key}
                       />
                     );
@@ -382,7 +382,7 @@ export default function UpdateProduct() {
                         title={"Cores"}
                         compWidth="30rem"
                         onChange={handleColorChangeOption}
-                        value={colorOptions}
+                        value={colorOptions || []}
                         name={key}
                       />
                     );

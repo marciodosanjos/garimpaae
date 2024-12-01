@@ -102,10 +102,12 @@ export const addCategoryAction = createAsyncThunk(
   async (payload, { rejectWithValue, getState }) => {
     try {
       const { name, file } = payload;
+      console.log(name);
+
       //fromData
-      const formData = new FormData();
-      formData.append("name", name);
-      formData.append("file", file);
+      const newformData = new FormData();
+      newformData.append("name", name);
+      newformData.append("file", file);
       //Token - Authenticated
       const token = getState()?.users?.userAuth?.userInfo?.token;
       const config = {
@@ -116,7 +118,7 @@ export const addCategoryAction = createAsyncThunk(
       //Images
       const { data } = await axios.post(
         `${baseURL}/categories`,
-        formData,
+        newformData,
         config
       );
       return data;

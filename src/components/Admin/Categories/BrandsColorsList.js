@@ -1,102 +1,123 @@
-const people = [
-  {
-    name: "Lindsay Walton",
-    title: "Front-end Developer",
-    email: "lindsay.walton@example.com",
-    role: "Member",
-  },
-  // More people...
-];
+import LoadingComponent from "../../LoadingComp/LoadingComponent";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect, useState } from "react";
+import TitleUserProfileSection from "../../TitleUserProfileSection/TitleUserProfileSection";
+import AdminTable from "../../Table/AdminTable";
+import useIsMobile from "../../../hooks/useIsMobile";
+import { Grid } from "@mui/material";
+import SuccessMsg from "../../SuccessMsg/SuccessMsg";
+import {
+  deleteColorAction,
+  fetchColorsAction,
+} from "../../../redux/slices/colors/colorsSlice";
 
-export default function BrandsColorsList() {
+export default function ManageCategories() {
+  const [isDeleted, setIsDeleted] = useState(false);
+  const [isSnackbarOpen, setSnackbarOpen] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+  const ismobile = useIsMobile();
+  const dispatch = useDispatch();
+
+  const handleSnackbarClose = () => {
+    setSnackbarOpen(false);
+  };
+
+  useEffect(() => {
+    fetchColorsAction();
+  }, [isDeleted, isSnackbarOpen, dispatch]);
+
+  const { colors } = useSelector((state) => state?.colors);
+
+  console.log(colors);
+
+  const [colorsData, setColorsData] = useState([]);
+
+  useEffect(() => {
+    if (colors) {
+      const colorNames = colors?.data?.map((item) => ({
+        colorName: item.name,
+        _id: item._id,
+      }));
+      setColorsData(colorNames);
+    }
+  }, [colors]);
+
+  const tableHeadItems = ["Cor", "Ação"];
+
+  console.log(colorsData);
+
+  //delete category handler
+  const deleteColorHandler = async (id) => {
+    try {
+      const result = await dispatch(deleteColorAction(id));
+
+      if (deleteColorAction.fulfilled.match(result)) {
+        console.log("Cor deletada");
+        setIsDeleted(true);
+        setSnackbarOpen(true);
+        setErrorMessage("");
+        dispatch(fetchColorsAction());
+        setTimeout(() => {
+          setSnackbarOpen(false);
+        }, 6000);
+      }
+
+      if (deleteColorAction.rejected.match(result)) {
+        console.log("Erro ao deletar cor:", result.payload);
+        setIsDeleted(false);
+        setErrorMessage("Erro ao deletar cor");
+        setTimeout(() => {
+          setErrorMessage("");
+        }, 6000);
+      }
+    } catch (error) {
+      console.log("Erro inesperado:", error);
+      setErrorMessage("Erro inesperado");
+    }
+  };
+
   return (
-    <div className="px-4 sm:px-6 lg:px-8">
-      <div className="sm:flex sm:items-center"></div>
-
-      <h3 className="text-lg font-medium leading-6 text-gray-900 mt-3">
-        Recent Oders
-      </h3>
-      <div className="-mx-4 mt-3  overflow-hidden shadow ring-1 ring-black ring-opacity-5 sm:-mx-6 md:mx-0 md:rounded-lg">
-        <table className="min-w-full divide-y divide-gray-300">
-          <thead className="bg-gray-50">
-            <tr>
-              <th
-                scope="col"
-                className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6"
-              >
-                Order ID
-              </th>
-              <th
-                scope="col"
-                className="hidden px-3 py-3.5 text-left text-sm font-semibold text-gray-900 lg:table-cell"
-              >
-                Payment Method
-              </th>
-              <th
-                scope="col"
-                className="hidden px-3 py-3.5 text-left text-sm font-semibold text-gray-900 sm:table-cell"
-              >
-                Oder Date
-              </th>
-              <th
-                scope="col"
-                className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
-              >
-                Delivery Date
-              </th>
-              <th
-                scope="col"
-                className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
-              >
-                Status
-              </th>
-
-              <th
-                scope="col"
-                className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
-              >
-                Total
-              </th>
-              {/* <th scope="col" className="relative py-3.5 pl-3 pr-4 sm:pr-6">
-                <span className="sr-only">Edit</span>
-              </th> */}
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-gray-200 bg-white">
-            {people.map((person) => (
-              <tr key={person.email}>
-                <td className="w-full max-w-0 py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:w-auto sm:max-w-none sm:pl-6">
-                  {person.name}
-                  <dl className="font-normal lg:hidden">
-                    <dt className="sr-only">Title</dt>
-                    <dd className="mt-1 truncate text-gray-700">
-                      {person.title}
-                    </dd>
-                    <dt className="sr-only sm:hidden">Email</dt>
-                    <dd className="mt-1 truncate text-gray-500 sm:hidden">
-                      {person.email}
-                    </dd>
-                  </dl>
-                </td>
-                <td className="hidden px-3 py-4 text-sm text-gray-500 lg:table-cell">
-                  {person.title}
-                </td>
-                <td className="hidden px-3 py-4 text-sm text-gray-500 sm:table-cell">
-                  {person.email}
-                </td>
-                <td className="px-3 py-4 text-sm text-gray-500">
-                  {person.role}
-                </td>
-                <td className="py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
-                  {/* <a href="#" className="text-indigo-600 hover:text-indigo-900">
-                    Edit<span className="sr-only">, {person.name}</span>
-                  </a> */}
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-    </div>
+    <Grid
+      container
+      direction="row"
+      sx={{
+        padding: 3,
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
+      <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
+        <TitleUserProfileSection
+          title={"Cores"}
+          description={"Confira as cores cadastradas na loja"}
+          alignment={ismobile && "center"}
+        />
+      </Grid>
+      <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
+        <AdminTable
+          title={"Lista de cores"}
+          tableHeadItems={tableHeadItems}
+          tableValues={colorsData}
+          buttonText={"Criar cor"}
+          href={"/admin/add-color"}
+          fn={deleteColorHandler}
+          path={"add-color"}
+        />
+        {isDeleted && (
+          <SuccessMsg
+            msg={"Cor deletada com sucesso"}
+            isOpened={isSnackbarOpen}
+            onClose={handleSnackbarClose}
+          />
+        )}
+        {errorMessage.includes("Erro") && (
+          <SuccessMsg
+            msg={errorMessage}
+            isOpened={true}
+            onClose={() => setErrorMessage("")}
+          />
+        )}
+      </Grid>
+    </Grid>
   );
 }

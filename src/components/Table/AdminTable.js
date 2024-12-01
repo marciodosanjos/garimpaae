@@ -28,7 +28,7 @@ export default function AdminTable({
       component={Paper}
       sx={{
         boxShadow: "none",
-        width: pathname === "/admin/categories" ? "50rem" : "auto",
+        width: pathname === "/admin/categories" ? "45rem" : "auto",
       }}
     >
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
@@ -62,7 +62,7 @@ export default function AdminTable({
               ?.filter((item) => item !== "_id") // Filtra os itens que não são "_id"
               .map((tableHeadItem, index) => (
                 <TableCell
-                  align="left"
+                  align={tableHeadItem === "Ação" ? "right" : "left"}
                   key={index}
                   sx={{
                     borderBottom: "1px solid grey",
@@ -132,7 +132,14 @@ export default function AdminTable({
 
                 {/* Renderiza a célula com a chave '_id' como a última */}
                 {idEntry && (
-                  <TableCell key={`${index}-id`}>
+                  <TableCell
+                    key={`${index}-id`}
+                    sx={{
+                      display: pathname === "/admin/categories" && "flex",
+                      justifyContent:
+                        pathname === "/admin/categories" && "flex-end",
+                    }}
+                  >
                     <Trash2
                       strokeWidth={1}
                       onClick={() =>
