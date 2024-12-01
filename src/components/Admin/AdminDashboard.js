@@ -12,6 +12,7 @@ import { Link, Outlet, useNavigate } from "react-router-dom";
 import useIsMobile from "../../hooks/useIsMobile";
 import { useDispatch, useSelector } from "react-redux";
 import { getUserProfileAction } from "../../redux/slices/users/usersSlice";
+import { fetchCategoriesAction } from "../../redux/slices/categories/categoriesSlice";
 
 const menuItems = [
   {
@@ -70,6 +71,14 @@ export default function UserProfile() {
       }, 3000);
     }
   }, []);
+
+  function handleClick(index) {
+    setIsActive(index);
+
+    if (index === 3) {
+      dispatch(fetchCategoriesAction());
+    }
+  }
 
   return (
     <Grid
@@ -132,7 +141,9 @@ export default function UserProfile() {
                       ? "0.5px solid rgba(0, 0, 0, 0.1)"
                       : "none", // Aplica borderBottom ao item ativo
                 }}
-                onClick={() => setIsActive(index)}
+                onClick={() => {
+                  handleClick(index);
+                }}
               >
                 <item.icon
                   color={isActive === index ? "#000" : "#71747E"}

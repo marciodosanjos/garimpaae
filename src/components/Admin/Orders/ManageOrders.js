@@ -5,7 +5,7 @@ import {
   fetchOrdersAction,
   updateOrderAction,
 } from "../../../redux/slices/orders/ordersSlice";
-import { Button, Grid } from "@mui/material";
+import { Grid } from "@mui/material";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -13,8 +13,6 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
-import { Link } from "react-router-dom";
-import translateLabels from "../../../utils/translateLabels";
 import LoadingComponent from "../../LoadingComp/LoadingComponent";
 import TitleUserProfileSection from "../../TitleUserProfileSection/TitleUserProfileSection";
 import FormSelectField from "../../FormSelectField/FormSelectField";
@@ -38,16 +36,27 @@ export default function OrdersList() {
   console.log(ordersData[1]);
 
   const orderStatusItems = ["shipped", "pending", "processing"];
-  const [orderStatus, setOrderStatus] = useState("");
+
+  const [statuses, setStatuses] = useState(
+    ordersData.reduce((acc, row) => {
+      acc[row._id] = row.status || ""; // Inicializa com o status atual ou vazio
+      return acc;
+    }, {})
+  );
 
   //handlers
-  const handleOnChange = async (e, orderId) => {
-    //setOrderStatus(e.target.event);
+  const handleOnChange = async (e, id) => {
     const newStatus = e.target.value;
+
+    // Atualiza apenas o status da linha correspondente
+    setStatuses((prevStatuses) => ({
+      ...prevStatuses,
+      [id]: newStatus,
+    }));
 
     try {
       const result = await dispatch(
-        updateOrderAction({ id: orderId, status: orderStatus })
+        updateOrderAction({ id, status: newStatus })
       );
 
       if (updateOrderAction.fulfilled.match(result)) {
@@ -179,7 +188,7 @@ export default function OrdersList() {
                           title={"Status"}
                           compWidth="10rem"
                           onChange={(e) => handleOnChange(e, row._id)}
-                          value={orderStatus ? orderStatus : row.status}
+                          value={statuses[row._id]} // Accesses the specific status of the current line
                           name="status"
                         />
                       </TableCell>
@@ -198,8 +207,8 @@ export default function OrdersList() {
             {errorMessage.includes("Erro") && (
               <SuccessMsg
                 msg={errorMessage}
-                isOpened={true} // Garanta que o erro seja exibido
-                onClose={() => setErrorMessage("")} // Limpe a mensagem de erro ao fechar
+                isOpened={true}
+                onClose={() => setErrorMessage("")}
               />
             )}
           </Grid>

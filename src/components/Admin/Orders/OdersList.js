@@ -27,7 +27,6 @@ export default function OrdersList() {
 
   return (
     <>
-      {error && <p>{error?.message}</p>}
       <Grid
         container
         direction="row"
@@ -140,9 +139,7 @@ export default function OrdersList() {
                         {row.orderItems.length}
                       </TableCell>
                       <TableCell align="right"> R$ {row.totalPrice}</TableCell>
-                      <TableCell align="right">
-                        {translateLabels(row.status)}
-                      </TableCell>
+                      <TableCell align="right">{row.status}</TableCell>
                     </TableRow>
                   ))}
                 </TableBody>

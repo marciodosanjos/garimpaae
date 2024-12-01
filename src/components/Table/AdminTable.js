@@ -8,7 +8,7 @@ import {
   TableHead,
   TableRow,
 } from "@mui/material";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { Trash2 } from "lucide-react";
 import translateLabels from "../../utils/translateLabels";
 
@@ -19,9 +19,18 @@ export default function AdminTable({
   buttonText,
   href,
   fn,
+  path,
 }) {
+  const { pathname } = useLocation();
+
   return (
-    <TableContainer component={Paper} sx={{ boxShadow: "none" }}>
+    <TableContainer
+      component={Paper}
+      sx={{
+        boxShadow: "none",
+        width: pathname === "/admin/categories" ? "50rem" : "auto",
+      }}
+    >
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
         <TableHead
           sx={{ borderBottom: "1px solid grey", position: "relative" }}
@@ -53,6 +62,7 @@ export default function AdminTable({
               ?.filter((item) => item !== "_id") // Filtra os itens que não são "_id"
               .map((tableHeadItem, index) => (
                 <TableCell
+                  align="left"
                   key={index}
                   sx={{
                     borderBottom: "1px solid grey",
@@ -81,6 +91,9 @@ export default function AdminTable({
           {tableValues?.map((row, index) => {
             const entries = Object.entries(row);
             const idEntry = entries.find(([key]) => key === "_id");
+            const categoryName = entries.find(
+              ([key]) => key === "categoryName"
+            );
             const otherEntries = entries.filter(([key]) => key !== "_id");
 
             return (
@@ -91,7 +104,9 @@ export default function AdminTable({
                 {otherEntries.map(([key, value]) => (
                   <TableCell key={`${index}-${key}`} align="left">
                     {key === "images" ? (
-                      <Link to={`/products/${idEntry[1]}`}>
+                      <Link
+                        to={`/${path}/${idEntry[1]}` || `/${path}/${idEntry}`}
+                      >
                         <img src={value} height={50} width={50} alt={"alt"} />
                       </Link>
                     ) : key === "brand" ? (
@@ -100,8 +115,11 @@ export default function AdminTable({
                       <>
                         <span style={{ marginRight: "0.5rem" }}>{value}</span>
                         <Link
-                          to={`edit/${idEntry[1]}`}
-                          style={{ textDecoration: "underline" }}
+                          to={`/${path}/${idEntry[1]}` || `/${path}/${idEntry}`}
+                          style={{
+                            textDecoration: "underline",
+                            display: pathname === "/admin/categories" && "none",
+                          }}
                         >
                           [editar]
                         </Link>
@@ -114,10 +132,16 @@ export default function AdminTable({
 
                 {/* Renderiza a célula com a chave '_id' como a última */}
                 {idEntry && (
-                  <TableCell key={`${index}-id`} align="right">
+                  <TableCell key={`${index}-id`}>
                     <Trash2
                       strokeWidth={1}
-                      onClick={() => fn(idEntry[1])}
+                      onClick={() =>
+                        fn(
+                          pathname === "/admin/categories"
+                            ? categoryName[1]
+                            : idEntry[1]
+                        )
+                      }
                       style={{ cursor: "pointer" }}
                     />
                   </TableCell>

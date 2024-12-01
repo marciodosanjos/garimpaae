@@ -229,7 +229,7 @@ export default function UpdateProduct() {
   return (
     <>
       <Container fixed>
-        {!sizeOption.length > 0 ? (
+        {!sizeOption?.length > 0 ? (
           <LoadingComponent />
         ) : (
           <Grid container>
@@ -281,7 +281,7 @@ export default function UpdateProduct() {
                         arr={categoriesItems || []}
                         title={"Categoria"}
                         compWidth="30rem"
-                        onChange={handleOnChange} // Passando onChange para o FormSelectField
+                        onChange={handleOnChange}
                         value={formData.category}
                         name={key}
                       />
@@ -345,16 +345,15 @@ export default function UpdateProduct() {
                           </Button>
 
                           {/* Exibe o nome do arquivo ou o texto padrão */}
-
                           <Typography>
-                            {files.length > 0
+                            {files?.length > 0
                               ? `Arquivos selecionados: ${files
                                   .map((file) => file.name)
                                   .join(", ")}`
                               : "Nenhum arquivo selecionado"}
                           </Typography>
 
-                          {filesError.length > 0 &&
+                          {filesError?.length > 0 &&
                             filesError.map((error) => (
                               <Typography sx={{ color: "red" }}>
                                 {error}
@@ -420,8 +419,8 @@ export default function UpdateProduct() {
               {errorMessage.includes("Erro") && (
                 <SuccessMsg
                   msg={errorMessage}
-                  isOpened={true} // Garanta que o erro seja exibido
-                  onClose={() => setErrorMessage("")} // Limpe a mensagem de erro ao fechar
+                  isOpened={true} // Make sure the error is displayed
+                  onClose={() => setErrorMessage("")} // Clear the error message when closing
                 />
               )}
             </Grid>
