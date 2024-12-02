@@ -1,145 +1,125 @@
-import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-
-import { Link } from "react-router-dom";
-import {
-  createBrandAction,
-  resetBrandAdded,
-} from "../../../redux/slices/brands/brandsSlice";
+import { useState } from "react";
 import SuccessMsg from "../../SuccessMsg/SuccessMsg";
-import LoadingComponent from "../../LoadingComp/LoadingComponent";
+import { useDispatch } from "react-redux";
+import { Box, Button, Container, Grid } from "@mui/material";
+import TitleUserProfileSection from "../../TitleUserProfileSection/TitleUserProfileSection";
+import translateLabels from "../../../utils/translateLabels";
+import FormTextField from "../../FormTextField/FormTextField";
+import { addColorAction } from "../../../redux/slices/colors/colorsSlice";
+import { createBrandAction } from "../../../redux/slices/brands/brandsSlice";
 
 export default function AddBrand() {
+  const [errorMessage, setErrorMessage] = useState("");
+  const [isSnackbarOpen, setSnackbarOpen] = useState(false);
   const dispatch = useDispatch();
-  //form data
   const [formData, setFormData] = useState({
     name: "",
   });
-  //onChange
+
+  //---onChange---
   const handleOnChange = (e) => {
+    console.log(e.target.value);
+
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  //onSubmit
-  const handleOnSubmit = (e) => {
-    e.preventDefault();
-    dispatch(createBrandAction(formData.name));
+  const handleSnackbarClose = () => {
+    setSnackbarOpen(false);
   };
 
-  const { loading, error, isAdded } = useSelector((state) => state?.brands);
+  //onSubmit
+  const handleOnSubmit = async (e) => {
+    e.preventDefault();
 
-  //useEffect para resetar isAdded
-  useEffect(() => {
-    if (isAdded) {
-      // Reseta isAdded após 3 segundos
-      setTimeout(() => {
-        dispatch(resetBrandAdded());
-      }, 2000);
+    const payload = formData.name;
+
+    console.log(payload);
+
+    try {
+      const result = await dispatch(createBrandAction(payload));
+      if (createBrandAction.fulfilled.match(result)) {
+        setSnackbarOpen(true);
+        setFormData({ name: "" });
+      } else {
+        setErrorMessage("Erro ao adicionar marca.");
+      }
+    } catch (error) {
+      console.log("Erro inesperado:", error);
+      setErrorMessage("Erro inesperado.");
     }
-  }, [isAdded, dispatch]);
+  };
 
   return (
     <>
-      {isAdded && <SuccessMsg message="Marca adicionada com sucesso" />}
-
-      <div className="flex min-h-full flex-col justify-center py-12 sm:px-6 lg:px-8">
-        <div className="sm:mx-auto sm:w-full sm:max-w-md">
-          <svg
-            className="mx-auto h-10 text-blue-600 w-auto"
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke-width="1.5"
-            stroke="currentColor"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              d="M20.25 6.375c0 2.278-3.694 4.125-8.25 4.125S3.75 8.653 3.75 6.375m16.5 0c0-2.278-3.694-4.125-8.25-4.125S3.75 4.097 3.75 6.375m16.5 0v11.25c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125V6.375m16.5 0v3.75m-16.5-3.75v3.75m16.5 0v3.75C20.25 16.153 16.556 18 12 18s-8.25-1.847-8.25-4.125v-3.75m16.5 0c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125"
+      <Container fixed>
+        <Grid container>
+          <Grid item xs={12} sm={12} md={12} lg={12}>
+            <TitleUserProfileSection
+              title={"Adicionar nova marca"}
+              description={"Adicione uma marca"}
+              alignment={"center"}
             />
-          </svg>
-
-          <h2 className="mt-6 text-center text-3xl font-bold tracking-tight text-gray-900">
-            Adicionar marca
-          </h2>
-        </div>
-
-        <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-lg">
-          <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
-            <form className="space-y-6" onSubmit={handleOnSubmit}>
-              <div>
-                <label
-                  htmlFor="email"
-                  className="block text-sm font-medium text-gray-700"
-                >
-                  Nome
-                </label>
-                <div className="mt-1">
-                  <input
+          </Grid>
+          <Grid
+            item
+            container
+            direction="column"
+            xs={12}
+            sm={12}
+            md={12}
+            lg={12}
+            style={{ textAlign: "center", gap: 30, paddingBottom: "6rem" }}
+          >
+            <form
+              onSubmit={handleOnSubmit}
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                gap: 15,
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              {Object.entries(formData).map(([key, value], index) => {
+                return (
+                  <FormTextField
+                    key={index}
+                    label={translateLabels(key)}
+                    value={value}
+                    name={key}
                     onChange={handleOnChange}
-                    value={formData.name}
-                    name="name"
-                    className="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
+                    compWidth="30rem"
                   />
-                </div>
-              </div>
-              <div>
-                <button
-                  type="submit"
-                  className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                >
-                  Adicionar marca
-                </button>
-              </div>
-              <div>{loading && <LoadingComponent />}</div>
+                );
+              })}
             </form>
-
-            <div className="mt-6">
-              <div className="relative">
-                <div className="absolute inset-0 flex items-center">
-                  <div className="w-full border-t border-gray-300" />
-                </div>
-                <div className="relative flex justify-center text-sm">
-                  <span className="bg-white px-2 text-gray-500">Or</span>
-                </div>
-              </div>
-
-              <div className="mt-6 grid grid-cols-3 gap-3">
-                <div>
-                  <Link
-                    to="/admin/add-brand"
-                    className="inline-flex w-full justify-center rounded-md border border-gray-300 bg-white py-2 px-4 text-sm font-medium text-gray-500 shadow-sm hover:bg-gray-50"
-                  >
-                    Marca
-                  </Link>
-                </div>
-
-                <div>
-                  <div>
-                    <Link
-                      to="/admin/add-color"
-                      className="inline-flex w-full justify-center rounded-md border border-gray-300 bg-white py-2 px-4 text-sm font-medium text-gray-500 shadow-sm hover:bg-gray-50"
-                    >
-                      Cor
-                    </Link>
-                  </div>
-                </div>
-
-                <div>
-                  <div>
-                    <Link
-                      to="/admin/add-category"
-                      className="inline-flex w-full justify-center rounded-md border border-gray-300 bg-white py-2 px-4 text-sm font-medium text-gray-500 shadow-sm hover:bg-gray-50"
-                    >
-                      Categoria
-                    </Link>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+            <Box sx={{ width: "100%" }}>
+              <Button
+                type="submit"
+                variant="primary"
+                sx={{ width: "30rem" }}
+                onClick={handleOnSubmit}
+              >
+                Adicionar nova marca
+              </Button>
+            </Box>
+            {isSnackbarOpen && (
+              <SuccessMsg
+                msg={"Marca adicionada com sucesso!"}
+                isOpened={isSnackbarOpen}
+                onClose={handleSnackbarClose}
+              />
+            )}
+            {errorMessage.includes("Erro") && (
+              <SuccessMsg
+                msg={errorMessage}
+                isOpened={true} // Garanta que o erro seja exibido
+                onClose={() => setErrorMessage("")} // Limpe a mensagem de erro ao fechar
+              />
+            )}
+          </Grid>
+        </Grid>
+      </Container>
     </>
   );
 }

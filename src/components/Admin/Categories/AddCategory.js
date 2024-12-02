@@ -1,10 +1,6 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
-import ErrorComponent from "../../ErrorMsg/ErrorMsg";
 import SuccessMsg from "../../SuccessMsg/SuccessMsg";
-import LoadingComponent from "../../LoadingComp/LoadingComponent";
-import UploadImg from "../../UploadImg/UploadImg";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { addCategoryAction } from "../../../redux/slices/categories/categoriesSlice";
 import {
   Box,

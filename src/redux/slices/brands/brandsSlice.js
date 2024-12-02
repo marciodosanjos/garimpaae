@@ -53,6 +53,30 @@ export const fetchBrandsAction = createAsyncThunk(
   }
 );
 
+//delete category
+export const deleteBrandAction = createAsyncThunk(
+  "color/delete",
+  async (id, { rejectWithValue, getState, dispatch }) => {
+    try {
+      const token = getState()?.users?.userAuth?.userInfo?.token;
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+
+      //http request
+      const { data } = await axios.delete(
+        `${baseURL}/brands/delete/${id}`,
+        config
+      );
+      return data;
+    } catch (error) {
+      return rejectWithValue(error?.response?.data);
+    }
+  }
+);
+
 // Action para resetar o estado de isAdded
 export const resetBrandAdded = createAsyncThunk("brands/resetAdded", () => {
   return false;

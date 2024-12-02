@@ -28,7 +28,12 @@ export default function AdminTable({
       component={Paper}
       sx={{
         boxShadow: "none",
-        width: pathname === "/admin/categories" ? "45rem" : "auto",
+        width:
+          pathname === "/admin/categories" ||
+          pathname === "/admin/colors" ||
+          pathname === "/admin/brands"
+            ? "45rem"
+            : "auto",
       }}
     >
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
@@ -135,9 +140,19 @@ export default function AdminTable({
                   <TableCell
                     key={`${index}-id`}
                     sx={{
-                      display: pathname === "/admin/categories" && "flex",
+                      display:
+                        pathname === "/admin/categories" ||
+                        pathname === "/admin/colors" ||
+                        pathname === "/admin/brands"
+                          ? "flex"
+                          : "none block",
+                      alignItems: "center",
                       justifyContent:
-                        pathname === "/admin/categories" && "flex-end",
+                        pathname === "/admin/categories" ||
+                        pathname === "/admin/colors" ||
+                        pathname === "/admin/brands"
+                          ? "flex-end"
+                          : "space-between",
                     }}
                   >
                     <Trash2

@@ -12,7 +12,6 @@ import CategoryToAdd from "./components/Admin/Categories/CategoryToAdd";
 import AddCategory from "./components/Admin/Categories/AddCategory";
 import AddBrand from "./components/Admin/Categories/AddBrand";
 import AddColor from "./components/Admin/Categories/AddColor";
-import UpdateCoupon from "./components/Admin/Coupons/UpdateCoupon";
 import Product from "./pages/PDP/PDP";
 import ShoppingCart from "./pages/Cart/ShoppingCart";
 import AddReview from "./components/Users/Reviews/AddReview";
@@ -24,7 +23,6 @@ import BrandsColorsList from "./components/Admin/Categories/BrandsColorsList";
 import AdminAuthRoute from "./components/AuthRoute/AdminAuthRoute";
 import TYP from "./pages/TYP/TYP";
 import ProductUpdate from "./components/Admin/Products/ProductUpdate";
-import UpdateOrders from "./components/Admin/Orders/UpdateOrders";
 import LandingPage from "./pages/LP/LP";
 import Footer from "./components/Footer/Footer";
 import PLP from "./pages/PLP/PLP";
@@ -34,6 +32,7 @@ import MyOrders from "./components/MyOrders/MyOrders";
 import ChangeAddress from "./components/ChangeAddress/ChangeAddress";
 import ChangePassword from "./components/ChangePassword/ChangePassword";
 import Logout from "./components/Logout/Logout";
+import BrandsList from "./components/Admin/Brands/BrandsList";
 
 const App = () => {
   return (
@@ -79,7 +78,7 @@ const App = () => {
           <Route path="edit-category/:id" element={<UpdateCategory />} />
           {/* brand category */}
           <Route path="add-brand" element={<AddBrand />} />
-          <Route path="all-brands" element={<BrandsColorsList />} />
+          <Route path="brands" element={<BrandsList />} />
           {/* color category */}
           <Route path="add-color" element={<AddColor />} />
           <Route path="colors" element={<BrandsColorsList />} />

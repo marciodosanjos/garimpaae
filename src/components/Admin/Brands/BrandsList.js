@@ -10,8 +10,12 @@ import {
   deleteColorAction,
   fetchColorsAction,
 } from "../../../redux/slices/colors/colorsSlice";
+import {
+  deleteBrandAction,
+  fetchBrandsAction,
+} from "../../../redux/slices/brands/brandsSlice";
 
-export default function ManageCategories() {
+export default function BrandsList() {
   const [isDeleted, setIsDeleted] = useState(false);
   const [isSnackbarOpen, setSnackbarOpen] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
@@ -23,35 +27,33 @@ export default function ManageCategories() {
   };
 
   useEffect(() => {
-    dispatch(fetchColorsAction());
+    dispatch(fetchBrandsAction());
   }, [isDeleted, isSnackbarOpen, dispatch]);
 
-  const { colors } = useSelector((state) => state?.colors);
+  const { brands } = useSelector((state) => state?.brands);
 
-  console.log(colors);
-
-  const [colorsData, setColorsData] = useState([]);
+  const [brandsData, setBrandsData] = useState([]);
 
   useEffect(() => {
-    if (colors) {
-      const colorNames = colors?.data?.map((item) => ({
+    if (brands) {
+      const brandsNames = brands?.data?.map((item) => ({
         colorName: item.name,
         _id: item._id,
       }));
-      setColorsData(colorNames);
+      setBrandsData(brandsNames);
     }
-  }, [colors]);
+  }, [brands]);
 
-  const tableHeadItems = ["Cor", "Ação"];
+  const tableHeadItems = ["Marca", "Ação"];
 
-  console.log(colorsData);
+  console.log(brandsData);
 
   //delete category handler
-  const deleteColorHandler = async (id) => {
+  const deleteHandler = async (id) => {
     try {
-      const result = await dispatch(deleteColorAction(id));
+      const result = await dispatch(deleteBrandAction(id));
 
-      if (deleteColorAction.fulfilled.match(result)) {
+      if (deleteBrandAction.fulfilled.match(result)) {
         console.log("Cor deletada");
         setIsDeleted(true);
         setSnackbarOpen(true);
@@ -62,7 +64,7 @@ export default function ManageCategories() {
         }, 6000);
       }
 
-      if (deleteColorAction.rejected.match(result)) {
+      if (deleteBrandAction.rejected.match(result)) {
         console.log("Erro ao deletar cor:", result.payload);
         setIsDeleted(false);
         setErrorMessage("Erro ao deletar cor");
@@ -88,24 +90,24 @@ export default function ManageCategories() {
     >
       <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
         <TitleUserProfileSection
-          title={"Cores"}
-          description={"Confira as cores cadastradas na loja"}
+          title={"Marcas"}
+          description={"Confira as marcas cadastradas na loja"}
           alignment={ismobile && "center"}
         />
       </Grid>
       <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
         <AdminTable
-          title={"Lista de cores"}
+          title={"Lista de marcas"}
           tableHeadItems={tableHeadItems}
-          tableValues={colorsData}
-          buttonText={"Criar cor"}
-          href={"/admin/add-color"}
-          fn={deleteColorHandler}
-          path={"add-color"}
+          tableValues={brandsData}
+          buttonText={"Criar marca"}
+          href={"/admin/add-brand"}
+          fn={deleteHandler}
+          path={"add-brand"}
         />
         {isDeleted && (
           <SuccessMsg
-            msg={"Cor deletada com sucesso"}
+            msg={"Marca deletada com sucesso"}
             isOpened={isSnackbarOpen}
             onClose={handleSnackbarClose}
           />
