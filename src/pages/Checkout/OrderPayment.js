@@ -10,7 +10,7 @@ import { Box, Button, Container, Grid, Typography } from "@mui/material";
 import useIsMobile from "../../hooks/useIsMobile";
 import { useNavigate } from "react-router-dom";
 
-export default function OrderPayment() {
+export default function Checkout() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const isMobile = useIsMobile();

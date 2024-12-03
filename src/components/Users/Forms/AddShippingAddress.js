@@ -22,8 +22,32 @@ const AddShippingAddress = ({ buttonText }) => {
   const { loading, error, profile } = useSelector((state) => state?.users);
   const user = profile?.data;
 
+  const [formData, setFormData] = useState({
+    firstName: user?.shippingAddress?.lastName,
+    lastName: user?.shippingAddress?.lastName,
+    address: user?.shippingAddress?.address,
+    city: user?.shippingAddress?.city,
+    country: user?.shippingAddress?.country,
+    region: user?.shippingAddress?.region,
+    postalCode: user?.shippingAddress?.postalCode,
+    phone: user?.shippingAddress?.phone,
+  });
+
   useEffect(() => {
-    if (user && user.shippingAddress) {
+    setFormData({
+      firstName: user?.shippingAddress?.lastName,
+      lastName: user?.shippingAddress?.lastName,
+      address: user?.shippingAddress?.address,
+      city: user?.shippingAddress?.city,
+      country: user?.shippingAddress?.country,
+      region: user?.shippingAddress?.city,
+      postalCode: user?.shippingAddress?.postalCode,
+      phone: user?.shippingAddress?.phone,
+    });
+  }, [user]);
+
+  useEffect(() => {
+    if (user && user?.shippingAddress) {
       Object.entries(user?.shippingAddress).map(([key, value], index) => {
         if (!value) {
           setHasAddress(false);
@@ -31,19 +55,6 @@ const AddShippingAddress = ({ buttonText }) => {
       });
     }
   }, [user]);
-
-  const [formData, setFormData] = useState({
-    firstName: user?.shippingAddress?.firstName || "",
-    lastName: user?.shippingAddress?.lastName || "",
-    address: user?.shippingAddress?.address || "",
-    city: user?.shippingAddress?.city || "",
-    country: user?.shippingAddress?.country || "",
-    region: user?.shippingAddress?.region || "",
-    postalCode: user?.shippingAddress?.postalCode || "",
-    phone: user?.shippingAddress?.phone || "",
-  });
-
-  console.log(formData);
 
   const onChange = (e) => {
     const { name, value } = e.target;
@@ -96,7 +107,6 @@ const AddShippingAddress = ({ buttonText }) => {
           flexWrap: "wrap",
           marginY: 2,
           width: "100%",
-          //border: "1px solid black",
         }}
       >
         <Grid
@@ -112,7 +122,6 @@ const AddShippingAddress = ({ buttonText }) => {
             display: "flex",
             flexDirection: "column",
             justifyContent: "space-beetwen",
-            //border: "1px solid black",
           }}
         >
           {formData &&
@@ -122,7 +131,7 @@ const AddShippingAddress = ({ buttonText }) => {
                 id={key.toLowerCase()}
                 name={key}
                 label={translatedValues(key)}
-                value={value || ""}
+                value={value}
                 onChange={onChange}
                 sx={{ width: "20px" }}
               />
