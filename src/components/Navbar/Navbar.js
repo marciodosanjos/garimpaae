@@ -15,6 +15,7 @@ import {
 import { ShoppingCart, User, Menu } from "lucide-react";
 import useIsMobile from "../../hooks/useIsMobile";
 import { getCartItemsAction } from "../../redux/slices/cart/cartSlice";
+import lowercaseFirstLetter from "../../utils/lowerCase";
 
 export default function Navbar() {
   const dispatch = useDispatch();
@@ -51,13 +52,6 @@ export default function Navbar() {
     dispatch(logoutUserAction());
     window.location.href = "/login";
   };
-
-  function lowercaseFirstLetter(text) {
-    return text
-      .split(" ")
-      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-      .join(" ");
-  }
 
   const [hovered, setHovered] = useState(null);
   const [hoveredIcon, setHoveredIcon] = useState(null);

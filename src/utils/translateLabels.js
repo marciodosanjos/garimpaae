@@ -54,6 +54,9 @@ const translateLabels = (value) => {
     case "description":
       return "Descrição";
       break;
+    case "azul":
+      return "#5353ec";
+      break;
 
     default:
       return value;

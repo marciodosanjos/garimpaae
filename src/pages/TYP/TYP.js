@@ -171,7 +171,7 @@ export default function ThanksForOrdering() {
                   borderRadius: 1,
                 }}
               >
-                {lastOrder.orderNumber}
+                {lastOrder?.orderNumber}
               </Typography>
             </Box>
             <Box sx={{ borderBottom: "0.5px solid rgba(0, 0, 0, 0.1)" }}>

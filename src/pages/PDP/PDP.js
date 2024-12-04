@@ -23,6 +23,7 @@ import useIsMobile from "../../hooks/useIsMobile";
 import Teaser from "../../components/Teaser/Teaser";
 import Gallery from "../../components/Gallery/Gallery";
 import SuccessMsg from "../../components/SuccessMsg/SuccessMsg";
+import translateLabels from "../../utils/translateLabels";
 
 export default function PDP() {
   const dispatch = useDispatch();
@@ -60,7 +61,7 @@ export default function PDP() {
 
   //Add to cart handler
   const addToCartHandler = () => {
-    if (selectedSize === "") {
+    if (!selectedSize) {
       setError("Erro: Selecione um tamanho correto");
       setSnackbarOpen(true);
       return;
@@ -91,6 +92,12 @@ export default function PDP() {
     setSnackbarOpen(true);
   };
 
+  const handleSelectSize = (size) => {
+    setSelectedSize(size);
+  };
+
+  console.log(selectedSize);
+
   return (
     <>
       <Container className="product" sx={{ marginY: "3rem" }}>
@@ -98,7 +105,7 @@ export default function PDP() {
           container
           sm={12}
           md={12}
-          sx={{ height: "auto", gap: 0, marginBottom: 30 }}
+          sx={{ height: "auto", gap: 3, marginBottom: 30 }}
         >
           <Grid item xs={12} sm={12} md={5} lg={6}>
             <Gallery arr={productData?.images} />
@@ -108,15 +115,16 @@ export default function PDP() {
             item
             xs={12}
             sm={12}
-            md={6}
-            lg={6}
+            md={5}
+            lg={5}
             sx={{
               flexDirection: "column",
               gap: 3,
-              paddingX: 4,
-              paddingY: isMobile && 3,
+              padding: 4,
+              paddingY: isMobile ? 3 : 2,
               justifyContent: "space-between",
               alignItems: { xs: "center", sm: "center", md: "flex-start" },
+              //boxShadow: "0px 4px 12px rgba(0, 0, 0, 0.1)",
             }}
           >
             <Box
@@ -134,7 +142,7 @@ export default function PDP() {
                 variant="body1"
                 sx={{
                   border: "1px solid grey",
-                  width: isMobile ? "100%" : "30%",
+                  width: isMobile ? "100%" : "50%",
                   color: "grey",
                   textAlign: "center",
                   borderRadius: 1,
@@ -149,7 +157,7 @@ export default function PDP() {
             <Box className="product-color">
               <FormControl>
                 <FormLabel
-                  id="demo-row-radio-buttons-group-label"
+                  id="row-radio-buttons-group-label"
                   sx={{
                     textTransform: "uppercase",
                     textAlign: isMobile && "center",
@@ -174,22 +182,23 @@ export default function PDP() {
                           control={
                             <Radio
                               sx={{
-                                backgroundColor: color,
-                                color: color,
+                                backgroundColor:
+                                  translateLabels(color) || "yellow",
+                                color: translateLabels(color),
                                 opacity: "90%",
 
                                 "&:hover": {
-                                  backgroundColor: color,
-                                  color: color,
+                                  backgroundColor: translateLabels(color),
+                                  color: translateLabels(color),
                                 },
                                 "&.Mui-checked": {
-                                  backgroundColor: color,
-                                  color: color,
+                                  backgroundColor: translateLabels(color),
+                                  color: translateLabels(color),
                                   border: "3px solid black",
                                 },
                                 "&.Mui-active": {
-                                  backgroundColor: color,
-                                  color: color,
+                                  backgroundColor: translateLabels(color),
+                                  color: translateLabels(color),
                                 },
                               }}
                             />
@@ -230,22 +239,31 @@ export default function PDP() {
               </FormControl>
             </Box>
             <Box className="product-size">
-              <Typography sx={{ textTransform: "uppercase", marginBottom: 1 }}>
+              <Typography
+                sx={{
+                  textTransform: "uppercase",
+                  marginBottom: 1,
+                  textAlign: isMobile && "center",
+                }}
+              >
                 Tamanho
               </Typography>
               <Box display="flex" flexDirection="row" gap={2}>
                 {productData?.sizes.map((size) => (
                   <Button
                     key={size}
-                    onClick={(e) => setSelectedSize(e.target.event)}
+                    onClick={() => {
+                      handleSelectSize(size);
+                    }}
                     value={size}
                     sx={{
                       display: "flex",
                       width: 40,
                       height: 40,
                       border: "2px solid grey",
-                      backgroundColor: selectedSize ? "#71747E" : "#ffffff",
-                      color: selectedSize ? "#ffffff" : "#71747E",
+                      backgroundColor:
+                        selectedSize === size ? "secondary.dark" : "#ffffff",
+                      color: selectedSize === size ? "#ffffff" : "#71747E",
                       cursor: "pointer",
                       "&:hover": {
                         backgroundColor: "lightgrey",

@@ -9,12 +9,19 @@ import LoadingComponent from "../../components/LoadingComp/LoadingComponent";
 import { Box, Button, Container, Grid, Typography } from "@mui/material";
 import useIsMobile from "../../hooks/useIsMobile";
 import { useNavigate } from "react-router-dom";
+import SuccessMsg from "../../components/SuccessMsg/SuccessMsg";
 
 export default function Checkout() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const isMobile = useIsMobile();
   const [isLogged, setIsLogged] = useState(true);
+  const [isSnackbarOpen, setSnackbarOpen] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+
+  const handleSnackbarClose = () => {
+    setSnackbarOpen(false);
+  };
 
   useEffect(() => {
     dispatch(getCartItemsAction());
@@ -60,13 +67,20 @@ export default function Checkout() {
 
   useEffect(() => {
     const userInfo = localStorage.getItem("userInfo");
-    if (!userInfo) {
+    if (!userInfo || orderErr === "Invalid token") {
       setIsLogged(false);
       setTimeout(() => {
         navigate("/login");
       }, 5000);
     }
-  }, []);
+  }, [navigate, orderErr]);
+
+  useEffect(() => {
+    if (orderErr === "Order validation failed") {
+      setErrorMessage(orderErr);
+      setSnackbarOpen(true);
+    }
+  }, [orderErr]);
 
   let data = [
     { title: "Subtotal", value: 300 },
@@ -223,7 +237,13 @@ export default function Checkout() {
               Finalizar compra
             </Button>
             {orderLoading && <LoadingComponent />}
-            <>{orderErr && <p>{orderErr?.message}</p>}</>
+            {errorMessage && (
+              <SuccessMsg
+                msg={errorMessage}
+                isOpened={isSnackbarOpen}
+                onClose={() => setErrorMessage("")}
+              />
+            )}
           </Grid>
         </Grid>
       </>

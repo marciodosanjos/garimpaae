@@ -28,8 +28,6 @@ export default function ManageCategories() {
 
   const { colors } = useSelector((state) => state?.colors);
 
-  console.log(colors);
-
   const [colorsData, setColorsData] = useState([]);
 
   useEffect(() => {
@@ -43,8 +41,6 @@ export default function ManageCategories() {
   }, [colors]);
 
   const tableHeadItems = ["Cor", "Ação"];
-
-  console.log(colorsData);
 
   //delete category handler
   const deleteColorHandler = async (id) => {
