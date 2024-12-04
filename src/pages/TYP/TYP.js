@@ -20,6 +20,12 @@ export default function ThanksForOrdering() {
 
   //---get cart items from store---
   const { cartItems } = useSelector((state) => state?.cart);
+  const { profile } = useSelector((state) => state?.users);
+
+  const ordersLength = profile?.data?.orders?.length;
+
+  const lastOrder = profile?.data?.orders[ordersLength - 1];
+  console.log(lastOrder);
 
   //calculate total price
   const sumTotalPrice = cartItems?.reduce((acc, curr) => {
@@ -37,7 +43,7 @@ export default function ThanksForOrdering() {
 
   let data = [
     { title: "Subtotal", value: 300 },
-    { title: "Frete", value: "free" },
+    { title: "Frete", value: 0 },
     { title: "Taxa", value: 20 },
   ];
 
@@ -129,7 +135,7 @@ export default function ThanksForOrdering() {
                   justifyContent: "flex",
                 }}
               >
-                {cartItems?.map((product, index) => (
+                {lastOrder?.orderItems?.map((product, index) => (
                   <Box key={index}>
                     <img
                       src={product?.image}
@@ -141,6 +147,32 @@ export default function ThanksForOrdering() {
                   </Box>
                 ))}
               </Box>
+            </Box>
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "center",
+                alignItems: "center",
+                gap: 3,
+              }}
+            >
+              <Typography>
+                Aqui está o número do pedido. Guarde-o com você para casos de
+                dúvidas
+              </Typography>
+              <Typography
+                sx={{
+                  border: "1px solid black",
+                  width: "auto",
+                  color: "black",
+                  textAlign: "center",
+                  paddingX: "1rem",
+                  borderRadius: 1,
+                }}
+              >
+                {lastOrder.orderNumber}
+              </Typography>
             </Box>
             <Box sx={{ borderBottom: "0.5px solid rgba(0, 0, 0, 0.1)" }}>
               {data?.map((item, index) => (
@@ -159,7 +191,10 @@ export default function ThanksForOrdering() {
                     {item?.title}
                   </Typography>
                   <Typography variant="h6">
-                    R$ {item.title === "Subtotal" ? sumTotalPrice : item.value}
+                    R${" "}
+                    {item.title === "Subtotal"
+                      ? lastOrder?.totalPrice
+                      : item.value}
                   </Typography>
                 </Box>
               ))}
@@ -178,7 +213,7 @@ export default function ThanksForOrdering() {
                 Total
               </Typography>
               <Typography variant="h6">
-                R$ {sumTotalPrice + data[2]?.value}
+                R$ {lastOrder?.totalPrice + data[2]?.value}
               </Typography>
             </Box>
             <Button
