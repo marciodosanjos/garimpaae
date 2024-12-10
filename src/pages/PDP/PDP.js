@@ -96,8 +96,6 @@ export default function PDP() {
     setSelectedSize(size);
   };
 
-  console.log(selectedSize);
-
   return (
     <>
       <Container className="product" sx={{ marginY: "3rem" }}>

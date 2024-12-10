@@ -5,7 +5,6 @@ import { Box, Button, Container, Grid } from "@mui/material";
 import TitleUserProfileSection from "../../TitleUserProfileSection/TitleUserProfileSection";
 import translateLabels from "../../../utils/translateLabels";
 import FormTextField from "../../FormTextField/FormTextField";
-import { addColorAction } from "../../../redux/slices/colors/colorsSlice";
 import { createBrandAction } from "../../../redux/slices/brands/brandsSlice";
 
 export default function AddBrand() {
@@ -18,8 +17,6 @@ export default function AddBrand() {
 
   //---onChange---
   const handleOnChange = (e) => {
-    console.log(e.target.value);
-
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
@@ -30,11 +27,7 @@ export default function AddBrand() {
   //onSubmit
   const handleOnSubmit = async (e) => {
     e.preventDefault();
-
     const payload = formData.name;
-
-    console.log(payload);
-
     try {
       const result = await dispatch(createBrandAction(payload));
       if (createBrandAction.fulfilled.match(result)) {

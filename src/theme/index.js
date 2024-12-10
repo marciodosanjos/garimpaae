@@ -29,8 +29,9 @@ const theme = createTheme({
             border: "1px solid black",
             "&:hover": {
               backgroundColor: "grey",
+              textTransform: "capitalize",
             },
-            textTransform: "capitalize",
+
             "@media (min-width:0px)": {
               fontSize: "2rem",
               textTransform: "none",

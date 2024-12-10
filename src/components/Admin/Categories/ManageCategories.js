@@ -1,4 +1,3 @@
-import LoadingComponent from "../../LoadingComp/LoadingComponent";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import {
@@ -11,7 +10,6 @@ import AdminTable from "../../Table/AdminTable";
 import useIsMobile from "../../../hooks/useIsMobile";
 import { Grid } from "@mui/material";
 import SuccessMsg from "../../SuccessMsg/SuccessMsg";
-import baseURL from "../../../utils/baseURL";
 
 export default function ManageCategories() {
   const [isDeleted, setIsDeleted] = useState(false);

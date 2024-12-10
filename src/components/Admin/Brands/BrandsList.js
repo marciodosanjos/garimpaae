@@ -1,4 +1,3 @@
-import LoadingComponent from "../../LoadingComp/LoadingComponent";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import TitleUserProfileSection from "../../TitleUserProfileSection/TitleUserProfileSection";
@@ -6,10 +5,7 @@ import AdminTable from "../../Table/AdminTable";
 import useIsMobile from "../../../hooks/useIsMobile";
 import { Grid } from "@mui/material";
 import SuccessMsg from "../../SuccessMsg/SuccessMsg";
-import {
-  deleteColorAction,
-  fetchColorsAction,
-} from "../../../redux/slices/colors/colorsSlice";
+import { fetchColorsAction } from "../../../redux/slices/colors/colorsSlice";
 import {
   deleteBrandAction,
   fetchBrandsAction,
@@ -45,8 +41,6 @@ export default function BrandsList() {
   }, [brands]);
 
   const tableHeadItems = ["Marca", "Ação"];
-
-  console.log(brandsData);
 
   //delete category handler
   const deleteHandler = async (id) => {

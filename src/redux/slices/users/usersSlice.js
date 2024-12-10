@@ -37,8 +37,6 @@ export const loginUserAction = createAsyncThunk(
 
       if (cartItems) {
         window.location.assign("/order-payment");
-      } else {
-        console.log("No cart items");
       }
 
       return data;

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { loginUserAction } from "../../redux/slices/users/usersSlice";
 import LoadingComponent from "../../components/LoadingComp/LoadingComponent";
@@ -7,18 +7,13 @@ import {
   Box,
   Button,
   Container,
-  FormControl,
   Grid,
-  Snackbar,
   TextField,
   Typography,
 } from "@mui/material";
-import useIsMobile from "../../hooks/useIsMobile";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const Login = () => {
-  const navigate = useNavigate();
-  const isMobile = useIsMobile();
   const dispatch = useDispatch();
   const [formData, setFormData] = useState({
     email: "",
@@ -27,9 +22,7 @@ const Login = () => {
 
   const { email, password } = formData;
 
-  const { loading, userInfo, error } = useSelector(
-    (state) => state?.users?.userAuth
-  );
+  const { loading, error } = useSelector((state) => state?.users?.userAuth);
 
   const onChangeHandler = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });

@@ -1,14 +1,10 @@
 //UpdateProduct.js
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import makeAnimated from "react-select/animated";
 import LoadingComponent from "../../LoadingComp/LoadingComponent";
 import SuccessMsg from "../../SuccessMsg/SuccessMsg";
 import {
-  addProductAction,
-  fecthProductsAction,
   fetchProductAtion,
-  resetProductAdded,
   updateProductAction,
 } from "../../../redux/slices/products/productsSlice";
 import { fetchCategoriesAction } from "../../../redux/slices/categories/categoriesSlice";
@@ -134,8 +130,7 @@ export default function UpdateProduct() {
     }
   }, [productData]);
 
-  const { name, brand, category, description, totalQty, price, images } =
-    formData;
+  const { brand, category } = formData;
 
   const newFormData = {
     ...formData,

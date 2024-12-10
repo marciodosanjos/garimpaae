@@ -19,10 +19,6 @@ export default function Checkout() {
   const [isSnackbarOpen, setSnackbarOpen] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
 
-  const handleSnackbarClose = () => {
-    setSnackbarOpen(false);
-  };
-
   useEffect(() => {
     dispatch(getCartItemsAction());
   }, [dispatch]);
@@ -35,11 +31,6 @@ export default function Checkout() {
     (acc, curr) => acc + curr?.totalPrice,
     0
   );
-
-  //create order submit handler
-  //  // const createOrderSubmitHandler = (e) => {
-  //     e.preventDefault();
-  //   };
 
   useEffect(() => {
     dispatch(getUserProfileAction());

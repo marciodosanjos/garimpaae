@@ -4,7 +4,7 @@ import {
   resetErrAction,
   resetSuccessAction,
 } from "../globalActions/globalActions";
-const { createAsyncThunk, createSlice } = require("@reduxjs/toolkit");
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
 //initalsState
 const initialState = {

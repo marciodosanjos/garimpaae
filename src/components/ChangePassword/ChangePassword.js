@@ -1,5 +1,4 @@
-import { Box, Button, Grid, Typography } from "@mui/material";
-import useIsMobile from "../../hooks/useIsMobile";
+import { Box, Button, Grid } from "@mui/material";
 import { useEffect, useState } from "react";
 import FormTextField from "../FormTextField/FormTextField";
 import { useDispatch, useSelector } from "react-redux";
@@ -11,7 +10,6 @@ import Alert from "@mui/material/Alert";
 import TitleUserProfileSection from "../TitleUserProfileSection/TitleUserProfileSection";
 
 export default function ChangePassword() {
-  const isMobile = useIsMobile();
   const [isUpdated, setIsUpdated] = useState(false);
 
   //select store data

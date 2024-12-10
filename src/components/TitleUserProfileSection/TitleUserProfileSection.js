@@ -1,4 +1,4 @@
-import { Box, Grid, Typography } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import useIsMobile from "../../hooks/useIsMobile";
 
 export default function TitleUserProfileSection({

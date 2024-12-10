@@ -57,7 +57,6 @@ export default function UserProfile() {
   const [hovered, setHovered] = useState(null);
   const [isActive, setIsActive] = useState(0);
   const isMobile = useIsMobile();
-  const [isLogged, setIsLogged] = useState(true);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -71,12 +70,11 @@ export default function UserProfile() {
 
   useEffect(() => {
     if (errorMsg === "Invalid token") {
-      setIsLogged(false);
       setTimeout(() => {
         navigate("/login");
       }, 3000);
     }
-  }, []);
+  }, [navigate, errorMsg]);
 
   function handleClick(index) {
     setIsActive(index);

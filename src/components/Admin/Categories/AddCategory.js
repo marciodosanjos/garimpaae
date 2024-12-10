@@ -26,14 +26,10 @@ export default function CategoryToAdd() {
 
   //---onChange---
   const handleOnChange = (e) => {
-    console.log(e.target.value);
-
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
   const file = files;
-  console.log(file[0]?.name);
-
   const newFormData = { ...formData, file };
 
   //file handle change

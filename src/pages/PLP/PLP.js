@@ -11,6 +11,7 @@ import debounce from "lodash.debounce";
 import FacetItem from "../../components/FacetItem/FacetItem";
 import Sorting from "../../components/Sorting/Sorting";
 import useIsMobile from "../../hooks/useIsMobile";
+import { useCallback } from "react";
 
 export default function PLP() {
   const [color, setColor] = useState("");
@@ -48,8 +49,7 @@ export default function PLP() {
     },
   ];
 
-  // Função para buscar produtos
-  const fetchProducts = async () => {
+  const fetchProducts = useCallback(async () => {
     if (!hasMore) return; // Não carregar mais produtos se não houver mais páginas
 
     setLoadingData(true);
@@ -75,7 +75,16 @@ export default function PLP() {
       console.error("Erro na requisição de produtos:", error);
     }
     setLoadingData(false);
-  };
+  }, [
+    hasMore,
+    selectedBrands,
+    selectedSizes,
+    category,
+    color,
+    price,
+    page,
+    sort,
+  ]);
 
   // Carrega produtos ao alterar filtros ou página
   useEffect(() => {
@@ -90,7 +99,7 @@ export default function PLP() {
     price,
     page,
     sort,
-    dispatch,
+    fetchProducts,
   ]);
 
   // Reinicia a página ao mudar qualquer filtro de busca

@@ -1,7 +1,7 @@
 import { Box, Container, Grid, Typography } from "@mui/material";
 import { ShoppingCart, MapPinHouse, Key, LogOut } from "lucide-react";
 import { useEffect, useState } from "react";
-import { Link, Navigate, Outlet, useNavigate } from "react-router-dom";
+import { Link, Outlet, useNavigate } from "react-router-dom";
 import useIsMobile from "../../hooks/useIsMobile";
 import { useDispatch, useSelector } from "react-redux";
 import { getUserProfileAction } from "../../redux/slices/users/usersSlice";
@@ -32,9 +32,7 @@ const menuItems = [
 export default function UserProfile() {
   const [hovered, setHovered] = useState(null);
   const [isActive, setIsActive] = useState(0);
-  const [hoveredIcon, setHoveredIcon] = useState(null);
   const isMobile = useIsMobile();
-  const [isLogged, setIsLogged] = useState(true);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -42,18 +40,19 @@ export default function UserProfile() {
     dispatch(getUserProfileAction());
   }, [dispatch]);
 
-  const { loading, error, profile } = useSelector((state) => state?.users);
+  console.log(hovered);
+
+  const { error } = useSelector((state) => state?.users);
 
   const errorMsg = error?.message;
 
   useEffect(() => {
     if (errorMsg === "Invalid token") {
-      setIsLogged(false);
       setTimeout(() => {
         navigate("/login");
       }, 3000);
     }
-  }, []);
+  }, [navigate, errorMsg]);
 
   return (
     <Container fixed>

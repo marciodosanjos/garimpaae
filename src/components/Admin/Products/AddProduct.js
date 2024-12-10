@@ -1,12 +1,9 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import makeAnimated from "react-select/animated";
-import LoadingComponent from "../../LoadingComp/LoadingComponent";
 import SuccessMsg from "../../SuccessMsg/SuccessMsg";
 import {
   addProductAction,
   fecthProductsAction,
-  resetProductAdded,
 } from "../../../redux/slices/products/productsSlice";
 import { fetchCategoriesAction } from "../../../redux/slices/categories/categoriesSlice";
 import { fetchBrandsAction } from "../../../redux/slices/brands/brandsSlice";
@@ -107,8 +104,8 @@ export default function AddProduct() {
 
   //form data
   const [formData, setFormData] = useState({
-    name: "Dunk Low",
-    description: "Lorem ipsum",
+    name: "",
+    description: "",
     category: "",
     sizes: "",
     brand: "",
@@ -118,8 +115,7 @@ export default function AddProduct() {
     images: "",
   });
 
-  const { name, brand, category, description, totalQty, price, images } =
-    formData;
+  const { brand, category } = formData;
 
   const newFormData = {
     ...formData,
@@ -165,7 +161,7 @@ export default function AddProduct() {
       if (!value) {
         const errorMsg = "Erro: preencha todos os campos";
         setErrorMessage(errorMsg);
-        console.log("dispara erro:", errorMsg); // Evite usar o estado diretamente aqui
+        console.log("dispara erro:", errorMsg);
         return; // Interrompa o fluxo se a validação falhar
       }
     });
@@ -174,7 +170,6 @@ export default function AddProduct() {
       // Despacha a ação para criar o produto e aguarda o resultado
       const result = await dispatch(addProductAction(newFormData));
 
-      // Aqui você pode manipular a resposta, caso seja necessário
       if (addProductAction.fulfilled.match(result)) {
         console.log("obj a ser enviado", newFormData);
         console.log("Produto adicionado com sucesso:", result.payload);
@@ -183,7 +178,7 @@ export default function AddProduct() {
         setTimeout(() => {
           setSnackbarOpen(false);
         }, 6000);
-        // Resetar os dados do formulário
+
         setFormData({
           name: "",
           description: "",

@@ -52,7 +52,6 @@ export default function ManageStocks() {
       });
 
     setProductsRows(productsRows);
-    console.log(productsRows);
   }, [products]);
 
   //delete product handler

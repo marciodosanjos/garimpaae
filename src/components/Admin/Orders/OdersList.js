@@ -11,7 +11,6 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import { Link } from "react-router-dom";
-import translateLabels from "../../../utils/translateLabels";
 import LoadingComponent from "../../LoadingComp/LoadingComponent";
 
 export default function OrdersList() {
@@ -21,7 +20,7 @@ export default function OrdersList() {
     dispatch(fetchOrdersAction());
   }, []);
 
-  const { orders, error } = useSelector((state) => state?.orders);
+  const { orders } = useSelector((state) => state?.orders);
 
   const ordersData = orders?.data;
 

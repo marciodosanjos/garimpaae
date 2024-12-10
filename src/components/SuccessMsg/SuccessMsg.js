@@ -12,8 +12,6 @@ export default function SuccessMsg({ msg, isOpened, onClose }) {
     onClose(); // Chama a função do componente pai.
   };
 
-  console.log(msg?.includes("failed"));
-
   return (
     <>
       <Snackbar open={isOpened} autoHideDuration={6000} onClose={handleClose}>

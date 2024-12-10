@@ -1,15 +1,7 @@
 import { useState } from "react";
 import SuccessMsg from "../../SuccessMsg/SuccessMsg";
 import { useDispatch } from "react-redux";
-import { addCategoryAction } from "../../../redux/slices/categories/categoriesSlice";
-import {
-  Box,
-  Button,
-  Container,
-  Grid,
-  InputLabel,
-  Typography,
-} from "@mui/material";
+import { Box, Button, Container, Grid } from "@mui/material";
 import TitleUserProfileSection from "../../TitleUserProfileSection/TitleUserProfileSection";
 import translateLabels from "../../../utils/translateLabels";
 import FormTextField from "../../FormTextField/FormTextField";
@@ -25,8 +17,6 @@ export default function AddColor() {
 
   //---onChange---
   const handleOnChange = (e) => {
-    console.log(e.target.value);
-
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
@@ -39,8 +29,6 @@ export default function AddColor() {
     e.preventDefault();
 
     const payload = formData.name;
-
-    console.log(payload);
 
     try {
       const result = await dispatch(addColorAction(payload));

@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { Box } from "@mui/material";
 
 export default function Sorting({ fn, sort }) {
   return (
-    <Box sx={{}}>
+    <Box>
       <select onChange={fn} value={sort} style={{ color: "#71747E" }}>
         <option value="">Ordenar</option>
         <option value="price_desc" name="Maior preço">

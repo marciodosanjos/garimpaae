@@ -1,8 +1,4 @@
-import {
-  createAsyncThunk,
-  createSlice,
-  rejectWithValue,
-} from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import baseURL from "../../../utils/baseURL";
 import {
@@ -102,7 +98,6 @@ export const addCategoryAction = createAsyncThunk(
   async (payload, { rejectWithValue, getState }) => {
     try {
       const { name, file } = payload;
-      console.log(name);
 
       //fromData
       const newformData = new FormData();

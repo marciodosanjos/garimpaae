@@ -8,13 +8,11 @@ import Navbar from "./components/Navbar/Navbar";
 import OrderPayment from "./pages/Checkout/OrderPayment";
 import ManageCategories from "./components/Admin/Categories/ManageCategories";
 import ManageStocks from "./components/Admin/Products/ManageStocks";
-import CategoryToAdd from "./components/Admin/Categories/CategoryToAdd";
 import AddCategory from "./components/Admin/Categories/AddCategory";
 import AddBrand from "./components/Admin/Categories/AddBrand";
 import AddColor from "./components/Admin/Categories/AddColor";
 import Product from "./pages/PDP/PDP";
 import ShoppingCart from "./pages/Cart/ShoppingCart";
-import AddReview from "./components/Users/Reviews/AddReview";
 import UpdateCategory from "./components/Admin/Categories/UpdateCategory";
 import OrdersList from "./components/Admin/Orders/OdersList";
 import ManageOrders from "./components/Admin/Orders/ManageOrders";
@@ -96,9 +94,6 @@ const App = () => {
         <Route path="/products-filters" element={<PLP />} />
         <Route path="/products/:id" element={<Product />} />
         <Route path="success" element={<TYP />} />
-
-        {/* review */}
-        <Route path="/add-review/:id" element={<AddReview />} />
 
         {/* shopping cart */}
         <Route path="/shopping-cart" element={<ShoppingCart />} />

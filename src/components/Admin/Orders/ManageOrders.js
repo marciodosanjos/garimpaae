@@ -1,5 +1,4 @@
 import { useDispatch, useSelector } from "react-redux";
-import OrdersStats from "./OrdersStatistics";
 import { useState } from "react";
 import {
   fetchOrdersAction,
@@ -33,8 +32,6 @@ export default function OrdersList() {
 
   const { orders, error } = useSelector((state) => state?.orders);
   const ordersData = orders?.data || [];
-  console.log(ordersData[1]);
-
   const orderStatusItems = ["shipped", "pending", "processing"];
 
   const [statuses, setStatuses] = useState(

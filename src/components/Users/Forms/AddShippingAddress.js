@@ -5,7 +5,7 @@ import {
   updateUserShippingAdressAction,
 } from "../../../redux/slices/users/usersSlice";
 import LoadingComponent from "../../LoadingComp/LoadingComponent";
-import { Box, Button, Grid } from "@mui/material";
+import { Button, Grid } from "@mui/material";
 import FormTextField from "../../FormTextField/FormTextField";
 import Alert from "@mui/material/Alert";
 import CheckIcon from "@mui/icons-material/Check";
@@ -48,7 +48,7 @@ const AddShippingAddress = ({ buttonText }) => {
 
   useEffect(() => {
     if (user && user?.shippingAddress) {
-      Object.entries(user?.shippingAddress).map(([key, value], index) => {
+      Object.entries(user?.shippingAddress).forEach(([key, value]) => {
         if (!value) {
           setHasAddress(false);
         }
@@ -67,6 +67,11 @@ const AddShippingAddress = ({ buttonText }) => {
   //onsubmit
   const onSubmit = (e) => {
     e.preventDefault();
+
+    if (hasAddress === false) {
+      return;
+    }
+
     dispatch(updateUserShippingAdressAction({ ...formData }));
     setIsUpdated(true);
   };

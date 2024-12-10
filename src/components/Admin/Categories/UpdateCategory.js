@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import ErrorComponent from "../../ErrorMsg/ErrorMsg";
-import SuccessMsg from "../../SuccessMsg/SuccessMsg";
 import LoadingComponent from "../../LoadingComp/LoadingComponent";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -17,7 +16,7 @@ export default function UpdateCategory() {
     dispatch(fetchCategoriesAction());
   }, [dispatch]);
 
-  const { categories, loading, error, isUpdated } = useSelector(
+  const { categories, loading, error } = useSelector(
     (state) => state?.categories
   );
 

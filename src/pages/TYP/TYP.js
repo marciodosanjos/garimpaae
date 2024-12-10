@@ -19,22 +19,11 @@ export default function ThanksForOrdering() {
   }, [dispatch]);
 
   //---get cart items from store---
-  const { cartItems } = useSelector((state) => state?.cart);
   const { profile } = useSelector((state) => state?.users);
 
   const ordersLength = profile?.data?.orders?.length;
 
   const lastOrder = profile?.data?.orders[ordersLength - 1];
-  console.log(lastOrder);
-
-  //calculate total price
-  const sumTotalPrice = cartItems?.reduce((acc, curr) => {
-    return acc + curr?.totalPrice;
-  }, 0);
-
-  //taxta
-
-  const frete = 20;
 
   //user address
   useEffect(() => {
