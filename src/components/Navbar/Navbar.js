@@ -39,9 +39,9 @@ export default function Navbar() {
     dispatch(fetchCategoriesAction());
   }, [dispatch]);
 
-  const {
-    categories: { data },
-  } = useSelector((state) => state?.categories);
+  const { categories } = useSelector((state) => state?.categories);
+
+  const data = categories?.data;
 
   const location = useLocation();
   const { pathname } = location;
@@ -110,18 +110,19 @@ export default function Navbar() {
                       onClose={() => setMobileMenuOpen(false)}
                     >
                       <List sx={{ width: 250 }}>
-                        {data?.map((category) => (
-                          <ListItem button key={category?._id}>
-                            <Link
-                              to={`/products-filters?category=${category?.name}`}
-                              onClick={() => setMobileMenuOpen(false)}
-                            >
-                              <ListItemText
-                                primary={lowercaseFirstLetter(category?.name)}
-                              />
-                            </Link>
-                          </ListItem>
-                        ))}
+                        {data &&
+                          data?.map((category) => (
+                            <ListItem button key={category?._id}>
+                              <Link
+                                to={`/products-filters?category=${category?.name}`}
+                                onClick={() => setMobileMenuOpen(false)}
+                              >
+                                <ListItemText
+                                  primary={lowercaseFirstLetter(category?.name)}
+                                />
+                              </Link>
+                            </ListItem>
+                          ))}
                         <ListItem button onClick={logoutHandler}>
                           <ListItemText primary="Logout" />
                         </ListItem>
@@ -160,9 +161,10 @@ export default function Navbar() {
                         gap: "2rem",
                       }}
                     >
-                      {data?.length <= 0 ? (
+                      {data && data?.length <= 0 ? (
                         <div>Erro ao carregar categorias</div>
                       ) : (
+                        data &&
                         data?.map((category, index) => (
                           <Link
                             key={category?._id}

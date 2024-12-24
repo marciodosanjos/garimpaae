@@ -8,6 +8,7 @@ import LoadingComponent from "../LoadingComp/LoadingComponent";
 import CheckIcon from "@mui/icons-material/Check";
 import Alert from "@mui/material/Alert";
 import TitleUserProfileSection from "../TitleUserProfileSection/TitleUserProfileSection";
+import DOMPurify from "dompurify";
 
 export default function ChangePassword() {
   const [isUpdated, setIsUpdated] = useState(false);
@@ -45,7 +46,20 @@ export default function ChangePassword() {
 
   const handleOnSubmit = (e) => {
     e.preventDefault();
-    dispatch(updateUserLoginData({ email: username, password }));
+
+    const sanitizedUsername = DOMPurify.sanitize(username);
+    const sanitizedPassword = DOMPurify.sanitize(password);
+
+    if (sanitizedUsername === "" || sanitizedPassword === "") {
+      return;
+    }
+
+    dispatch(
+      updateUserLoginData({
+        email: sanitizedUsername,
+        password: sanitizedPassword,
+      })
+    );
     setIsUpdated(true);
   };
 

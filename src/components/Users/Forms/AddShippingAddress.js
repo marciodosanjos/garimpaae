@@ -9,6 +9,7 @@ import { Button, Grid } from "@mui/material";
 import FormTextField from "../../FormTextField/FormTextField";
 import Alert from "@mui/material/Alert";
 import CheckIcon from "@mui/icons-material/Check";
+import DOMPurify from "dompurify";
 
 const AddShippingAddress = ({ buttonText }) => {
   const dispatch = useDispatch();
@@ -72,7 +73,17 @@ const AddShippingAddress = ({ buttonText }) => {
       return;
     }
 
-    dispatch(updateUserShippingAdressAction({ ...formData }));
+    const sanitizedFormData = {};
+    for (const [key, value] of Object.entries(formData)) {
+      const sanitizedValue = DOMPurify.sanitize(value);
+      if (sanitizedValue === "") {
+        alert("Preencha os campos corretamente");
+        return;
+      }
+      sanitizedFormData[key] = sanitizedValue;
+    }
+
+    dispatch(updateUserShippingAdressAction({ ...sanitizedFormData }));
     setIsUpdated(true);
   };
 

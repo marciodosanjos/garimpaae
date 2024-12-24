@@ -18,9 +18,9 @@ export default function LandingPage() {
   const { products } = useSelector((state) => state?.products);
 
   const featuredProducts1 =
-    products.data && products.data.slice(products.data.length - 3);
+    products?.data && products?.data?.slice(products?.data?.length - 3);
 
-  const featuredProducts2 = products.data && products.data.slice(3, 6);
+  const featuredProducts2 = products?.data && products?.data?.slice(3, 6);
 
   return (
     <Box sx={{ flexGrow: 1, backgroundColor: "#ffffff" }}>

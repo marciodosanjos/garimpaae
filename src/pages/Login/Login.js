@@ -12,6 +12,7 @@ import {
   Typography,
 } from "@mui/material";
 import { Link } from "react-router-dom";
+import DOMPurify from "dompurify";
 
 const Login = () => {
   const dispatch = useDispatch();
@@ -35,8 +36,16 @@ const Login = () => {
       return;
     }
 
+    const sanitizedEmail = DOMPurify.sanitize(email);
+    const sanitizedPassword = DOMPurify.sanitize(password);
+
+    if (sanitizedEmail === "" || sanitizedPassword === "") {
+      return;
+    }
     try {
-      dispatch(loginUserAction({ email, password }));
+      dispatch(
+        loginUserAction({ email: sanitizedEmail, password: sanitizedPassword })
+      );
 
       if (error) {
         return;

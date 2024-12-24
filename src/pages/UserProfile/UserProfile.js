@@ -40,8 +40,6 @@ export default function UserProfile() {
     dispatch(getUserProfileAction());
   }, [dispatch]);
 
-  console.log(hovered);
-
   const { error } = useSelector((state) => state?.users);
 
   const errorMsg = error?.message;

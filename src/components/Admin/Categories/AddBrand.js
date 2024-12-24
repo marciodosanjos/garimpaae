@@ -6,6 +6,7 @@ import TitleUserProfileSection from "../../TitleUserProfileSection/TitleUserProf
 import translateLabels from "../../../utils/translateLabels";
 import FormTextField from "../../FormTextField/FormTextField";
 import { createBrandAction } from "../../../redux/slices/brands/brandsSlice";
+import DOMPurify from "dompurify";
 
 export default function AddBrand() {
   const [errorMessage, setErrorMessage] = useState("");
@@ -28,8 +29,11 @@ export default function AddBrand() {
   const handleOnSubmit = async (e) => {
     e.preventDefault();
     const payload = formData.name;
+
+    const sanitizedName = DOMPurify.sanitize(payload);
+
     try {
-      const result = await dispatch(createBrandAction(payload));
+      const result = await dispatch(createBrandAction(sanitizedName));
       if (createBrandAction.fulfilled.match(result)) {
         setSnackbarOpen(true);
         setFormData({ name: "" });

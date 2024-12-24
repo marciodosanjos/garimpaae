@@ -6,6 +6,7 @@ import TitleUserProfileSection from "../../TitleUserProfileSection/TitleUserProf
 import translateLabels from "../../../utils/translateLabels";
 import FormTextField from "../../FormTextField/FormTextField";
 import { addColorAction } from "../../../redux/slices/colors/colorsSlice";
+import DOMPurify from "dompurify";
 
 export default function AddColor() {
   const [errorMessage, setErrorMessage] = useState("");
@@ -30,8 +31,10 @@ export default function AddColor() {
 
     const payload = formData.name;
 
+    const sanitizedName = DOMPurify.sanitize(payload);
+
     try {
-      const result = await dispatch(addColorAction(payload));
+      const result = await dispatch(addColorAction(sanitizedName));
       if (addColorAction.fulfilled.match(result)) {
         setSnackbarOpen(true);
         setFormData({ name: "" });

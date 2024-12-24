@@ -6,6 +6,7 @@ import { Alert, Box, Button, Container, Grid, TextField } from "@mui/material";
 import LoadingComponent from "../../LoadingComp/LoadingComponent";
 import CheckIcon from "@mui/icons-material/Check";
 import TitleUserProfileSection from "../../TitleUserProfileSection/TitleUserProfileSection";
+import DOMPurify from "dompurify";
 
 const RegisterForm = () => {
   const navigate = useNavigate();
@@ -32,25 +33,41 @@ const RegisterForm = () => {
       return;
     }
 
+    const sanitizedEmail = DOMPurify.sanitize(email);
+    const sanitizedPassword = DOMPurify.sanitize(password);
+    const sanitizedFullname = DOMPurify.sanitize(fullname);
+
+    if (
+      sanitizedEmail === "" ||
+      sanitizedPassword === "" ||
+      sanitizedFullname === ""
+    ) {
+      return;
+    }
+
     try {
-      dispatch(registrationUserAction({ email, password, fullname })).then(
-        (res) => {
-          if (res?.error?.message) {
+      dispatch(
+        registrationUserAction({
+          email: sanitizedEmail,
+          password: sanitizedPassword,
+          fullname: sanitizedFullname,
+        })
+      ).then((res) => {
+        if (res?.error?.message) {
+          setIsCreated(false);
+          setError(true);
+          setTimeout(() => {
+            navigate("/register");
+          }, 2000);
+        } else {
+          setIsCreated(true);
+          setError(false);
+          setTimeout(() => {
             setIsCreated(false);
-            setError(true);
-            setTimeout(() => {
-              navigate("/register");
-            }, 2000);
-          } else {
-            setIsCreated(true);
-            setError(false);
-            setTimeout(() => {
-              setIsCreated(false);
-              navigate("/");
-            }, 5000);
-          }
+            navigate("/");
+          }, 5000);
         }
-      );
+      });
     } catch (error) {
       console.error(error);
     }

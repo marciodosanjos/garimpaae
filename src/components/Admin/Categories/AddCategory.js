@@ -13,6 +13,7 @@ import {
 import TitleUserProfileSection from "../../TitleUserProfileSection/TitleUserProfileSection";
 import translateLabels from "../../../utils/translateLabels";
 import FormTextField from "../../FormTextField/FormTextField";
+import DOMPurify from "dompurify";
 
 export default function CategoryToAdd() {
   const [errorMessage, setErrorMessage] = useState("");
@@ -64,7 +65,9 @@ export default function CategoryToAdd() {
       return;
     }
 
-    const payload = { ...formData, file: files[0] }; // Primeiro arquivo
+    const sanitizedName = DOMPurify.sanitize(formData.name);
+
+    const payload = { sanitizedName, file: files[0] }; // Primeiro arquivo
     try {
       const result = await dispatch(addCategoryAction(payload));
       if (addCategoryAction.fulfilled.match(result)) {

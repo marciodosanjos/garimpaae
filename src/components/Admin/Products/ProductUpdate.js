@@ -24,6 +24,7 @@ import translateLabels from "../../../utils/translateLabels";
 import FormSelectField from "../../FormSelectField/FormSelectField";
 import FormMultiSelectField from "../../FormMultiSelectField/FormMultiSelectField";
 import { useParams } from "react-router-dom";
+import DOMPurify from "dompurify";
 
 export default function UpdateProduct() {
   const [files, setFiles] = useState("");
@@ -181,13 +182,23 @@ export default function UpdateProduct() {
       }
     });
 
+    const sanitizedFormData = {};
+    for (const [key, value] of Object.entries(newFormData)) {
+      const sanitizedValue = DOMPurify.sanitize(value);
+      if (sanitizedValue === "") {
+        alert("Preencha os campos corretamente");
+        return;
+      }
+      sanitizedFormData[key] = sanitizedValue;
+    }
+
     try {
       // Despacha a ação para criar o produto e aguarda o resultado
-      const result = await dispatch(updateProductAction(newFormData));
+      const result = await dispatch(updateProductAction(sanitizedFormData));
 
       // Aqui você pode manipular a resposta, caso seja necessário
       if (updateProductAction.fulfilled.match(result)) {
-        console.log("obj a ser enviado", newFormData);
+        console.log("obj a ser enviado", sanitizedFormData);
         console.log("Produto adicionado com sucesso:", result.payload);
         setSnackbarOpen(true);
         setErrorMessage("");
